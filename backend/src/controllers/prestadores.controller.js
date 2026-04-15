@@ -31,3 +31,35 @@ const buscarPorId = async (req, res) => {
       .json({ mensagem: "Erro ao realizar busca do prestador de serviço" });
   }
 };
+
+const criar = async (req, res) => {
+  try {
+    const {
+      usuario_id,
+      tipo_servico,
+      descricao,
+      telefone,
+      latitude,
+      longitude,
+    } = req.body;
+
+    if (!usuario_id || !tipo_servico) {
+      return res.status(400).json({
+        mensagem: "Id do Usuario e tipo de serviço precisam ser preenchidos",
+      });
+    }
+    const [result] = await pool.query(
+      `INSERT INTO prestadores (usuario_id, tipo_servico,descricao,telefone,latitude,longitude) VALUES(?,?,?,?,?,?)`,
+      [usuario_id, tipo_servico, descricao, telefone, latitude, longitude],
+    );
+
+    res.status(201).json({
+      mensagem: "Prestador cadastrado com sucesso",
+      id: result.insertId,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: "Erro ao cadastrar prestador" });
+  }
+};
+module.exports = { listar, buscarPorId, criar };
