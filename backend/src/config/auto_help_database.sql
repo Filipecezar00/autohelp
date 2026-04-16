@@ -33,3 +33,15 @@ CREATE TABLE solicitacoes(
     FOREIGN KEY (cliente_id) REFERENCES usuarios(id),
     FOREIGN KEY (prestador_id) REFERENCES prestadores(id)
 );
+
+USE autohelp;
+
+INSERT INTO usuarios (nome,email,senha,tipo) VALUES 
+('Carlos Mecânico','carlos@email.com','123456','prestador'),
+('João Borracheiro','joao@email.com','123456','prestador'),
+('Pedro Guincho','pedro@email.com','123456','prestador');
+
+INSERT INTO prestadores (usuario_id,tipo_servico,descricao,telefone,latitude,longitude) VALUES
+(1,'mecanico','Especialista em carros populares','(31) 9999-0001',-19.9167,-43.9345),
+(2,'Borracheiro','Troca e conserto de pneus','(31) 9999-0002',-19.9245,-43.9412),
+(3,'guincho','Guincho 24h para toda BH','(31) 9999-0003',-19.9102,-43.9278);
