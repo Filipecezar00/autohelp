@@ -2,10 +2,14 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const prestadoresRoutes = require("./src/routes/prestadores.routes");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/prestadores", prestadoresRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
