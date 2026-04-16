@@ -16,7 +16,7 @@ function PrestadorCard({ prestador }) {
       </div>
 
       <h3 style={styles.nome}>
-        {prestador.descricao || "Prestador de Serviço"}
+        {prestador.descricao || "Prestadores de Serviço"}
       </h3>
 
       <p style={styles.info}>
