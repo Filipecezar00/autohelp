@@ -42,8 +42,10 @@ function Home() {
   }
   return (
     <div style={styles.container}>
-      <h1 style={styles.titulo}>Mecânico Perto</h1>
-      <p style={styles.subtitulo}>{prestadores.length} prestador encontrado</p>
+      <h1 style={styles.titulo}>AutoHelp</h1>
+      <p style={styles.subtitulo}>
+        {prestadores.length} prestadores encontrados
+      </p>
       {prestadores.map((prestador) => (
         <PrestadorCard key={prestadores.id} prestador={prestador} />
       ))}
