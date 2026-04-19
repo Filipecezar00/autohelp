@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const cadastrarUsuario = async (req, res) => {
   try {
-    const { dados, nome, email, senha } = req.body;
+    const { nome, email, senha } = req.body;
 
     if (!nome || !email || !senha) {
       return res.status(400).send("Todos os campos são obrigatórios");
@@ -14,20 +14,22 @@ const cadastrarUsuario = async (req, res) => {
       [email],
     );
     if (existente.length > 0) {
-      return res.status(409).send("Email já cadastrado");
+      return res.status(409).json({ message: "Email já cadastrado" });
+    }
+
+    if (senha.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Senha muito curta, tente outra." });
+    }
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Email inválido" });
     }
 
     const saltRounds = 10;
     const senhaProtegida = await bcrypt.hash(senha, saltRounds);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (senha.length < 6) {
-      return res.status(400).send("Senha muito curta, tente outra.");
-    }
-
-    if (!emailRegex.test(email)) {
-      return res.status(400).send("Email inválido");
-    }
 
     await pool.query(`INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)`, [
       nome,
@@ -35,10 +37,10 @@ const cadastrarUsuario = async (req, res) => {
       senhaProtegida,
     ]);
 
-    return res.status(201).send("Usuário cadastrado com sucesso");
+    return res.status(201).json({ message: "Usuário cadastrado com sucesso" });
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Erro interno no servidor");
+    return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };
 module.exports = { cadastrarUsuario };
