@@ -19,6 +19,15 @@ const cadastrarUsuario = async (req, res) => {
 
     const saltRounds = 10;
     const senhaProtegida = await bcrypt.hash(senha, saltRounds);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (senha.length < 6) {
+      return res.status(400).send("Senha muito curta, tente outra.");
+    }
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).send("Email inválido");
+    }
 
     await pool.query(`INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)`, [
       nome,
