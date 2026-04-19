@@ -83,4 +83,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { cadastrarUsuario };
+module.exports = { cadastrarUsuario, login };
