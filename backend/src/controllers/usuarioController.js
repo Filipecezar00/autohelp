@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const cadastrarUsuario = async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!nome || !email || !senha) {
       return res.status(400).send("Todos os campos são obrigatórios");
@@ -30,7 +31,6 @@ const cadastrarUsuario = async (req, res) => {
 
     const saltRounds = 10;
     const senhaProtegida = await bcrypt.hash(senha, saltRounds);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     await pool.query(`INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)`, [
       nome,
