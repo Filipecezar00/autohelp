@@ -61,7 +61,8 @@ const login = async (req, res) => {
     if (!usuario) {
       return res.status(401).json({ message: "Email ou senha incorretos" });
     }
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+
+    const senhaCorreta = await bcrypt.compare(senha, usuario[0].senha);
 
     if (!senhaCorreta) {
       return res.status(401).json({ message: "Email ou senha incorretos" });

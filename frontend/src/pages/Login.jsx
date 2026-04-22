@@ -32,7 +32,7 @@ function Login() {
       <form onSubmit={fazerLogin}>
         <input
           type="email"
-          placeholder="email"
+          placeholder="Email"
           value={Email}
           onChange={(e) => setEmail(e.target.value)}
           style={{ display: "block", margin: "10px auto" }}
