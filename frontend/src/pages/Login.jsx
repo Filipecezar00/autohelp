@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "../../src/Login.css";
 
 function Login() {
   const [estaLogado, setEstaLogado] = useState(false);
@@ -27,25 +28,27 @@ function Login() {
     }
   };
   return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
+    <div className="loginContainer">
       <h2>Login AutoHelp</h2>
-      <form onSubmit={fazerLogin}>
+      <form onSubmit={fazerLogin} className="login-form">
         <input
           type="email"
           placeholder="Email"
           value={Email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: "block", margin: "10px auto" }}
+          className="login-input"
         />
         <input
           type="password"
           placeholder="Senha"
           value={Senha}
           onChange={(e) => setSenha(e.target.value)}
-          style={{ display: "block", margin: "10px auto" }}
+          className="login-input"
         />
 
-        <button type="submit">Entrar</button>
+        <button type="submit" className="login-button">
+          Entrar
+        </button>
       </form>
     </div>
   );
