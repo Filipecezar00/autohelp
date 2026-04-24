@@ -93,7 +93,7 @@ function Cadastro() {
         </div>
         {etapa < 4 && (
           <div style={s.progressBar}>
-            {[1, 2, 3].map((i) => {
+            {[1, 2, 3].map((i) => (
               <div
                 key={i}
                 style={{
@@ -101,8 +101,8 @@ function Cadastro() {
                   background:
                     i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#1a1d24",
                 }}
-              ></div>;
-            })}
+              ></div>
+            ))}
           </div>
         )}
 
@@ -288,7 +288,7 @@ const s = {
   logoIcon: { fontSize: 36 },
   logoNome: { margin: 0, fontSize: 20, fontWeight: 500, color: "#f0f0f0" },
   logoSub: { margin: 0, fontSize: 12, color: "#555e6e" },
-  progressBar: { display: "flex", gap: 6, margimBottom: 24 },
+  progressBar: { display: "flex", gap: 6, margimBottom: 24, margin: "10px" },
   progressStep: {
     flex: 1,
     height: 3,
@@ -303,7 +303,7 @@ const s = {
     fontSize: 12,
     color: "#e05a6a",
     marginBottom: 12,
-    width: "30%",
+    width: "100%",
     margin: "10px",
     textAlign: "center",
     fontSize: "14px",
