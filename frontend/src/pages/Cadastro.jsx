@@ -267,8 +267,6 @@ const s = {
     background: "#111318",
     padding: "0 24px 40px",
     fontFamily: "sans-serif",
-    borderRadius: "2em",
-    border: "5px solid #2a5298",
   },
   card: {
     width: "100%",
