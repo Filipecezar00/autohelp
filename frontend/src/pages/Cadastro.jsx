@@ -86,181 +86,199 @@ function Cadastro() {
 
   return (
     <div style={s.tela}>
-      <div style={s.logoArea}>
-        <h1 style={s.logoNome}>Mecânico Perto</h1>
-        <p style={s.logoSub}>Crie sua Conta</p>
-      </div>
-      {etapa < 4 && (
-        <div style={s.progressBar}>
-          {[1, 2, 3].map((i) => {
-            <div
-              key={i}
-              style={{
-                ...s.progressStep,
-                background:
-                  i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#1a1d24",
-              }}
-            ></div>;
-          })}
+      <div style={s.card}>
+        <div style={s.logoArea}>
+          <h1 style={s.logoNome}>AutoHelp</h1>
+          <p style={s.logoSub}>Crie sua Conta</p>
         </div>
-      )}
-
-      {erro && (
-        <div style={s.erroBadge}>
-          <span>Erro</span>
-          {erro}
-        </div>
-      )}
-      {etapa === 1 && (
-        <div style={s.form}>
-          <div style={s.stepHeader}>
-            <h2 style={s.stepTitle}>Quem é você ?</h2>
-            <p style={s.stepSub}>Etapa 1 de 3 - informações básicas</p>
+        {etapa < 4 && (
+          <div style={s.progressBar}>
+            {[1, 2, 3].map((i) => {
+              <div
+                key={i}
+                style={{
+                  ...s.progressStep,
+                  background:
+                    i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#1a1d24",
+                }}
+              ></div>;
+            })}
           </div>
-          <input
-            style={s.input}
-            placeholder="Nome Completo"
-            value={form.nome}
-            onChange={handleChange("nome")}
-          />
-          <input
-            style={s.input}
-            placeholder="Email"
-            type="email"
-            value={form.email}
-            onChange={handleChange("email")}
-          />
-          <input
-            type={s.input}
-            placeholder="Telefone"
-            value={form.telefone}
-            onChange={handleChange("telefone")}
-          />
-          <button style={s.btnPrimary} onClick={avancarEtapa}>
-            Continuar
-          </button>
-          <p style={s.hint}>
-            Já tem uma conta?{" "}
-            <span style={s.link} onClick={() => navigate("/login")}>
-              Entrar
-            </span>
-          </p>
-        </div>
-      )}
-      {etapa === 2 && (
-        <div style={s.form}>
-          <div style={s.stepHeader}>
-            <h2 style={s.stepTitle}>Crie uma senha</h2>
-            <p style={s.stepSub}>Etapa 2 de 3 - Segurança da conta</p>
+        )}
+
+        {erro && (
+          <div style={s.erroBadge}>
+            <span>Erro: </span>
+            {erro}
           </div>
-          <input
-            style={s.input}
-            placeholder="Senha"
-            type="password"
-            value={form.senha}
-            onChange={handleChange("senha")}
-          />
-
-          {form.senha.length > 0 && (
-            <>
-              <div style={s.forcaBar}>
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    style={{
-                      ...s.forcaSegmento,
-                      background: i <= forca ? forcaCor : "#1a1d24",
-                    }}
-                  ></div>
-                ))}
-              </div>
-              <p style={{ ...s.hint, color: forcaCor }}>{forcaLabel}</p>
-            </>
-          )}
-          <input
-            style={s.input}
-            placeholder="Confirme a senha"
-            type="password"
-            value={form.confirmarSenha}
-            onChange={handleChange("confirmarSenha")}
-          />
-
-          <div style={s.btnRow}>
-            <button style={s.btnSecondary} onClick={() => setEtapa(1)}>
-              Voltar
-            </button>
+        )}
+        {etapa === 1 && (
+          <div style={s.form}>
+            <div style={s.stepHeader}>
+              <h2 style={s.stepTitle}>Quem é você ?</h2>
+              <p style={s.stepSub}>Etapa 1 de 3 - informações básicas</p>
+            </div>
+            <input
+              style={s.input}
+              placeholder="Nome Completo"
+              value={form.nome}
+              onChange={handleChange("nome")}
+            />
+            <input
+              style={s.input}
+              placeholder="Email"
+              type="email"
+              value={form.email}
+              onChange={handleChange("email")}
+            />
+            <input
+              style={s.input}
+              type="tel"
+              placeholder="Telefone"
+              value={form.telefone}
+              onChange={handleChange("telefone")}
+            />
             <button style={s.btnPrimary} onClick={avancarEtapa}>
               Continuar
             </button>
+            <p style={s.hint}>
+              Já tem uma conta?{" "}
+              <span style={s.link} onClick={() => navigate("/login")}>
+                Entrar
+              </span>
+            </p>
           </div>
-        </div>
-      )}
+        )}
+        {etapa === 2 && (
+          <div style={s.form}>
+            <div style={s.stepHeader}>
+              <h2 style={s.stepTitle}>Crie uma senha</h2>
+              <p style={s.stepSub}>Etapa 2 de 3 - Segurança da conta</p>
+            </div>
+            <input
+              style={s.input}
+              placeholder="Senha"
+              type="password"
+              value={form.senha}
+              onChange={handleChange("senha")}
+            />
 
-      {etapa === 3 && (
-        <div style={s.form}>
-          <div style={s.stepHeader}>
-            <h2 style={s.stepTitle}>Como vai usar o app?</h2>
-            <p style={s.stepSub}>Etapa 3 de 3 - tipo de conta</p>
+            {form.senha.length > 0 && (
+              <>
+                <div style={s.forcaBar}>
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      style={{
+                        ...s.forcaSegmento,
+                        background: i <= forca ? forcaCor : "#1a1d24",
+                      }}
+                    ></div>
+                  ))}
+                </div>
+                <p style={{ ...s.hint, color: forcaCor }}>{forcaLabel}</p>
+              </>
+            )}
+            <input
+              style={s.input}
+              placeholder="Confirme a senha"
+              type="password"
+              value={form.confirmarSenha}
+              onChange={handleChange("confirmarSenha")}
+            />
+
+            <div style={s.btnRow}>
+              <button style={s.btnSecondary} onClick={() => setEtapa(1)}>
+                Voltar
+              </button>
+              <button style={s.btnPrimary} onClick={avancarEtapa}>
+                Continuar
+              </button>
+            </div>
           </div>
-          <div style={s.tipoGrid}>
-            {[
-              {
-                valor: "cliente",
-                label: "Cliente",
-                desc: "Quero encontrar serviços",
-              },
-              {
-                valor: "prestador",
-                label: "Prestador",
-                desc: "Ofereço Serviços mecânicos",
-              },
-            ].map((op) => {
-              <div
-                key={op.valor}
-                style={{
-                  ...s.tipoCard,
-                  ...(form.tipo === op.valor ? s.tipoCardSelecionado : {}),
-                }}
+        )}
+
+        {etapa === 3 && (
+          <div style={s.form}>
+            <div style={s.stepHeader}>
+              <h2 style={s.stepTitle}>Como vai usar o app?</h2>
+              <p style={s.stepSub}>Etapa 3 de 3 - tipo de conta</p>
+            </div>
+            <div style={s.tipoGrid}>
+              {[
+                {
+                  valor: "cliente",
+                  label: "Cliente",
+                  desc: "Quero encontrar serviços",
+                },
+                {
+                  valor: "prestador",
+                  label: "Prestador",
+                  desc: "Ofereço Serviços mecânicos",
+                },
+              ].map((op) => (
+                <div
+                  key={op.valor}
+                  style={{
+                    ...s.tipoCard,
+                    ...(form.tipo === op.valor ? s.tipoCardSelecionado : {}),
+                  }}
+                >
+                  <span style={{ fontSize: 28 }}>{op.emoji}</span>
+                  <p style={s.tipoLabel}>{op.label}</p>
+                  <p style={s.tipoDesc}>{op.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div style={s.btnRow}>
+              <button style={s.btnSecondary} onClick={() => setEtapa(2)}>
+                Voltar
+              </button>
+              <button
+                style={{ ...s.btnPrimary, opacity: carregando ? 0.6 : 1 }}
+                onClick={handleSubmit}
+                disabled={carregando}
               >
-                <span style={{ fontSize: 28 }}>{op.emoji}</span>
-                <p style={s.tipoLabel}>{op.label}</p>
-                <p style={s.tipoDesc}>{op.desc}</p>
-              </div>;
-            })}
+                {carregando ? "Criando conta..." : "Criar conta"}
+              </button>
+            </div>
           </div>
-          <div style={s.btnRow}>
-            <button style={s.btnSecondary} onClick={() => setEtapa(2)}>
-              Voltar
-            </button>
-            <button
-              style={{ ...s.btnPrimary, opacity: carregando ? 0.6 : 1 }}
-              onClick={handleSubmit}
-              disabled={carregando}
-            >
-              {carregando ? "Criando conta..." : "Criar conta"}
+        )}
+        {etapa === 4 && (
+          <div style={s.successArea}>
+            <div style={s.successIcon}>Sucess</div>
+            <h2 style={s.stepTitle}>Conta criada!</h2>
+            <p style={s.stepSub}>Bem vindo ao AutoHelp</p>
+            <button style={s.btnPrimary} onClick={() => navigate("/login")}>
+              Fazer Login
             </button>
           </div>
-        </div>
-      )}
-      {etapa === 4 && (
-        <div style={s.successArea}>
-          <div style={s.successIcon}>Sucess</div>
-          <h2 style={s.stepTitle}>Conta criada!</h2>
-          <p style={s.stepSub}>Bem vindo ao AutoHelp</p>
-          <button style={s.btnPrimary} onClick={() => navigate("/login")}>
-            Fazer Login
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 const s = {
   tela: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
     minHeight: "100vh",
     background: "#111318",
     padding: "0 24px 40px",
     fontFamily: "sans-serif",
+    borderRadius: "2em",
+    border: "5px solid #2a5298",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "400px",
+    background: "#111318",
+    padding: "40px 24px",
+    borderRadius: "24px",
+    border: "2px solid #1a1d24",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+    marginTop: "4em",
   },
   logoArea: {
     display: "flex",
@@ -272,7 +290,7 @@ const s = {
   logoIcon: { fontSize: 36 },
   logoNome: { margin: 0, fontSize: 20, fontWeight: 500, color: "#f0f0f0" },
   logoSub: { margin: 0, fontSize: 12, color: "#555e6e" },
-  progressBar: { display: "flex", gap: 6, margimBottom: 20 },
+  progressBar: { display: "flex", gap: 6, margimBottom: 24 },
   progressStep: {
     flex: 1,
     height: 3,
@@ -286,7 +304,11 @@ const s = {
     padding: "8px 12px",
     fontSize: 12,
     color: "#e05a6a",
-    margimBottom: 12,
+    marginBottom: 12,
+    width: "30%",
+    margin: "10px",
+    textAlign: "center",
+    fontSize: "14px",
   },
   form: { display: "flex", flexDirection: "column", gap: 12 },
   stepHeader: { margimBottom: 4 },
@@ -325,6 +347,7 @@ const s = {
     fontWeight: 500,
     cursor: "pointer",
     flex: 2,
+    width: "100%",
   },
   btnSecondary: {
     background: "#1a1d24",
@@ -337,8 +360,19 @@ const s = {
     flex: 1,
   },
   btnRow: { display: "flex", gap: 10 },
-  tipoGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 },
-  tipoCard: { background: "#1a1d24", border: "1px solid #252931" },
+  tipoGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 10,
+  },
+  tipoCard: {
+    background: "#1a1d24",
+    border: "1px solid #252931",
+    margin: "10px",
+    padding: "10px",
+    borderRadius: "10px",
+    cursor: "pointer",
+  },
   tipoCardSelecionado: { background: "#1a2030", border: "1px solid #2a5298" },
   tipoLabel: {
     margin: "8px 0 4px",
