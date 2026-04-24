@@ -39,6 +39,7 @@ function Cadastro() {
   const [etapa, setEtapa] = useState(1);
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  const [hovered, setHovered] = useState(null);
 
   const handleChange = (campo) => (e) => {
     setForm((prev) => ({ ...prev, [campo]: e.target.value }));
@@ -222,7 +223,13 @@ function Cadastro() {
                   style={{
                     ...s.tipoCard,
                     ...(form.tipo === op.valor ? s.tipoCardSelecionado : {}),
+                    ...(hovered === op.valor ? s.tipoCardHover : {}),
                   }}
+                  onMouseEnter={() => setHovered(op.valor)}
+                  onMouseLeave={() => setHovered(null)}
+                  onClick={() =>
+                    setForm((prev) => ({ ...prev, tipo: op.valor }))
+                  }
                 >
                   <span style={{ fontSize: 28 }}>{op.emoji}</span>
                   <p style={s.tipoLabel}>{op.label}</p>
@@ -370,6 +377,12 @@ const s = {
     padding: "10px",
     borderRadius: "10px",
     cursor: "pointer",
+  },
+  tipoCardHover: {
+    border: "1px solid #3b7de8",
+    background: "#1e222b",
+    transform: "translateY(-2px)",
+    transition: "all 0.2s",
   },
   tipoCardSelecionado: { background: "#1a2030", border: "1px solid #2a5298" },
   tipoLabel: {
