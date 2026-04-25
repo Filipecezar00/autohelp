@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../src/Cadastro.css";
 import api from "../services/api";
 
 const validarEtapa1 = ({ nome, email, telefone }) => {
@@ -86,19 +87,19 @@ function Cadastro() {
   const forcaCor = ["", "#993c1d", "#854f0b", "#185fa5", "#0f6e56"][forca];
 
   return (
-    <div style={s.tela}>
-      <div style={s.card}>
-        <div style={s.logoArea}>
-          <h1 style={s.logoNome}>AutoHelp</h1>
-          <p style={s.logoSub}>Crie sua Conta</p>
+    <div className="tela">
+      <div className="card">
+        <div className="logoArea">
+          <h1 className="logoNome">AutoHelp</h1>
+          <p className="LogoSub">Crie sua Conta</p>
         </div>
         {etapa < 4 && (
-          <div style={s.progressBar}>
+          <div className="progressBar">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
+                className="progressStep"
                 style={{
-                  ...s.progressStep,
                   background:
                     i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#1a1d24",
                 }}
@@ -108,56 +109,56 @@ function Cadastro() {
         )}
 
         {erro && (
-          <div style={s.erroBadge}>
+          <div className="erroBadge">
             <span>Erro: </span>
             {erro}
           </div>
         )}
         {etapa === 1 && (
-          <div style={s.form}>
-            <div style={s.stepHeader}>
-              <h2 style={s.stepTitle}>Quem é você ?</h2>
-              <p style={s.stepSub}>Etapa 1 de 3 - informações básicas</p>
+          <div className="form">
+            <div className="stepHeader">
+              <h2 className="stepTitle">Quem é você ?</h2>
+              <p className="stepSub">Etapa 1 de 3 - informações básicas</p>
             </div>
             <input
-              style={s.input}
+              className="input"
               placeholder="Nome Completo"
               value={form.nome}
               onChange={handleChange("nome")}
             />
             <input
-              style={s.input}
+              className="input"
               placeholder="Email"
               type="email"
               value={form.email}
               onChange={handleChange("email")}
             />
             <input
-              style={s.input}
+              className="input"
               type="tel"
               placeholder="Telefone"
               value={form.telefone}
               onChange={handleChange("telefone")}
             />
-            <button style={s.btnPrimary} onClick={avancarEtapa}>
+            <button className="btnPrimary" onClick={avancarEtapa}>
               Continuar
             </button>
-            <p style={s.hint}>
+            <p className="hint">
               Já tem uma conta?{" "}
-              <span style={s.link} onClick={() => navigate("/login")}>
+              <span className="link" onClick={() => navigate("/login")}>
                 Entrar
               </span>
             </p>
           </div>
         )}
         {etapa === 2 && (
-          <div style={s.form}>
-            <div style={s.stepHeader}>
-              <h2 style={s.stepTitle}>Crie uma senha</h2>
-              <p style={s.stepSub}>Etapa 2 de 3 - Segurança da conta</p>
+          <div className="form">
+            <div className="stepHeader">
+              <h2 className="stepTitle">Crie uma senha</h2>
+              <p className="stepSub">Etapa 2 de 3 - Segurança da conta</p>
             </div>
             <input
-              style={s.input}
+              className="input"
               placeholder="Senha"
               type="password"
               value={form.senha}
@@ -166,33 +167,33 @@ function Cadastro() {
 
             {form.senha.length > 0 && (
               <>
-                <div style={s.forcaBar}>
+                <div className="forcaBar">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      style={{
-                        ...s.forcaSegmento,
-                        background: i <= forca ? forcaCor : "#1a1d24",
-                      }}
+                      className="forcaSegmento"
+                      style={{ background: i <= forca ? forcaCor : "#1a1d24" }}
                     ></div>
                   ))}
                 </div>
-                <p style={{ ...s.hint, color: forcaCor }}>{forcaLabel}</p>
+                <p style={{ color: forcaCor }} className="hint">
+                  {forcaLabel}
+                </p>
               </>
             )}
             <input
-              style={s.input}
+              className="input"
               placeholder="Confirme a senha"
               type="password"
               value={form.confirmarSenha}
               onChange={handleChange("confirmarSenha")}
             />
 
-            <div style={s.btnRow}>
-              <button style={s.btnSecondary} onClick={() => setEtapa(1)}>
+            <div className="btnRow">
+              <button className="btnSecondary" onClick={() => setEtapa(1)}>
                 Voltar
               </button>
-              <button style={s.btnPrimary} onClick={avancarEtapa}>
+              <button className="btnPrimary" onClick={avancarEtapa}>
                 Continuar
               </button>
             </div>
@@ -200,12 +201,12 @@ function Cadastro() {
         )}
 
         {etapa === 3 && (
-          <div style={s.form}>
-            <div style={s.stepHeader}>
-              <h2 style={s.stepTitle}>Como vai usar o app?</h2>
-              <p style={s.stepSub}>Etapa 3 de 3 - tipo de conta</p>
+          <div className="form">
+            <div className="stepHeader">
+              <h2 className="stepTitle">Como vai usar o app?</h2>
+              <p className="stepSub">Etapa 3 de 3 - tipo de conta</p>
             </div>
-            <div style={s.tipoGrid}>
+            <div className="tipoGrid">
               {[
                 {
                   valor: "cliente",
@@ -220,11 +221,7 @@ function Cadastro() {
               ].map((op) => (
                 <div
                   key={op.valor}
-                  style={{
-                    ...s.tipoCard,
-                    ...(form.tipo === op.valor ? s.tipoCardSelecionado : {}),
-                    ...(hovered === op.valor ? s.tipoCardHover : {}),
-                  }}
+                  className={`tipoCard${form.tipo === op.valor ? "Selecionado" : ""} ${hovered === op.valor ? "hover" : ""}`}
                   onMouseEnter={() => setHovered(op.valor)}
                   onMouseLeave={() => setHovered(null)}
                   onClick={() =>
@@ -232,17 +229,18 @@ function Cadastro() {
                   }
                 >
                   <span style={{ fontSize: 28 }}>{op.emoji}</span>
-                  <p style={s.tipoLabel}>{op.label}</p>
-                  <p style={s.tipoDesc}>{op.desc}</p>
+                  <p className="tipoLabel">{op.label}</p>
+                  <p className="tipoDesc">{op.desc}</p>
                 </div>
               ))}
             </div>
-            <div style={s.btnRow}>
-              <button style={s.btnSecondary} onClick={() => setEtapa(2)}>
+            <div className="btnRow">
+              <button className="btnSecondary" onClick={() => setEtapa(2)}>
                 Voltar
               </button>
               <button
-                style={{ ...s.btnPrimary, opacity: carregando ? 0.6 : 1 }}
+                style={{ opacity: carregando ? 0.6 : 1 }}
+                className="btnPrimary"
                 onClick={handleSubmit}
                 disabled={carregando}
               >
@@ -252,11 +250,11 @@ function Cadastro() {
           </div>
         )}
         {etapa === 4 && (
-          <div style={s.successArea}>
-            <div style={s.successIcon}>Sucess</div>
-            <h2 style={s.stepTitle}>Conta criada!</h2>
-            <p style={s.stepSub}>Bem vindo ao AutoHelp</p>
-            <button style={s.btnPrimary} onClick={() => navigate("/login")}>
+          <div className="successArea">
+            <div className="successIcon">Sucess</div>
+            <h2 className="stepTitle">Conta criada!</h2>
+            <p className="stepSub">Bem vindo ao AutoHelp</p>
+            <button className="btnPrimary" onClick={() => navigate("/login")}>
               Fazer Login
             </button>
           </div>
@@ -265,6 +263,5 @@ function Cadastro() {
     </div>
   );
 }
-const s = {};
 
 export default Cadastro;

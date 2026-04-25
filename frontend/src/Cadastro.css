@@ -1,151 +1,184 @@
- .tela {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #111318;
-    padding: "0 24px 40px";
-    font-family: "sans-serif";
-  }
-  .card {
-    width: 100%; 
-    max-width:400px;
-    background-color: #111318;
-    padding:40px 24px;
-    border-radius: 24px;
-    border: 2px solid #1a1d24;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-    margin-top: 4em;
-  }
-  .logoArea{
-    display: flex;
-    flex-direction:column;
-    align-items:center;
-    padding:32px 0 20px;
-    gap: 6; 
-  }
-  .logoIcon{ 
-    font-size: 36 
+.tela {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #111318;
+  font-family: sans-serif;
 }
-  .logoNome{ margin: 0; font-size: 20; font-weight: 500; color: #f0f0f0; }
-  .logoSub { margin: 0; font-size: 12; color: #555e6e;}
-  .progressBar{ display: flex; gap: 6; margin-bottom: 24; margin:10px; }
-  .progressStep{
-    flex: 1;
-    height: 3;
-    border-radius: 2;
-    transition: background 0.3s; 
-  }
-  .erroBadge{
-    background: #1f1215; 
-    border: 1px solid #5a1a22; 
-    border-radius: 8; 
-    padding: 8px 12px; 
-    font-size: 12;
-    color: #e05a6a;
-    margin-bottom: 12;
-    width:100%;
-    margin:10px; 
-    text-align: center; 
-    font-size:14px; 
-  }
-  .form { display: flex; flex-direction: column; gap: 12; }
-  .stepHeader{ margin-bottom: 4; }
-  .stepTitle{
-    margin: 0 0 4px;
-    font-size: 16;
-    font-weight: 500;
-    color: #e8eaf0; 
-  }
-  .stepSub{ margin: 0; font-size: 12; color: #555e6e; }
-  input{
-    background: #1a1d24;
-    border: 1px solid #252931;
-    border-radius: 10;
-    padding: 12px 14px;
-    font-size: 14;
-    color: #e8eaf0;
-    outline: none;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .forcaBar{ display:flex; gap: 4; margin-top: -4;}
-  .forcaSegmento{
-    flex: 1;
-    height: 3;
-    border-radius: 2;
-    transition: background 0.3s;
-  }
-  .btnPrimary{
-    background: #1a4fa8; 
-    border: none;
-    border-radius: 12;
-    padding: 14;
-    color: #e8f0ff;
-    font-size: 15;
-    font-weight: 500;  
-    cursor: pointer; 
-    flex: 2; 
-    width: 100%;
-  }
-  .btnSecondary{
-    background: #1a1d24; 
-    border: 1px solid #252931; 
-    border-radius: 12; 
-    padding: 13;
-    color: #7a8494; 
-    font-size: 14; 
-    cursor: pointer; 
-    flex: 1; 
-  }
-  .btnRow{ display:flex;
-     gap: 10; }
-  .tipoGrid {
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 10; 
-  }
-  .tipoCard{
-    background:#1a1d24; 
-    border: 1px solid #252931; 
-    margin:10px;
-    padding:10px;
-    border-radius:10px;
-    cursor:pointer; 
-  }
-  .tipoCardHover{
-    border: 1px solid #3b7de8; 
-    background: #1e222b; 
-    transform: translateY(-2px); 
-    transition: all 0.2s;
-  }
-  .tipoCardSelecionado{ background: "#1a2030", border: "1px solid #2a5298" }
-  .tipoLabel{
-    margin: 8px 0 4px; 
-    font-size: 13;
-    font-weight: 500; 
-    color: #c8cdd6;
-  }
-  .tipoDesc{ margin: 0; font-size: 11; color:#555e6e; line-height: 1.4; }
-  .hint{ text-align: center; font-size: 12; color: #3a4050; margin: 0; }
-  .link{ color: #3b7de8; cursor: pointer; }
-  .successArea{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12; 
-    padding-top: 40; 
-    text-align:center;
-  }
-  .successIcon{
-    width: 64; 
-    height: 64; 
-    background:#0d2a1a; 
-    border: 1px solid #1a4a2a; 
-    border-radius: 20; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 28; 
-    color: #1d9e75; 
-  }
+.card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #111318;
+  padding: 40px 24px;
+  border-radius: 24px;
+  border: 2px solid #1a1d24;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-top: 4em;
+}
+.logoArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 20px;
+  gap: 0.5em;
+}
+.logoIcon {
+  font-size: 36px;
+}
+.logoNome {
+  font-size: 30px;
+  font-weight: 500px;
+  color: #f0f0f0;
+}
+.LogoSub {
+  font-size: 20px;
+  color: #555e6e;
+}
+.progressBar {
+  display: flex;
+  margin: 10px;
+}
+.progressStep {
+  transition: background 0.3s;
+}
+.erroBadge {
+  background: #1f1215;
+  border: 1px solid #5a1a22;
+  border-radius: 12px;
+  padding: 8px 12px;
+  color: #e05a6a;
+  width: 100%;
+  margin: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.stepHeader {
+  margin-bottom: 4px;
+}
+.stepTitle {
+  margin: 5px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #e8eaf0;
+}
+.stepSub {
+  margin: 5px;
+  font-size: 12px;
+  color: #555e6e;
+}
+input {
+  background: #1a1d24;
+  border: 1px solid #252931;
+  padding: 12px 14px;
+  font-size: 14;
+  color: #e8eaf0;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 5px;
+  border-radius: 12px;
+}
+.forcaBar {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px 0;
+}
+.forcaSegmento {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+.btnPrimary {
+  background: #1a4fa8;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: #e8f0ff;
+  font-size: 15;
+  font-weight: 500;
+  cursor: pointer;
+  flex: 2px;
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
+}
+.btnSecondary {
+  background: #1a1d24;
+  border: 1px solid #252931;
+  border-radius: 12px;
+  padding: 10px;
+  color: #7a8494;
+  font-size: 14px;
+  width: 100%;
+  margin: 5px;
+  cursor: pointer;
+  flex: 1;
+}
+.btnRow {
+  display: flex;
+}
+.tipoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tipoCard {
+  background: #1a1d24;
+  border: 1px solid #252931;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.tipoCardHover {
+  border: 1px solid #3b7de8;
+  background: #1e222b;
+  transform: translateY(-2px);
+  transition: all 0.2s;
+}
+.tipoCardSelecionado {
+  background: #1a2030;
+  border: 1px solid #2a5298;
+  border-radius: 10px;
+  padding: 10px;
+}
+.tipoLabel {
+  margin: 8px 0 4px;
+  color: #c8cdd6;
+}
+.tipoDesc {
+  color: #555e6e;
+  line-height: 1.4;
+}
+.hint {
+  text-align: center;
+  color: #3a4050;
+}
+.link {
+  color: #3b7de8;
+  cursor: pointer;
+}
+.successArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.successIcon {
+  width: 64;
+  height: 64;
+  background: #0d2a1a;
+  border: 1px solid #1a4a2a;
+  border-radius: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28;
+  color: #1d9e75;
+}
