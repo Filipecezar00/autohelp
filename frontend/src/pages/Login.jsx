@@ -2,6 +2,8 @@ import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../../src/Login.css";
+import { RxEyeOpen } from "react-icons/rx";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const validarEmail = (email) => {
   if (!email.trim()) return "Email é obrigatório";
@@ -19,6 +21,7 @@ function Login() {
   const [estaLogado, setEstaLogado] = useState(false);
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -30,6 +33,10 @@ function Login() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setErro(null);
+  };
+
+  const alternarSenha = () => {
+    setMostrarSenha(!mostrarSenha);
   };
 
   const fazerLogin = async (e) => {
@@ -83,14 +90,19 @@ function Login() {
             onChange={handleChange}
             className="input"
           />
-          <input
-            name="senha"
-            type="password"
-            placeholder="Senha"
-            value={form.senha}
-            onChange={handleChange}
-            className="input"
-          />
+          <div>
+            <input
+              name="senha"
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="Senha"
+              value={form.senha}
+              onChange={handleChange}
+              className="input"
+            />
+            <button type="button" onClick={alternarSenha}>
+              {mostrarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
+            </button>
+          </div>
           <button type="submit" className="btnPrimary" disabled={carregando}>
             Entrar
           </button>
