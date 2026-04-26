@@ -28,28 +28,36 @@ function Login() {
     }
   };
   return (
-    <div className="loginContainer">
-      <h2>Login AutoHelp</h2>
-      <form onSubmit={fazerLogin} className="login-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={Email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={Senha}
-          onChange={(e) => setSenha(e.target.value)}
-          className="login-input"
-        />
-
-        <button type="submit" className="login-button">
-          Entrar
-        </button>
-      </form>
+    <div className="tela">
+      <div className="card">
+        <h1 className="logoTitle">Login AutoHelp</h1>
+        <p className="logoSubtitle">Crie sua Conta</p>
+        <form onSubmit={fazerLogin} className="login-form">
+          <input
+            type="email"
+            placeholder="Email"
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input"
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={Senha}
+            onChange={(e) => setSenha(e.target.value)}
+            className="input"
+          />
+          <button type="submit" className="btnPrimary">
+            Entrar
+          </button>
+          <p className="hint">
+            Não tem uma conta ?{" "}
+            <span className="link" onClick={() => navigate("/cadastro")}>
+              Criar
+            </span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,56 +1,103 @@
 :root {
-  --primary-color: #0000cd;
-  --secondary-color: #191970;
-  --text-white: #ffffff;
+  --primary-color: #111318;
+  --secondary-color: #1a1d24;
+  --error-color: #5a1a22;
+  --backgrouderror-color: #e05a6a;
+  --text-white: #f0f0f0;
+  --text-gray: #555e6e;
+  --text-link: #3b7de8;
   --input-bg: #ffffff;
   --radius-lg: 1em;
   --radius-md: 0.5em;
   --spacing: 1rem;
 }
 
-.loginContainer {
-  text-align: "center";
+.tela {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
-
-  margin: var(--spacing);
-  padding: 2rem;
+  min-height: 100vh;
   background-color: var(--primary-color);
-  color: var(--text-white);
-  border: 5px solid var(--secondary-color);
-  border-radius: var(--radius-lg);
+  font-family: sans-serif;
+}
+.card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #111318;
+  padding: 40px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--secondary-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-top: 4em;
+}
+.logoTitle {
+  font-size: 30px;
+  font-weight: 500px;
+  margin: 5px;
+  padding: 5px;
   text-align: center;
+  color: var(--text-white);
+}
+.logoSubtitle {
+  font-size: 20px;
+  margin: 5px;
+  padding: 5px;
+  text-align: center;
+  color: var(--text-gray);
+}
+
+.erroBadge {
+  background-color: var(--secondary-color);
+  border: 1px solid var(--error-color);
+  border-radius: 12px;
+  padding: 8px 12px;
+  color: var(--backgrouderror-color);
+  width: 100%;
+  margin: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.input {
+  background: var(--primary-color);
+  border: 1px solid var(--secondary-color);
+  padding: 12px 14px;
+  font-size: 14;
+  color: var(--text-white);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 5px;
+  border-radius: 12px;
+}
+
+.link {
+  color: var(--text-link);
+  cursor: pointer;
+}
+
+.hint {
+  text-align: center;
+  line-height: 1.4;
+}
+
+.btnPrimary {
+  background: #1a4fa8;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--text-white);
+  font-size: 15;
+  font-weight: 500;
+  cursor: pointer;
+  flex: 2px;
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
 }
 .login-form {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 300px;
-}
-
-.login-input {
-  padding: 0.75rem;
-  margin-bottom: var(--spacing);
-  border-radius: var(--radius-md);
-  border: 1px solid #ccc;
-  background-color: var(--input-bg);
-  font-size: 1rem;
-}
-
-.login-button {
-  padding: 0.75rem;
-  border-radius: var(--radius-md);
-  border: none;
-  background-color: var(--text-white);
-  color: var(--secondary-color);
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.login-button:hover {
-  opacity: 0.9;
-  background-color: #f0f0f0;
-  color: #0000cd;
 }
