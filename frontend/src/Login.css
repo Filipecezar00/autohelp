@@ -33,27 +33,27 @@
 .logoTitle {
   font-size: 30px;
   font-weight: 500px;
-  margin: 5px;
+  margin: 0px 15px 5px 0px;
   padding: 5px;
   text-align: center;
   color: var(--text-white);
 }
 .logoSubtitle {
   font-size: 20px;
-  margin: 5px;
+  margin: 0px 10px 5px 0px;
   padding: 5px;
   text-align: center;
   color: var(--text-gray);
 }
 
-.erroBadge {
-  background-color: var(--secondary-color);
-  border: 1px solid var(--error-color);
+.erroMsg {
+  background: #1f1215;
+  border: 1px solid #5a1a22;
   border-radius: 12px;
   padding: 8px 12px;
-  color: var(--backgrouderror-color);
-  width: 100%;
-  margin: 5px;
+  color: #e05a6a;
+  width: 90%;
+  margin: 10px;
   text-align: center;
   font-size: 14px;
 }
