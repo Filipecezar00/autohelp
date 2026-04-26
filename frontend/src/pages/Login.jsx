@@ -90,7 +90,7 @@ function Login() {
             onChange={handleChange}
             className="input"
           />
-          <div>
+          <div className="password_space">
             <input
               name="senha"
               type={mostrarSenha ? "text" : "password"}
@@ -99,9 +99,9 @@ function Login() {
               onChange={handleChange}
               className="input"
             />
-            <button type="button" onClick={alternarSenha}>
+            <span onClick={alternarSenha} className="password_button">
               {mostrarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
-            </button>
+            </span>
           </div>
           <button type="submit" className="btnPrimary" disabled={carregando}>
             Entrar
