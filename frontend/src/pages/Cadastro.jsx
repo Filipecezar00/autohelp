@@ -171,18 +171,21 @@ function Cadastro() {
             </div>
 
             <div className="space_password">
-              <input
-                className="input"
-                placeholder="Senha"
-                type={mostrarSenha ? "text" : "password"}
-                value={form.senha}
-                onChange={handleChange("senha")}
-              />
-              <span className="button_vison" onClick={alternarSenha}>
-                {mostrarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
-              </span>
+              <div className="input-wrapper">
+                <input
+                  className="input"
+                  placeholder="Senha"
+                  type={mostrarSenha ? "text" : "password"}
+                  value={form.senha}
+                  onChange={handleChange("senha")}
+                />
+                <span className="button_vison" onClick={alternarSenha}>
+                  {mostrarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
+                </span>
+              </div>
+
               {form.senha.length > 0 && (
-                <>
+                <div className="forca-container">
                   <div className="forcaBar">
                     {[1, 2, 3, 4].map((i) => (
                       <div
@@ -197,18 +200,21 @@ function Cadastro() {
                   <p style={{ color: forcaCor }} className="hint">
                     {forcaLabel}
                   </p>
-                </>
+                </div>
               )}
-              <input
-                className="input"
-                placeholder="Confirme a senha"
-                type={mostrarConfirmarSenha ? "text" : "password"}
-                value={form.confirmarSenha}
-                onChange={handleChange("confirmarSenha")}
-              />
-              <span className="button_vison" onClick={alternarConfirmarSenha}>
-                {mostrarConfirmarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
-              </span>
+
+              <div className="input-wrapper">
+                <input
+                  className="input"
+                  placeholder="Confirme a senha"
+                  type={mostrarConfirmarSenha ? "text" : "password"}
+                  value={form.confirmarSenha}
+                  onChange={handleChange("confirmarSenha")}
+                />
+                <span className="button_vison" onClick={alternarConfirmarSenha}>
+                  {mostrarConfirmarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
+                </span>
+              </div>
             </div>
 
             <div className="btnRow">
