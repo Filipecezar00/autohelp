@@ -120,6 +120,7 @@ input {
   cursor: pointer;
   flex: 1;
 }
+
 .btnRow {
   display: flex;
 }
@@ -181,4 +182,19 @@ input {
   justify-content: center;
   font-size: 28;
   color: #1d9e75;
+}
+
+.space_password {
+  /* display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center; */
+}
+
+.button_vison {
+  cursor: pointer;
+  color: #ffffff;
+  align-self: flex-end;
+  /* transform: translateY(-170%); */
 }

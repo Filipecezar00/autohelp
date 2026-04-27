@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../src/Cadastro.css";
 import api from "../services/api";
+import { RxEyeOpen } from "react-icons/rx";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const validarEtapa1 = ({ nome, email, telefone }) => {
   if (!nome.trim()) return "Nome é obrigatório";
@@ -41,10 +43,20 @@ function Cadastro() {
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(false);
   const [hovered, setHovered] = useState(null);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [mostrarConfirmarSenha, setmostrarConfirmarSenha] = useState(false);
 
   const handleChange = (campo) => (e) => {
     setForm((prev) => ({ ...prev, [campo]: e.target.value }));
     setErro(null);
+  };
+
+  const alternarSenha = () => {
+    setMostrarSenha(!mostrarSenha);
+  };
+
+  const alternarConfirmarSenha = () => {
+    setmostrarConfirmarSenha(!mostrarConfirmarSenha);
   };
 
   const avancarEtapa = () => {
@@ -157,37 +169,47 @@ function Cadastro() {
               <h2 className="stepTitle">Crie uma senha</h2>
               <p className="stepSub">Etapa 2 de 3 - Segurança da conta</p>
             </div>
-            <input
-              className="input"
-              placeholder="Senha"
-              type="password"
-              value={form.senha}
-              onChange={handleChange("senha")}
-            />
 
-            {form.senha.length > 0 && (
-              <>
-                <div className="forcaBar">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="forcaSegmento"
-                      style={{ background: i <= forca ? forcaCor : "#1a1d24" }}
-                    ></div>
-                  ))}
-                </div>
-                <p style={{ color: forcaCor }} className="hint">
-                  {forcaLabel}
-                </p>
-              </>
-            )}
-            <input
-              className="input"
-              placeholder="Confirme a senha"
-              type="password"
-              value={form.confirmarSenha}
-              onChange={handleChange("confirmarSenha")}
-            />
+            <div className="space_password">
+              <input
+                className="input"
+                placeholder="Senha"
+                type={mostrarSenha ? "text" : "password"}
+                value={form.senha}
+                onChange={handleChange("senha")}
+              />
+              <span className="button_vison" onClick={alternarSenha}>
+                {mostrarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
+              </span>
+              {form.senha.length > 0 && (
+                <>
+                  <div className="forcaBar">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="forcaSegmento"
+                        style={{
+                          background: i <= forca ? forcaCor : "#1a1d24",
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                  <p style={{ color: forcaCor }} className="hint">
+                    {forcaLabel}
+                  </p>
+                </>
+              )}
+              <input
+                className="input"
+                placeholder="Confirme a senha"
+                type={mostrarConfirmarSenha ? "text" : "password"}
+                value={form.confirmarSenha}
+                onChange={handleChange("confirmarSenha")}
+              />
+              <span className="button_vison" onClick={alternarConfirmarSenha}>
+                {mostrarConfirmarSenha ? <RxEyeOpen /> : <FaRegEyeSlash />}
+              </span>
+            </div>
 
             <div className="btnRow">
               <button className="btnSecondary" onClick={() => setEtapa(1)}>
