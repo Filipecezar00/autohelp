@@ -64,7 +64,7 @@ function Login() {
       const msg =
         error.response?.status === 401
           ? "Email ou senha incorretos"
-          : "Não existe um email vinculado a essa conta.";
+          : " Erro interno, por favor tente novamente mais tarde.";
       setErro(msg);
     } finally {
       setCarregando(false);
