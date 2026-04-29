@@ -98,6 +98,8 @@ function Cadastro() {
   const forcaLabel = ["", "Fraca", "Regular", "Boa", "Forte"][forca];
   const forcaCor = ["", "#993c1d", "#854f0b", "#185fa5", "#0f6e56"][forca];
 
+  console.log("etapa:", etapa);
+
   return (
     <div className="tela">
       <div className="card">
@@ -113,7 +115,7 @@ function Cadastro() {
                 className="progressStep"
                 style={{
                   background:
-                    i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#1a1d24",
+                    i < etapa ? "#2a5298" : i === etapa ? "#3b7de8" : "#ffffff",
                 }}
               ></div>
             ))}

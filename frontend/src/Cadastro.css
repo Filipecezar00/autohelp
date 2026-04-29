@@ -37,10 +37,14 @@
 }
 .progressBar {
   display: flex;
-  margin: 10px;
+  gap: 5px;
 }
 .progressStep {
   transition: background 0.3s;
+  width: 40px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 4px;
 }
 .erroBadge {
   background: #1f1215;
