@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useGeocalizacao() {
+export default function useGeolocalizacao() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [erro, setErro] = useState(null);
