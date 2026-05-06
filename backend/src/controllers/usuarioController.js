@@ -58,7 +58,7 @@ const login = async (req, res) => {
       [email],
     );
 
-    if (!usuario) {
+    if (usuario.length === 0) {
       return res.status(401).json({ message: "Email ou senha incorretos" });
     }
 
@@ -69,7 +69,7 @@ const login = async (req, res) => {
     }
 
     const dadosDoToken = {
-      id: usuario.id,
+      id: usuario[0].id,
       tipo: usuario.tipo,
     };
 
@@ -126,9 +126,9 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
     const prestadorComDistancia = prestadores.map((prestador) => {
       const distancia = calcularDistanciaHaversine(
         lat,
-        lon,
+        lng,
         parseFloat(prestador.lat),
-        parseFloat(prestador.lon),
+        parseFloat(prestador.lng),
       );
       return { ...prestador, distancia_km: Number(distancia.toFixed(1)) };
     });
