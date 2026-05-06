@@ -92,11 +92,11 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
 
     if (isNaN(lat) || isNaN(lng)) {
       return res
-        .json({ error: "Latitude e longitude são obrigatórios" })
-        .status(400);
+        .status(400)
+        .json({ error: "Latitude e longitude são obrigatórios" });
     }
     if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-      return res.json({ error: "Coordenadas inválidas" }).status(400);
+      return res.status(400).json({ error: "Coordenadas inválidas" });
     }
 
     const query = `SELECT prestadores.*, usuarios.nome FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.ativo = verdadeiro AND prestadores.latitude IS NOT NULL AND prestadores.longitude IS NOT NULL`;
@@ -114,7 +114,7 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       let lat2Rad = converterRadianos(lat2);
 
       let a =
-        Math.sin(dlat / 2) * Math.sin(dlng / 2) +
+        Math.sin(dlat / 2) * Math.sin(dlon / 2) +
         Math.sin(dlon / 2) *
           Math.sin(dlon / 2) *
           Math.cos(lat1Rad) *
@@ -126,9 +126,9 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
     const prestadorComDistancia = prestadores.map((prestador) => {
       const distancia = calcularDistanciaHaversine(
         lat,
-        lng,
+        lon,
         parseFloat(prestador.lat),
-        parseFloat(prestador.lng),
+        parseFloat(prestador.lon),
       );
       return { ...prestador, distancia_km: Number(distancia.toFixed(1)) };
     });
