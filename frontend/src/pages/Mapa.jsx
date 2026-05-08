@@ -19,12 +19,6 @@ export default function Mapa() {
   ]);
   const [raio, setRaio] = useState(10);
 
-  useEffect(() => {
-    if (latitude && longitude) {
-      buscarPrestadores();
-    }
-  }, [latitude, longitude, raio]);
-
   async function buscarPrestadores() {
     try {
       setCarregandoAPI(true);
@@ -38,27 +32,36 @@ export default function Mapa() {
     } finally {
       setCarregandoAPI(false);
     }
-    const prestadoresFiltrados = prestadores.filter((p) =>
-      filtrosTipos.includes(p.tipo_servico),
-    );
-    function alternarFiltro(tipo) {
-      if (filtrosTipos.includes(tipo)) {
-        if (filtrosTipos.length > 1) {
-          setFiltrosTipos(filtrosTipos.filter((t) => t !== tipo));
-        }
-      } else {
-        setFiltrosTipos([...filtrosTipos, tipo]);
-      }
-    }
-    if (buscandoGeo) return <div>Obtendo sua localização...</div>;
-    if (erroGeo)
-      return (
-        <div>
-          Erro: {erroGeo}{" "}
-          <button onClick={() => window.location.reload()}>
-            Tentar novamente
-          </button>
-        </div>
-      );
   }
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      buscarPrestadores();
+    }
+  }, [latitude, longitude, raio]);
+
+  const prestadoresFiltrados = prestadores.filter((p) =>
+    filtrosTipos.includes(p.tipo_servico),
+  );
+
+  function alternarFiltro(tipo) {
+    if (filtrosTipos.includes(tipo)) {
+      if (filtrosTipos.length > 1) {
+        setFiltrosTipos(filtrosTipos.filter((t) => t !== tipo));
+      }
+    } else {
+      setFiltrosTipos([...filtrosTipos, tipo]);
+    }
+  }
+
+  if (buscandoGeo) return <div>Obtendo sua localização...</div>;
+  if (erroGeo)
+    return (
+      <div>
+        Erro: {erroGeo}{" "}
+        <button onClick={() => window.location.reload()}>
+          Tentar novamente
+        </button>
+      </div>
+    );
 }
