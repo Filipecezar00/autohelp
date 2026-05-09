@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaKey, FaTruck } from "react-icons/fa";
-import { PiTire } from "react-icons/pi";
+import { PiMarkdownLogo, PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const criarIconeCustomizado = (IconeComponent, cor) => {
@@ -28,3 +28,34 @@ const ICONES = {
     className: "",
   }),
 };
+
+export default function MapaView({ centroMapa, prestadores }) {
+  if (!centroMapa?.lat || !centroMapa?.lng) return null;
+  return (
+    <MapContainer
+      center={[centroMapa.lat, centroMapa.lng]}
+      zoom={14}
+      style={{ height: "400px", width: "100%" }}
+    >
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <Marker position={[centroMapa.lat, centroMapa.lng]} icon={ICONES.usuario}>
+        <Popup>Você está aqui</Popup>
+      </Marker>
+      {prestadores.map((prestador) => (
+        <Marker
+          key={prestador.id}
+          position={[prestador.latitude, prestador.longitude]}
+          icon={ICONES[prestador.tipo_servico] || ICONES.mecanico}
+        >
+          <Popup>
+            <div>
+              <h3>{prestador.nome}</h3>
+              <p>{prestador.tipo_servico}</p>
+              <p>Distância: {prestador.distancia_km}km</p>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
+  );
+}
