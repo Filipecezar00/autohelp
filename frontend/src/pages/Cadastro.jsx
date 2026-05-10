@@ -281,7 +281,7 @@ function Cadastro() {
         )}
         {etapa === 4 && (
           <div className="successArea">
-            <div className="successIcon">Sucess</div>
+            <div className="successIcon">Success</div>
             <h2 className="stepTitle">Conta criada!</h2>
             <p className="stepSub">Bem vindo ao AutoHelp</p>
             <button className="btnPrimary" onClick={() => navigate("/login")}>

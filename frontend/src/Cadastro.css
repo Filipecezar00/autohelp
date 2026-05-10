@@ -178,11 +178,10 @@ input {
   text-align: center;
 }
 .successIcon {
-  width: 64;
-  height: 64;
+  width: 100px;
   background: #0d2a1a;
   border: 1px solid #1a4a2a;
-  border-radius: 20;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
