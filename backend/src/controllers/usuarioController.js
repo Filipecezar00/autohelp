@@ -53,24 +53,26 @@ const login = async (req, res) => {
         .status(400)
         .json({ message: "Email e senha são campos obrigatórios" });
     }
-    const [usuario] = await pool.query(
+    const [usuarios] = await pool.query(
       "SELECT * FROM usuarios WHERE email = ?",
       [email],
     );
 
-    if (usuario.length === 0) {
+    if (usuarios.length === 0) {
       return res.status(401).json({ message: "Email ou senha incorretos" });
     }
 
-    const senhaCorreta = await bcrypt.compare(senha, usuario[0].senha);
+    const usuarioEncontrado = usuarios[0];
+
+    const senhaCorreta = await bcrypt.compare(senha, usuarioEncontrado.senha);
 
     if (!senhaCorreta) {
       return res.status(401).json({ message: "Email ou senha incorretos" });
     }
 
     const dadosDoToken = {
-      id: usuario[0].id,
-      tipo: usuario.tipo,
+      id: usuarioEncontrado.id,
+      tipo: usuarioEncontrado.tipo,
     };
 
     const token = jwt.sign(dadosDoToken, process.env.JWT_SECRET, {
@@ -79,7 +81,7 @@ const login = async (req, res) => {
 
     return res.status(200).json({ token: token });
   } catch (error) {
-    console.error(error);
+    console.error("ERRO DETALHADO NO LOGIN: ", error);
     res.status(500).json({ mensagem: "Erro ao concluir processo de login" });
   }
 };
