@@ -40,7 +40,7 @@ const cadastrarUsuario = async (req, res) => {
 
     return res.status(201).json({ message: "Usuário cadastrado com sucesso" });
   } catch (error) {
-    console.error(error);
+    console.error("Erro no cadastro:" + error);
     return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };
@@ -48,11 +48,15 @@ const cadastrarUsuario = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, senha } = req.body;
+
+    console.log("Tentativa de login para:", email);
+
     if (!email || !senha) {
       return res
         .status(400)
         .json({ message: "Email e senha são campos obrigatórios" });
     }
+
     const [usuarios] = await pool.query(
       "SELECT * FROM usuarios WHERE email = ?",
       [email],
@@ -74,6 +78,10 @@ const login = async (req, res) => {
       id: usuarioEncontrado.id,
       tipo: usuarioEncontrado.tipo,
     };
+
+    if (!process.env.JWT_SECRET) {
+      throw new Error("A variável JWT_SECRET não foi definida no arquivo .env");
+    }
 
     const token = jwt.sign(dadosDoToken, process.env.JWT_SECRET, {
       expiresIn: "24h",
@@ -101,9 +109,9 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       return res.status(400).json({ error: "Coordenadas inválidas" });
     }
 
-    const query = `SELECT prestadores.*, usuarios.nome FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.ativo = verdadeiro AND prestadores.latitude IS NOT NULL AND prestadores.longitude IS NOT NULL`;
+    const query = `SELECT prestadores.*, usuarios.nome FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.ativo = TRUE AND prestadores.latitude IS NOT NULL AND prestadores.longitude IS NOT NULL`;
 
-    const prestadores = [];
+    const [prestadores] = await pool.query(query);
     const converterRadianos = (graus) => graus * (Math.PI / 180);
 
     const calcularDistanciaHaversine = (lat1, lon1, lat2, lon2) => {

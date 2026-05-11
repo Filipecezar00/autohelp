@@ -17,7 +17,9 @@ function Home() {
       setErro(null);
 
       const resposta = await api.get("/prestadores");
-      setPrestadores(resposta.data);
+      if (resposta && resposta.data) {
+        setPrestadores(resposta.data);
+      }
     } catch (error) {
       setErro(
         "Não foi possivel carregar os prestadores. Verifique se o servidor está no ar",
