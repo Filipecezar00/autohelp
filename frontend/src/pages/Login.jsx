@@ -42,20 +42,24 @@ function Login() {
   const fazerLogin = async (e) => {
     e.preventDefault();
     setErro(null);
+    setCarregando(true);
 
     try {
-      setCarregando(true);
-
       const resposta = await api.post("/auth/login", form);
+
+      if (!resposta) {
+        throw new Error("O servidor não respondeu. verifique sua conexão");
+      }
 
       console.log("CONTEÚDO DA RESPOSTA:", resposta.data);
 
       if (resposta && resposta.data && resposta.data.token) {
-        const token = resposta.data.token;
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", resposta.data.token);
         navigate("/home");
       } else {
-        throw new Error("O servidor não enviou o token de acesso.");
+        throw new Error(
+          "Usuário autenticado, mas o token não foi enviado pelo servidor",
+        );
       }
     } catch (error) {
       console.error("DEBUG COMPLETO:", error);
