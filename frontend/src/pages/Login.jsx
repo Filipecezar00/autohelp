@@ -41,31 +41,36 @@ function Login() {
 
   const fazerLogin = async (e) => {
     e.preventDefault();
-
-    const erroEmail = validarEmail(form.email);
-    const erroSenha = validarSenha(form.senha);
-    const erros = erroEmail || erroSenha;
-
-    if (erros) {
-      setErro(erros);
-      return;
-    }
+    setErro(null);
 
     try {
       setCarregando(true);
 
       const resposta = await api.post("/auth/login", form);
 
-      const token = resposta.data.token;
-      localStorage.setItem("token", token);
+      console.log("CONTEÚDO DA RESPOSTA:", resposta.data);
 
-      navigate("/home");
+      if (resposta && resposta.data && resposta.data.token) {
+        const token = resposta.data.token;
+        localStorage.setItem("token", token);
+        navigate("/home");
+      } else {
+        throw new Error("O servidor não enviou o token de acesso.");
+      }
     } catch (error) {
-      const msg =
-        error.response?.status === 401
-          ? "Email ou senha incorretos"
-          : " Erro interno, por favor tente novamente mais tarde.";
-      setErro(msg);
+      console.error("DEBUG COMPLETO:", error);
+
+      let msgFinal = "Erro ao conectar com o servidor.";
+
+      if (error.response) {
+        msgFinal =
+          error.response.data?.message ||
+          error.response.data?.mensagem ||
+          "Erro no servidor.";
+      } else if (error.message) {
+        msgFinal = error.menssage;
+      }
+      setErro(msgFinal);
     } finally {
       setCarregando(false);
     }
