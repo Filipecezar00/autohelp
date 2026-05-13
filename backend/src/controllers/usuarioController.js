@@ -49,8 +49,6 @@ const login = async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    console.log("Tentativa de login para:", email);
-
     if (!email || !senha) {
       return res
         .status(400)
@@ -89,7 +87,6 @@ const login = async (req, res) => {
 
     return res.status(200).json({ token: token });
   } catch (error) {
-    console.error("ERRO DETALHADO NO LOGIN: ", error);
     res.status(500).json({ mensagem: "Erro ao concluir processo de login" });
   }
 };
