@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 import PrestadorCard from "../components/PrestadorCard";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [prestadores, setPrestadores] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     buscarPrestadores();
@@ -51,6 +53,11 @@ function Home() {
       {prestadores.map((prestador) => (
         <PrestadorCard key={prestadores.id} prestador={prestador} />
       ))}
+      <div className={styles.containerBtn}>
+        <button onClick={() => navigate("/mapa")} style={styles.btnMapa}>
+          Ver Mapa de Prestadores
+        </button>
+      </div>
     </div>
   );
 }
@@ -59,6 +66,20 @@ const styles = {
     maxWidth: "600px",
     margin: "0 auto",
     padding: "20px",
+    fontFamily: "sans-serif",
+  },
+  btnMapa: {
+    marginTop: "20px",
+    padding: "14px 28px",
+    background: "#1a4fa8",
+    color: "#fff",
+    border: "none",
+    borderRadius: "12px",
+    fontSize: "16px",
+    cursor: "pointer",
+  },
+  containerBtn: {
+    padding: "24px",
     fontFamily: "sans-serif",
   },
   titulo: {
