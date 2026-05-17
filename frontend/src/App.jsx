@@ -7,6 +7,7 @@ import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/PrivateRoute";
 import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   return (

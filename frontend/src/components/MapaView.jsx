@@ -4,6 +4,7 @@ import { FaKey, FaTruck } from "react-icons/fa";
 import { PiTire } from "react-icons/pi";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import "leaflet/dist/leaflet.css";
 
 const criarIconeCustomizado = (IconeComponent, cor) => {
   const htmlIcone = renderToStaticMarkup(
@@ -22,7 +23,7 @@ const criarIconeCustomizado = (IconeComponent, cor) => {
 
 const ICONES = {
   mecanico: criarIconeCustomizado(FaKey, "#3b82f6"),
-  borracheiro: criarIconeCustomizado(PiTire, "#f97316"),
+  borrachoeiro: criarIconeCustomizado(PiTire, "#f97316"),
   guincho: criarIconeCustomizado(FaTruck, "#ef4444"),
   usuario: L.divIcon({
     html: '<div style="font-size:30px;">⭐</div>',
@@ -30,8 +31,8 @@ const ICONES = {
   }),
 };
 
-export default function MapaView({ centroMapa, prestadores }) {
-  if (!centroMapa?.lat || !centroMapa?.lng) return null;
+export default function MapaView({ centro, prestadores }) {
+  if (!centro || centro.length !== 2) return null;
   if (prestadores.length === 0) {
     return (
       <div>
@@ -43,12 +44,12 @@ export default function MapaView({ centroMapa, prestadores }) {
   }
   return (
     <MapContainer
-      center={[centroMapa.lat, centroMapa.lng]}
+      center={centro}
       zoom={14}
       style={{ height: "400px", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <Marker position={[centroMapa.lat, centroMapa.lng]} icon={ICONES.usuario}>
+      <Marker position={centro} icon={ICONES.usuario}>
         <Popup>Você está aqui</Popup>
       </Marker>
       {prestadores.map((prestador) => (
@@ -61,7 +62,10 @@ export default function MapaView({ centroMapa, prestadores }) {
             <div>
               <h3>{prestador.nome}</h3>
               <p>{prestador.tipo_servico}</p>
-              <p>Distância: {prestador.distancia_km}km</p>
+              <p>
+                Distância: {parseFloat(prestador.distancia_km || 0).toFixed(2)}{" "}
+                km
+              </p>
             </div>
           </Popup>
         </Marker>
