@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../services/api";
+import MapaView from "../components/MapaView";
 import useGeolocalizacao from "../hooks/useGeolocalizacao";
 
 export default function Mapa() {
@@ -10,21 +11,24 @@ export default function Mapa() {
     carregando: buscandoGeo,
   } = useGeolocalizacao();
   const [prestadores, setPrestadores] = useState([]);
-  const [carregandoAPI, setCarregandoAPI] = useState(false);
+  const [carregandoAPI, setCarregandoAPI] = useState(true);
   const [erroAPI, setErroAPI] = useState(null);
   const [filtrosTipos, setFiltrosTipos] = useState([
     "mecanico",
-    "borracheiro",
+    "borrachoeiro",
     "guincho",
   ]);
   const [raio, setRaio] = useState(10);
+
+  const centroLat = latitude || -12.962682;
+  const centroLng = longitude || -38.402214;
 
   async function buscarPrestadores() {
     try {
       setCarregandoAPI(true);
       setErroAPI(null);
       const resposta = await api.get("/prestadores/proximos", {
-        params: { lat: latitude, lng: longitude, raio: raio },
+        params: { lat: centroLat, lng: centroLng, raio: raio },
       });
 
       console.log("RAIO-X DO MAPA");
@@ -37,17 +41,18 @@ export default function Mapa() {
 
       setPrestadores(resposta.data);
     } catch (error) {
-      setErroAPI("Não foi possível carregar os prestadores");
+      console.error("Erro ao carregar dados no mapa", error);
+      setErroAPI("Não foi possível carregar os prestadores próximos.");
     } finally {
       setCarregandoAPI(false);
     }
   }
 
   useEffect(() => {
-    if (latitude && longitude) {
+    if (centroLat && centroLng) {
       buscarPrestadores();
     }
-  }, [latitude, longitude, raio]);
+  }, [centroLat, centroLng, raio]);
 
   const prestadoresFiltrados = prestadores.filter((p) =>
     filtrosTipos.includes(p.tipo_servico),
@@ -67,10 +72,22 @@ export default function Mapa() {
   if (erroGeo)
     return (
       <div>
-        Erro: {erroGeo}{" "}
+        Erro de localização: {erroGeo}{" "}
         <button onClick={() => window.location.reload()}>
           Tentar novamente
         </button>
       </div>
     );
+
+  if (carregandoAPI)
+    return <div>Carregando Prestadores próximos no mapa...</div>;
+
+  return (
+    <MapaView
+      prestadores={prestadoresFiltrados}
+      centro={[centroLat, centroLng]}
+      alternarFiltro={alternarFiltro}
+      filtrosAtivos={filtrosTipos}
+    />
+  );
 }

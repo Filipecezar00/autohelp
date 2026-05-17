@@ -2,6 +2,7 @@ import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaKey, FaTruck } from "react-icons/fa";
 import { PiTire } from "react-icons/pi";
+import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const criarIconeCustomizado = (IconeComponent, cor) => {
