@@ -26,6 +26,15 @@ export default function Mapa() {
       const resposta = await api.get("/prestadores/proximos", {
         params: { lat: latitude, lng: longitude, raio: raio },
       });
+
+      console.log("RAIO-X DO MAPA");
+      console.log("STATUS DA RESPOSTA:", resposta.status);
+      console.log(
+        "QUANTIDADE DE PRESTADORES RECEBIDOS DENTRO DO RAIO:",
+        resposta.data.length,
+      );
+      console.log("DADOS RECEBIDOS BRUTAS:", resposta.data);
+
       setPrestadores(resposta.data);
     } catch (error) {
       setErroAPI("Não foi possível carregar os prestadores");

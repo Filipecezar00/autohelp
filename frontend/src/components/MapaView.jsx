@@ -31,6 +31,15 @@ const ICONES = {
 
 export default function MapaView({ centroMapa, prestadores }) {
   if (!centroMapa?.lat || !centroMapa?.lng) return null;
+  if (prestadores.length === 0) {
+    return (
+      <div>
+        <p style={{ color: "#3b82f6" }}>
+          Nenhum Prestador disponivel em sua região.
+        </p>
+      </div>
+    );
+  }
   return (
     <MapContainer
       center={[centroMapa.lat, centroMapa.lng]}

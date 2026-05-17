@@ -106,6 +106,11 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       return res.status(400).json({ error: "Coordenadas inválidas" });
     }
 
+    console.log("LOG DO BACKEND");
+    console.log("Latitude recebida:", lat, "Tipo:", typeof lat);
+    console.log("Longitude recebida:", lng, "Tipo:", typeof lng);
+    console.log("Raio recebido: ", raio, "Tipo:", typeof raio);
+
     const query = `SELECT prestadores.*, usuarios.nome FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.ativo = TRUE AND prestadores.latitude IS NOT NULL AND prestadores.longitude IS NOT NULL`;
 
     const [prestadores] = await pool.query(query);
@@ -121,38 +126,42 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       let lat2Rad = converterRadianos(lat2);
 
       let a =
-        Math.sin(dlat / 2) * Math.sin(dlon / 2) +
+        Math.sin(dlat / 2) * Math.sin(dlat / 2) +
         Math.sin(dlon / 2) *
           Math.sin(dlon / 2) *
           Math.cos(lat1Rad) *
           Math.cos(lat2Rad);
+      a = Math.min(1, a);
       let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return raioTerra * c;
     };
 
-    const prestadorComDistancia = prestadores.map((prestador) => {
+    const filtrados = prestadores.filter((prestador) => {
+      const latBanco = parseFloat(prestador.latitude);
+      const lngBanco = parseFloat(prestador.longitude);
+
+      if (isNaN(latBanco) || isNaN(lngBanco)) {
+        return false;
+      }
+
       const distancia = calcularDistanciaHaversine(
         lat,
         lng,
-        parseFloat(prestador.lat),
-        parseFloat(prestador.lng),
+        latBanco,
+        lngBanco,
       );
-      return { ...prestador, distancia_km: Number(distancia.toFixed(1)) };
+
+      console.log(
+        `Prestador ID: ${prestador.id} (${prestador.nome}: Distância = ${distancia.toFixed(2)}) km`,
+      );
+
+      return distancia <= raio;
     });
-    const dentroDoRaio = prestadorComDistancia.filter(
-      (p) => p.distancia_km <= raio,
-    );
 
-    const ordenados = dentroDoRaio.sort(
-      (a, b) => a.distancia_km - b.distancia_km,
-    );
-
-    return res.status(200).json(ordenados);
+    return res.status(200).json(filtrados);
   } catch (error) {
-    console.error("Erro em Buscar Prestadores por distancia:", error);
-    return res
-      .status(500)
-      .json({ error: "Erro interno ao buscar prestadores" });
+    console.error("Erro crítico no controlador:", error);
+    return res.status(500).json({ error: "Erro interno no servidor" });
   }
 };
 
