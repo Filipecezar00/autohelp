@@ -136,29 +136,34 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       return raioTerra * c;
     };
 
-    const filtrados = prestadores.filter((prestador) => {
+    const filtrados = prestadores.map((prestador) => {
       const latBanco = parseFloat(prestador.latitude);
       const lngBanco = parseFloat(prestador.longitude);
 
-      if (isNaN(latBanco) || isNaN(lngBanco)) {
-        return false;
+      let distancia = 0;
+      if (!isNaN(latBanco) || !isNaN(lngBanco)) {
+        distancia = calcularDistanciaHaversine(lat, lng, latBanco, lngBanco);
       }
-
-      const distancia = calcularDistanciaHaversine(
-        lat,
-        lng,
-        latBanco,
-        lngBanco,
-      );
 
       console.log(
         `Prestador ID: ${prestador.id} (${prestador.nome}: Distância = ${distancia.toFixed(2)}) km`,
       );
 
-      return distancia <= raio;
+      return {
+        ...prestador,
+        distancia_km: distancia,
+      };
     });
 
-    return res.status(200).json(filtrados);
+    const prestadoresFiltrados = filtrados.filter(
+      (p) => p.distancia_km <= raio,
+    );
+
+    console.log(
+      `Encontrados ${filtrados.length} prestadores no raio de ${raio} km `,
+    );
+
+    return res.status(200).json(prestadoresFiltrados);
   } catch (error) {
     console.error("Erro crítico no controlador:", error);
     return res.status(500).json({ error: "Erro interno no servidor" });

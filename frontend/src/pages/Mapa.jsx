@@ -15,7 +15,7 @@ export default function Mapa() {
   const [erroAPI, setErroAPI] = useState(null);
   const [filtrosTipos, setFiltrosTipos] = useState([
     "mecanico",
-    "borrachoeiro",
+    "borracheiro",
     "guincho",
   ]);
   const [raio, setRaio] = useState(10);

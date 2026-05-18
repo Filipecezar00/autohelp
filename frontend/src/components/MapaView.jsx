@@ -2,7 +2,6 @@ import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaKey, FaTruck } from "react-icons/fa";
 import { PiTire } from "react-icons/pi";
-import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 
@@ -23,7 +22,7 @@ const criarIconeCustomizado = (IconeComponent, cor) => {
 
 const ICONES = {
   mecanico: criarIconeCustomizado(FaKey, "#3b82f6"),
-  borrachoeiro: criarIconeCustomizado(PiTire, "#f97316"),
+  borracheiro: criarIconeCustomizado(PiTire, "#f97316"),
   guincho: criarIconeCustomizado(FaTruck, "#ef4444"),
   usuario: L.divIcon({
     html: '<div style="font-size:30px;">⭐</div>',
