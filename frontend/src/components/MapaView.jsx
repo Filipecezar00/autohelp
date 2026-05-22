@@ -4,6 +4,7 @@ import { FaKey, FaTruck } from "react-icons/fa";
 import { PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
+import { FiltroServico } from "./FiltroServico";
 
 const CONFIG_TIPOS = {
   mecanico: {
@@ -119,28 +120,46 @@ function PopupPrestador({ prestador }) {
 export default function MapaView({ centro, prestadores }) {
   if (!centro || centro.length !== 2) return null;
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <header className="mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">
+    <div className="w-full min-h-screen bg-slate-50 p-4 md:p-6 text-slate-800">
+      <header className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-right">
           Prestadores proximos a sua região
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          {prestadores.length} prestadores encontrados
+        <p className="text-sm text-slate-500 mt-1 font-medium">
+          {prestadores.length}{" "}
+          {prestadores.length === 1
+            ? "Prestador encontrado"
+            : "Prestadores encontrados"}
         </p>
       </header>
 
+      <div className="mb-6 bg-white p-3 rounded-xl shadow-sm border border-slate-200/60">
+        <FiltroServico
+          tipo={tiposDeServico}
+          filtrosAtivos={filtrosAtivos}
+          onAlternar={onAlternar}
+        />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <aside className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-4 border-b">
-            <h2 className="font-semibold text-gray-700">
-              Resultados ({prestadores.length})
+        <aside className="lg:col-span-1 bg-white rounded-xl shadow-md border border-slate-200/60 flex flex-col overflow-hidden h-[500px]">
+          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+            <h2 className="font-bold text-slate-700 flex items-center justify-between">
+              <span>Resultados</span>
+              <span className="bg-slate-200 text-slate-700 text-xs px-2 py-0.5 rounded-full">
+                {prestadores.length}
+              </span>
             </h2>
           </div>
-          <div className="p-4 max-h-[460px] overflow-y-auto flex flex-col gap-3">
+
+          <div className="p-4 overflow-y-auto flex flex-col gap-3 flex-1 bg-white">
             {prestadores.length === 0 ? (
-              <p className="text-sm text-gray-400 py-8 text-center">
-                Nenhum Prestador nessa categoria
-              </p>
+              <div className="py-12 text-center">
+                <span className="text-3xl block mb-2">Search</span>
+                <p className="text-sm font-medium text-slate-400">
+                  Nenhum prestador ativo nesta Categoria
+                </p>
+              </div>
             ) : (
               prestadores.map((p) => (
                 <CardListaPrestador key={p.id} prestador={p} />
@@ -148,11 +167,12 @@ export default function MapaView({ centro, prestadores }) {
             )}
           </div>
         </aside>
-        <main className="lg:col-span-2 rounded-xl overflow-hidden shadow-sm border-gray-100">
+
+        <main className="lg:col-span-2 rounded-xl overflow-hidden shadow-md border border-slate-200/60 bg-white h-[500px]">
           <MapContainer
             center={centro}
             zoom={14}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -160,7 +180,9 @@ export default function MapaView({ centro, prestadores }) {
             />
             <Marker position={centro} icon={ICONES.usuario}>
               <Popup>
-                <span className="font-semibold text-sm">Você está aqui</span>
+                <span className="font-semibold text-sm text-slate-900">
+                  Você está aqui
+                </span>
               </Popup>
             </Marker>
 
