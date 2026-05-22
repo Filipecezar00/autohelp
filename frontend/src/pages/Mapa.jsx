@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import api from "../services/api";
 import MapaView from "../components/MapaView";
-import FiltroServico from "../components/FiltroServico";
+import { FiltroServico } from "../components/FiltroServico";
 import TelaCarregando from "../components/TelaCarregando";
 import TelaErro from "../components/TelaErro";
 import useGeolocalizacao from "../hooks/useGeolocalizacao";
@@ -26,7 +26,7 @@ export default function Mapa() {
   const [erroAPI, setErroAPI] = useState(null);
   const [filtrosTipos, setFiltrosTipos] = useState(TIPOS_SERVICO);
 
-  const [raio, setRaio] = useState(10);
+  const [raio, setRaio] = useState(100);
 
   const centroLat = latitude ?? COORDENADAS_PADRAO.lat;
   const centroLng = longitude ?? COORDENADAS_PADRAO.lng;

@@ -1,4 +1,4 @@
-export function FiltroServico({ filtroAtivos, onAlternar }) {
+export function FiltroServico({ filtrosAtivos = [], onAlternar }) {
   const tipos = [
     { valor: "mecanico", label: "Mecânico" },
     { valor: "borracheiro", label: "Borracheiro" },
@@ -8,7 +8,7 @@ export function FiltroServico({ filtroAtivos, onAlternar }) {
   return (
     <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
       {tipos.map((tipo) => {
-        const estaAtivo = filtroAtivos.includes(tipo.valor);
+        const estaAtivo = filtrosAtivos.includes(tipo.valor);
         return (
           <button
             style={{
