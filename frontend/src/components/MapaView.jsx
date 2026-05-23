@@ -1,7 +1,9 @@
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaKey, FaTruck } from "react-icons/fa";
+import Btn_return from "./RetornarHome";
 import { PiTire } from "react-icons/pi";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 
@@ -186,6 +188,17 @@ export default function MapaView({ centro, prestadores = [] }) {
   if (!centro || centro.length !== 2) return null;
   return (
     <div className="w-full bg-slate-50 p-4 md:p-6">
+      <span
+        style={{
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+        }}
+      >
+        <Btn_return />
+      </span>
       <header className="mb-5">
         <h1 className="text-2xl font-bold text-slate-900">
           Prestadores proximos a sua região
