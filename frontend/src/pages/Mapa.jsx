@@ -26,7 +26,7 @@ export default function Mapa() {
   const [erroAPI, setErroAPI] = useState(null);
   const [filtrosTipos, setFiltrosTipos] = useState(TIPOS_SERVICO);
 
-  const [raio, setRaio] = useState(100);
+  const [raio, setRaio] = useState(50);
 
   const centroLat = latitude ?? COORDENADAS_PADRAO.lat;
   const centroLng = longitude ?? COORDENADAS_PADRAO.lng;

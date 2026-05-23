@@ -5,6 +5,7 @@ import Btn_return from "./RetornarHome";
 import { PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
+import React from "react";
 
 const CONFIG_TIPOS = {
   mecanico: {
@@ -183,8 +184,19 @@ function EstadoVazio() {
   );
 }
 
-export default function MapaView({ centro, prestadores = [] }) {
+export default function MapaView({
+  centro,
+  prestadores = [],
+  raioAtual = 10,
+  onAlternarRaio,
+}) {
   if (!centro || centro.length !== 2) return null;
+
+  const [valorLocal, setValorLocal] = React.useState(raioAtual);
+
+  React.useEffect(() => {
+    setValorLocal(raioAtual);
+  }, [raioAtual]);
   return (
     <div className="w-full bg-slate-50 p-4 md:p-6">
       <span
@@ -198,15 +210,47 @@ export default function MapaView({ centro, prestadores = [] }) {
       >
         <Btn_return />
       </span>
-      <header className="mb-5">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Prestadores proximos a sua região
-        </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          {prestadores.length === 0
-            ? "Nenhum Prestador encontrado nesta área"
-            : `${prestadores.length} prestador${prestadores.length > 1 ? "es" : ""}`}
-        </p>
+      <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="space-y-1">
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+            Prestadores proximos a sua região
+          </h1>
+          <p className="text-xs md:text-sm text-slate-500 font-medium">
+            {prestadores.length === 0
+              ? "Nenhum Prestador encontrado nesta área"
+              : `${prestadores.length} prestador${prestadores.length > 1 ? "es" : ""}`}
+          </p>
+        </div>
+
+        <div className="w-full md:max-w-xs bg-slate-50 p-3 rounded-xl border border-slate-200/60 flex flex-col gap-1.5">
+          <div className="flex justify-between items-center">
+            <label
+              htmlFor="raio-busca"
+              className="text-xs font-bold text-slate-600 uppercase tracking-wider"
+            >
+              Raio de Busca
+            </label>
+            <span className="text-xs font-extrabold text-blue-600 bg-blue-100/80 px-2 py-0.5 rounded-md border border-blue-200">
+              Até {valorLocal} km
+            </span>
+          </div>
+          <input
+            id="raio-busca"
+            type="range"
+            min="1"
+            max="50"
+            step="1"
+            value={valorLocal}
+            onChange={(e) => setValorLocal(Number(e.target.value))}
+            onMouseUp={() => onAlternarRaio(valorLocal)}
+            onTouchEnd={() => onAlternarRaio(valorLocal)}
+            className="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer accent-blue-600 focus:outline-none transition-all"
+          />
+          <div className="flex justify-between text-[10px] font-bold text-slate-400 ">
+            <span>1 km</span>
+            <span>50 km</span>
+          </div>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
