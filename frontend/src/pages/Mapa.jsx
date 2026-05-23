@@ -92,8 +92,10 @@ export default function Mapa() {
         <MapaView
           prestadores={prestadoresFiltrados}
           centro={[centroLat, centroLng]}
-          filtroAtivos={filtrosTipos}
+          filtrosAtivos={filtrosTipos}
           onAlternar={alternarFiltro}
+          raioAtual={raio}
+          onAlternarRaio={setRaio}
         />
       )}
     </div>

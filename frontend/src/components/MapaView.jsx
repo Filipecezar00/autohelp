@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaKey, FaTruck } from "react-icons/fa";
 import Btn_return from "./RetornarHome";
 import { PiTire } from "react-icons/pi";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 
