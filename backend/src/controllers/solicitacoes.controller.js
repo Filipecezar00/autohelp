@@ -44,3 +44,24 @@ async function criarSolicitação(req, res) {
     res.status(500).json({ message: "Erro ao Criar Solicitação" });
   }
 }
+
+async function listarSolicitacoesDoCliente(req, res) {
+  try {
+    const clienteId = req.usuario.id;
+
+    const [solicitacoes] = await pool.query(
+      `SELECT solicitacoes.*,
+        usuarios.nome AS nome_prestador,
+        prestadores.tipo_servico,
+        prestadores.telefone FROM solicitacoes
+        JOIN prestadores ON solicitacoes.prestadores_id = prestadores.id
+        JOIN usuarios ON prestadores.usuario_id = usuarios.id
+        WHERE solicitacoes.cliente_id = ? ORDER BY solicitacoes.criado_em DESC`,
+      [clienteId],
+    );
+    return res.status(200).json(solicitacoes);
+  } catch (error) {
+    console.error("Erro no Banco ao listar Solicitações:", error);
+    return res.status(500).send("Erro ao Buscar Solicitações");
+  }
+}
