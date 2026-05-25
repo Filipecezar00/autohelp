@@ -102,3 +102,76 @@ async function listarSolicitacoesDoPrestador(req, res) {
     return res.status(500).json({ message: "Erro ao buscar Solicitações" });
   }
 }
+
+async function atualizarStatus(req, res) {
+  try {
+    const solicitacaoId = req.params.id;
+    const novoStatus = req.body.status;
+    const usuarioId = req.usuario.id;
+
+    const statusPermitidos = ["aceita", "recusada", "concluida", "cancelada"];
+
+    if (!statusPermitidos.includes(novoStatus)) {
+      return res.status(400).json({ message: "status inválido" });
+    }
+    const [ResultadoSolicitacao] = await pool.query(
+      `
+  SELECT solicitacoes.*, 
+  prestadores.usuario_id
+  AS prestador_usuario_id
+  FROM solicitacoes JOIN prestadores ON 
+  solicitacoes.prestador_id = prestadores.id 
+  WHERE solicitacoes.id = ? 
+  `,
+      [solicitacaoId],
+    );
+
+    if (ResultadoSolicitacao.length === 0) {
+      return res.status(404).json({ message: "solicitação não encontrada" });
+    }
+
+    const solicitacao = ResultadoSolicitacao[0];
+
+    if (novoStatus === "cancelada") {
+      if (solicitacao.cliente_id !== usuarioId) {
+        return res
+          .status(403)
+          .json({ message: "Apenas o cliente Pode Cancelar" });
+      }
+    }
+    if (["aceita", "recusada", "concluida"].includes(novoStatus)) {
+      if (solicitacao.prestador_usuario_id !== usuarioId) {
+        return res
+          .status(403)
+          .json({ message: "Apenas o prestador pode executar esta ação" });
+      }
+    }
+    const transicoesValidas = {
+      pendente: ["aceita", "recusada", "cancelada"],
+      aceita: ["concluida", "cancelada"],
+      recusada: [],
+      concluida: [],
+      cancelada: [],
+    };
+    const transicoesPermitidas = transicoesValidas[solicitacao.status];
+
+    if (!transicoesPermitidas.includes(novoStatus)) {
+      return res.status(422).json({ message: "Transição de status inválida" });
+    }
+
+    await pool.query(
+      `UPDATE solicitacoes 
+       SET status = ?, atualizado_em = NOW()
+       WHERE id = ? 
+    `,
+      [novoStatus, solicitacaoId],
+    );
+
+    return res
+      .status(200)
+      .json({ mensagem: "Status atualizado", status: novoStatus });
+  } catch (error) {
+    console.error("Erro ao executar atualização de status: ", error);
+    return res.status(500).json({ message: "Erro ao atualizar status" });
+  }
+}
