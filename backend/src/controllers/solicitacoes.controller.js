@@ -65,3 +65,40 @@ async function listarSolicitacoesDoCliente(req, res) {
     return res.status(500).send("Erro ao Buscar Solicitações");
   }
 }
+
+async function listarSolicitacoesDoPrestador(req, res) {
+  try {
+    const usuarioId = req.usuario.id;
+
+    const [Resultadoprestador] = await pool.query(
+      "SELECT id FROM prestadores WHERE usuario_id = ?",
+      [usuarioId],
+    );
+
+    if (Resultadoprestador.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Perfil de Prestador não Encontrado" });
+    }
+
+    const prestador = Resultadoprestador[0];
+
+    const [solicitacoes] = await pool.query(
+      `SELECT solicitacoes.*,
+              usuarios.nome AS nome_cliente,
+              usuarios.email AS email_cliente
+              FROM solicitacoes JOIN usuarios ON 
+              solicitacoes.cliente_id = usuarios.id WHERE
+              solicitacoes.prestador_id = ?
+              ORDER BY CASE status WHEN 'pendente'
+              THEN 1 WHEN 'aceita' THEN 2 ELSE 3 END,
+              solicitacoes.criado_em DESC`,
+      [prestador.id],
+    );
+
+    return res.status(200).json(solicitacoes);
+  } catch (error) {
+    console.error("Erro ao buscar as solicitações do prestador:", error);
+    return res.status(500).json({ message: "Erro ao buscar Solicitações" });
+  }
+}
