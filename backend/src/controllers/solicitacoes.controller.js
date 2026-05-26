@@ -1,4 +1,4 @@
-async function criarSolicitação(req, res) {
+async function criarSolicitacao(req, res) {
   try {
     const clienteId = req.usuario.id;
     const prestadorId = req.body.prestador_id;
@@ -54,7 +54,7 @@ async function listarSolicitacoesDoCliente(req, res) {
         usuarios.nome AS nome_prestador,
         prestadores.tipo_servico,
         prestadores.telefone FROM solicitacoes
-        JOIN prestadores ON solicitacoes.prestadores_id = prestadores.id
+        JOIN prestadores ON solicitacoes.prestador_id = prestadores.id
         JOIN usuarios ON prestadores.usuario_id = usuarios.id
         WHERE solicitacoes.cliente_id = ? ORDER BY solicitacoes.criado_em DESC`,
       [clienteId],
@@ -62,7 +62,7 @@ async function listarSolicitacoesDoCliente(req, res) {
     return res.status(200).json(solicitacoes);
   } catch (error) {
     console.error("Erro no Banco ao listar Solicitações:", error);
-    return res.status(500).send("Erro ao Buscar Solicitações");
+    return res.status(500).json("Erro ao Buscar Solicitações");
   }
 }
 
