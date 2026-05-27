@@ -222,3 +222,11 @@ async function cancelarSolicitacao(req, res) {
       .json({ message: "Erro interno ao processar o cancelamento" });
   }
 }
+
+module.exports = {
+  criarSolicitacao,
+  listarSolicitacoesDoCliente,
+  listarSolicitacoesDoPrestador,
+  atualizarStatus,
+  cancelarSolicitacao,
+};

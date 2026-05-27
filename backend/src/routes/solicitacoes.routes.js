@@ -1,21 +1,15 @@
-import express from "express";
-import autenticarToken from "../middlewares/authMiddleware";
-import {
-  criarSolicitacao,
-  listarSolicitacoesDoCliente,
-  listarSolicitacoesDoPrestador,
-  atualizarStatus,
-  cancelarSolicitacao,
-} from "../controllers/solicitacoes.controller.js";
+const express = require("express");
+const autenticarToken = require("../middlewares/authMiddleware.js");
+const solicitacoesController = require("../controllers/solicitacoes.controller.js");
 
 const router = express.Router();
 
 router.use(autenticarToken);
 
-router.post("/", criarSolicitacao);
-router.get("/minhas", listarSolicitacoesDoCliente);
-router.get("/recebidas", listarSolicitacoesDoPrestador);
-router.delete("/:id", cancelarSolicitacao);
-router.patch("/:id/status", atualizarStatus);
+router.post("/", solicitacoesController.criarSolicitacao);
+router.get("/minhas", solicitacoesController.listarSolicitacoesDoCliente);
+router.get("/recebidas", solicitacoesController.listarSolicitacoesDoPrestador);
+router.delete("/:id", solicitacoesController.cancelarSolicitacao);
+router.patch("/:id/status", solicitacoesController.atualizarStatus);
 
-export default router;
+module.exports = router;
