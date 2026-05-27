@@ -62,7 +62,7 @@ async function listarSolicitacoesDoCliente(req, res) {
     return res.status(200).json(solicitacoes);
   } catch (error) {
     console.error("Erro no Banco ao listar Solicitações:", error);
-    return res.status(500).json("Erro ao Buscar Solicitações");
+    return res.status(500).json({ message: "Erro ao Buscar Solicitações" });
   }
 }
 
