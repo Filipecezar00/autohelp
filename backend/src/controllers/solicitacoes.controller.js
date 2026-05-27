@@ -175,3 +175,50 @@ async function atualizarStatus(req, res) {
     return res.status(500).json({ message: "Erro ao atualizar status" });
   }
 }
+
+async function cancelarSolicitacao(req, res) {
+  try {
+    const solicitacaoId = req.params.id;
+    const clienteId = req.usuario.id;
+
+    const [solicitacoes] = await pool.query(
+      "SELECT * FROM solicitacoes WHERE id = ?",
+      [solicitacaoId],
+    );
+    if (solicitacoes.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Solicitação não pode ser encontrada" });
+    }
+
+    const solicitacao = solicitacoes[0];
+
+    const estados = ["pendente", "aceita"];
+
+    if (solicitacao.cliente_id !== clienteId) {
+      return res.status(403).json({
+        message: "Você não tem permissão para cancelar essa solicitação",
+      });
+    }
+
+    if (!estados.includes(solicitacao.status)) {
+      return res
+        .status(422)
+        .json({ message: "Está solicitação não pode ser cancelada" });
+    }
+
+    await pool.query(
+      "UPDATE solicitacoes SET status = 'cancelada', atualizado_em = NOW() WHERE id = ? ",
+      [solicitacaoId],
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Solicitação cancelada com sucesso" });
+  } catch (error) {
+    console.error("ERRO DURANTE PROCESSO DE CANCELAR SOLICITAÇÃO", error);
+    return res
+      .status(500)
+      .json({ message: "Erro interno ao processar o cancelamento" });
+  }
+}
