@@ -21,7 +21,7 @@ export default function Solicitacao() {
   useEffect(() => {
     async function carregarDadosPrestador() {
       try {
-        const resposta = await api.get("/prestadores" + prestadorId);
+        const resposta = await api.get("/prestadores/" + prestadorId);
         setPrestador(resposta.data);
       } catch (err) {
         setErro("Prestador não encontrado");
