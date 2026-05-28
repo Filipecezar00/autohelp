@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
 
 import api from "../services/api";
-export default async function Solicitacao() {
+export default function Solicitacao() {
   const { prestadorId } = useParams();
 
   const [prestador, setPrestador] = useState(null);
@@ -19,15 +19,18 @@ export default async function Solicitacao() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const resposta = api.get("/prestadores/" + prestadorId);
-      setPrestador(resposta.dados);
-    } catch {
-      setErro("Prestador não encontrado");
-    } finally {
-      setCarregando(false);
+    async function carregarDadosPrestador() {
+      try {
+        const resposta = await api.get("/prestadores" + prestadorId);
+        setPrestador(resposta.data);
+      } catch (err) {
+        setErro("Prestador não encontrado");
+      } finally {
+        setCarregando(false);
+      }
     }
-  }, []);
+    carregarDadosPrestador();
+  }, [prestadorId]);
 
   const feedBackTexto = (e) => {
     setDescricao(e.target.value);
