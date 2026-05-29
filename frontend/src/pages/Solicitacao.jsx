@@ -65,9 +65,9 @@ export default function Solicitacao() {
 
       setSucesso(true);
     } catch (erro) {
-      if (erro.response.status === 409) {
+      if (erro.response && erro.response.status === 409) {
         setErro("Você já tem uma solicitação ativa com esse prestador.");
-      } else if (erro) {
+      } else {
         setErro("Erro ao enviar solicitação. Tente novamente");
       }
     } finally {
@@ -94,12 +94,14 @@ export default function Solicitacao() {
   } else {
     return (
       <div>
-        <div>
-          <h1>{prestador.nome}</h1>
-          <p>{prestador.tipo}</p>
-          <p>{prestador.telefone}</p>
-          <p>{prestador.distancia}</p>
-        </div>
+        {prestador && (
+          <div>
+            <h1>{prestador.nome}</h1>
+            <p>{prestador.tipo}</p>
+            <p>{prestador.telefone}</p>
+            <p>{prestador.distancia}</p>
+          </div>
+        )}
         <textarea
           placeholder="Ex: pneu furado na rua X, próximo ao Y"
           onChange={feedBackTexto}
@@ -109,8 +111,11 @@ export default function Solicitacao() {
           Descreva com detalhes seu Problema
         </textarea>
         <small>Caracteres Digitados:{descricao.length}</small>
-        {erro && <p>Verifique o comprimento e tente novamente.</p>}
-        <button disabled={enviando} onClick={handleSubmit}>
+        {erro && <p>{erro}</p>}
+        <button
+          disabled={enviando || descricao.trim().length < 10}
+          onClick={handleSubmit}
+        >
           {enviando ? "Enviando" : "Enviar Solicitação"}
         </button>
       </div>
