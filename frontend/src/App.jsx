@@ -1,13 +1,15 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Mapa from "./pages/Mapa";
 import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/PrivateRoute";
 import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
+
+const Home = lazy(() => import("./pages/Home"));
+const Mapa = lazy(() => import("./pages/Mapa"));
+const Solicitacao = lazy(() => import("./pages/Solicitacao"));
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/home" element={<Home />} />
               <Route path="/mapa" element={<Mapa />} />
+              <Route path="/solicitar/:prestadorId" element={<Solicitacao />} />
             </Route>
             <Route path="/" element={<Navigate to="/login" replace />}></Route>
             <Route

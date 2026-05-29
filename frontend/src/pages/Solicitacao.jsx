@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { TelaCarregando } from "../components/TelaCarregando";
-import { TelaErro } from "../components/TelaErro";
+import TelaCarregando from "../components/TelaCarregando";
+import TelaErro from "../components/TelaErro";
 import { useNavigate } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
 
@@ -21,7 +21,7 @@ export default function Solicitacao() {
   useEffect(() => {
     async function carregarDadosPrestador() {
       try {
-        const resposta = await api.get("/prestadores/" + prestadorId);
+        const resposta = await api.get(`/prestadores/${prestadorId}`);
         setPrestador(resposta.data);
       } catch (err) {
         setErro("Prestador não encontrado");
