@@ -6,6 +6,7 @@ import { PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const CONFIG_TIPOS = {
   mecanico: {
@@ -116,6 +117,7 @@ function CardListaPrestador({ prestador }) {
 
 function PopupPrestador({ prestador }) {
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
+  const navigate = useNavigate();
 
   return (
     <div style={{ minWidth: 180, fontFamily: "sans-serif" }}>
@@ -151,6 +153,12 @@ function PopupPrestador({ prestador }) {
       </div>
 
       <button
+        onClick={navigate(`/solicitar/${prestador.id}`, {
+          state: {
+            nome: prestador.nome,
+            distancia: prestador.distancia,
+          },
+        })}
         style={{
           marginTop: 10,
           width: "100%",

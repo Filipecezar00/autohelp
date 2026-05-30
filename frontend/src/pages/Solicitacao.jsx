@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import TelaCarregando from "../components/TelaCarregando";
 import TelaErro from "../components/TelaErro";
 import { useNavigate } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
+import styles from "../../src/Solicitacao.module.css";
 
 import api from "../services/api";
 export default function Solicitacao() {
@@ -17,11 +18,16 @@ export default function Solicitacao() {
   const [carregando, setCarregando] = useState(true);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const dadosVindosDoMapa = location.state;
 
   useEffect(() => {
     async function carregarDadosPrestador() {
       try {
         const resposta = await api.get(`/prestadores/${prestadorId}`);
+        console.log("DADOS REAIS DO PRESTADOR VINDO DO BACKEND");
+        console.log(resposta.data);
         setPrestador(resposta.data);
       } catch (err) {
         setErro("Prestador não encontrado");
@@ -93,13 +99,16 @@ export default function Solicitacao() {
     );
   } else {
     return (
-      <div>
+      <div className={styles.cardPrestador}>
         {prestador && (
           <div>
-            <h1>{prestador.nome}</h1>
-            <p>{prestador.tipo}</p>
-            <p>{prestador.telefone}</p>
-            <p>{prestador.distancia}</p>
+            <h1>{dadosVindosDoMapa?.nome || `Prestador ${prestador.id}`}</h1>
+            <p>Especialidade: {prestador.tipo_servico}</p>
+            <p>Telefone: {prestador.telefone}</p>
+            <p>Descrição: {prestador.descricao}</p>
+            {dadosVindosDoMapa?.distancia && (
+              <p>Distância: {dadosVindosDoMapa.distancia} km</p>
+            )}
           </div>
         )}
         <textarea
