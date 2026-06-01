@@ -60,7 +60,8 @@ export default function Solicitacao() {
     navigate("/mapa");
   };
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    if (e) e.preventDefault();
     if (!descricao.trim()) {
       setErro("Descreva o Problema para continuar");
       return;

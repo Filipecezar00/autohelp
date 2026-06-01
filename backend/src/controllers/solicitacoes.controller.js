@@ -1,8 +1,9 @@
 async function criarSolicitacao(req, res) {
   try {
-    const clienteId = req.usuario.id;
+    const clienteId = req.user.id;
     const prestadorId = req.body.prestador_id;
     const descricao = req.body.descricao;
+    const pool = require("../config/database");
 
     if (!prestadorId) {
       return res.status(400).json({ message: "O prestador é obrigatorio" });
