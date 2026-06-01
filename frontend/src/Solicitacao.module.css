@@ -72,6 +72,7 @@
   font-weight: 600;
   color: #e8eaf0;
   margin-bottom: 4px;
+  margin: 5px;
 }
 
 .badgeTipo {
@@ -161,6 +162,20 @@
   color: #e05a6a;
 }
 
+.btnAtivo {
+  background-color: #1a4fa8;
+  color: #e8f0ff;
+}
+
+.btnAtivo:hover {
+  background-color: #1a5fcc;
+  transform: translateY(-1px);
+}
+
+.btnAtivo:active {
+  transform: translateY(0);
+}
+
 .btnEnviar {
   width: 100%;
   display: flex;
@@ -177,7 +192,8 @@
   cursor: pointer;
   transition:
     background-color 0.2s,
-    transform 0.1s;
+    transform 0.1s,
+    opacity 0.2s;
   margin-top: 8px;
 }
 
@@ -195,6 +211,7 @@
   background-color: #1a2030;
   color: #3a4050;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .spinner {

@@ -145,6 +145,7 @@ export default function Solicitacao() {
             Confirme os dados e descreva o problema
           </p>
         </div>
+
         {prestador && (
           <div className={styles.cardPrestador}>
             <div className={styles.prestadorNome}>
@@ -193,46 +194,44 @@ export default function Solicitacao() {
               }}
               maxLength={500}
               rows={4}
-            >
-              <div className={styles.contadorRow}>
-                <span className={styles.contador}>
-                  {descricao.length} / 500
+            ></textarea>
+
+            <div className={styles.contadorRow}>
+              <span className={styles.contador}>{descricao.length} / 500</span>
+              {descricao.length >= 450 && (
+                <span className={styles.contadorAlerta}>
+                  {caracteresRestantes} restantes
                 </span>
-                {descricao.length >= 450 && (
-                  <span className={styles.contadorAlerta}>
-                    {caracteresRestantes} restantes
-                  </span>
-                )}
+              )}
+            </div>
+            {erro && (
+              <div className={styles.erroBadge}>
+                <FiAlertCircle size={14} />
+                <span>{erro}</span>
               </div>
-              {erro && (
-                <div className={styles.erroBadge}>
-                  <FiAlertCircle size={14} />
-                  <span>{erro}</span>
-                </div>
+            )}
+            <button
+              className={`${styles.btnEnviar} ${!podeEnviar ? styles.btnDesabilitado : styles.btnAtivo}`}
+              onClick={handleSubmit}
+              disabled={!podeEnviar}
+              aria-disabled={!podeEnviar}
+            >
+              {enviando ? (
+                <>
+                  <span className={styles.spinner}>Enviando...</span>
+                </>
+              ) : (
+                <>
+                  <FiSend size={16} />
+                  {podeEnviar ? "Enviar Solicitação" : "Preencha o campo acima"}
+                </>
               )}
-              <button
-                className={`${styles.btnEnviar} ${!podeEnviar ? styles.btnDesabilitado : ""}`}
-                onClick={handleSubmit}
-                disabled={!podeEnviar}
-              >
-                {enviando ? (
-                  <>
-                    <span className={styles.spinner}>Enviando...</span>
-                  </>
-                ) : (
-                  <>
-                    <FiSend size={16} />
-                    Enviar Solicitação
-                  </>
-                )}
-              </button>
-              {descricao.trim().length < 10 && descricao.length > 0 && (
-                <p className={styles.dica}>
-                  Mínimo 10 caracteres - {10 - descricao.trim().length}{" "}
-                  restantes
-                </p>
-              )}
-            </textarea>
+            </button>
+            {descricao.trim().length < 10 && descricao.length > 0 && (
+              <p className={styles.dica}>
+                Mínimo 10 caracteres - {10 - descricao.trim().length} restantes
+              </p>
+            )}
           </div>
         </div>
       </div>
