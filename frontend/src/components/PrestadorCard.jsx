@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 function PrestadorCard({ prestador }) {
   const tipoInfo = {
     mecanico: { label: "Mêcanico", cor: "#1a73e8" },
@@ -9,6 +11,20 @@ function PrestadorCard({ prestador }) {
     cor: "#555",
   };
 
+  const navigate = useNavigate();
+
+  const solicitarServico = () => {
+    if (prestador?.id) {
+      navigate(`/solicitar/${prestador.id}`, {
+        state: {
+          nome: prestador.nome,
+          distancia: prestador.distancia,
+        },
+      });
+    } else {
+      navigate("/mapa");
+    }
+  };
   return (
     <div style={styles.card}>
       <div style={{ ...styles.badge, backgroundColor: info.cor }}>
@@ -26,7 +42,9 @@ function PrestadorCard({ prestador }) {
         Lat:{prestador.latitude},Lng:{prestador.longitude}
       </p>
 
-      <button style={styles.botao}>Solicitar Serviço</button>
+      <button style={styles.botao} onClick={solicitarServico}>
+        Solicitar Serviço
+      </button>
     </div>
   );
 }
