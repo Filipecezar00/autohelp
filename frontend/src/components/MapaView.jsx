@@ -5,7 +5,7 @@ import Btn_return from "./RetornarHome";
 import { PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CONFIG_TIPOS = {
@@ -37,6 +37,7 @@ const CONFIG_TIPOS = {
     label: "Guincho",
   },
 };
+
 const criarIconeCustomizado = (IconeComponent, cor) => {
   const html = renderToStaticMarkup(
     <div
@@ -119,6 +120,19 @@ function PopupPrestador({ prestador }) {
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
   const navigate = useNavigate();
 
+  const handleSolicitar = () => {
+    if (prestador?.id) {
+      navigate(`/solicitar/${prestador.id}`, {
+        state: {
+          nome: prestador.nome,
+          distancia: prestador.distancia,
+        },
+      });
+    } else {
+      navigate("/mapa");
+    }
+  };
+
   return (
     <div style={{ minWidth: 180, fontFamily: "sans-serif" }}>
       <div
@@ -153,12 +167,7 @@ function PopupPrestador({ prestador }) {
       </div>
 
       <button
-        onClick={navigate(`/solicitar/${prestador.id}`, {
-          state: {
-            nome: prestador.nome,
-            distancia: prestador.distancia,
-          },
-        })}
+        onClick={handleSolicitar}
         style={{
           marginTop: 10,
           width: "100%",

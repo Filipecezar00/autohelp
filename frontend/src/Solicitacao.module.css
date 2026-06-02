@@ -176,6 +176,27 @@
   transform: translateY(0);
 }
 
+.btnVoltar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background-color: #1a4fa8;
+  color: #e8f0ff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s,
+    opacity 0.2s;
+  margin-top: 8px;
+}
+
 .btnEnviar {
   width: 100%;
   display: flex;

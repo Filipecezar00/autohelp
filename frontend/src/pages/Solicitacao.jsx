@@ -137,6 +137,10 @@ export default function Solicitacao() {
   const caracteresRestantes = 500 - descricao.length;
   const podeEnviar = !enviando && descricao.trim().length >= 10;
 
+  const voltarParaMapa = () => {
+    navigate("/mapa");
+  };
+
   return (
     <div className={styles.tela}>
       <div className={styles.card}>
@@ -227,6 +231,9 @@ export default function Solicitacao() {
                   {podeEnviar ? "Enviar Solicitação" : "Preencha o campo acima"}
                 </>
               )}
+            </button>
+            <button className={styles.btnVoltar} onClick={voltarParaMapa}>
+              Voltar para o mapa
             </button>
             {descricao.trim().length < 10 && descricao.length > 0 && (
               <p className={styles.dica}>
