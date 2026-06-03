@@ -1,3 +1,4 @@
+const pool = require("../config/database");
 async function criarSolicitacao(req, res) {
   try {
     const clienteId = req.user.id;
@@ -48,7 +49,7 @@ async function criarSolicitacao(req, res) {
 
 async function listarSolicitacoesDoCliente(req, res) {
   try {
-    const clienteId = req.usuario.id;
+    const clienteId = req.user.id;
 
     const [solicitacoes] = await pool.query(
       `SELECT solicitacoes.*,

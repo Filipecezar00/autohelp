@@ -6,6 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
+import Historico from "./pages/Historico";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -26,6 +27,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/mapa" element={<Mapa />} />
               <Route path="/solicitar/:prestadorId" element={<Solicitacao />} />
+              <Route path="/historico" element={<Historico />} />
             </Route>
             <Route path="/" element={<Navigate to="/login" replace />}></Route>
             <Route

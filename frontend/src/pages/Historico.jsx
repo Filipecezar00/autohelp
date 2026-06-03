@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api.js";
-import { TelaCarregando } from "../components/TelaCarregando.jsx";
-import { TelaErro } from "../components/TelaErro.jsx";
-import { CardSolicitacao } from "../components/CardSolicitacao.jsx";
+import TelaCarregando from "../components/TelaCarregando.jsx";
+import TelaErro from "../components/TelaErro.jsx";
+import CardSolicitacao from "../components/CardSolicitacao.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Historico() {

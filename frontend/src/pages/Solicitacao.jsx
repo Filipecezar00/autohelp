@@ -232,6 +232,9 @@ export default function Solicitacao() {
                 </>
               )}
             </button>
+            <button className={styles.btnHistorico} onClick={IrParaHistorico}>
+              Historico de solicitações
+            </button>
             <button className={styles.btnVoltar} onClick={voltarParaMapa}>
               Voltar para o mapa
             </button>
