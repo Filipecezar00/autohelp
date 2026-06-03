@@ -1,31 +1,43 @@
-import { useState } from "react";
+import styles from "../CardSolicitacao.module.css";
 import { IoMdClose } from "react-icons/io";
 
-export default function CardSolicitacao(prestador) {
-  const [control, setControl] = useState(false);
-
-  const handleControl = () => {
-    setControl(true);
-  };
+export default function CardSolicitacao({
+  solicitacao,
+  cancelando,
+  onCancelar,
+}) {
+  const { id, status, descricao, criado_em, tipo_servico, nome_prestador } =
+    solicitacao;
 
   return (
-    <div
-      style={{ border: "1px solid #ccc", padding: "15px", borderRadius: "8px" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "5px",
-          margin: "10px 0",
-        }}
-      >
-        {status === "pendente" && <IoMdClose onClick={handleControl} />}
-        <p>{prestador.nome}</p>
-        <p>{prestador.tipo_servico}</p>
-        <p>{prestador.status}</p>
-        <p>{prestador.data}</p>
-        <p>{prestador.descricao}</p>
+    <div className={styles.cardContainer}>
+      <div className={styles.cardAlinhamento}>
+        {status === "pendente" && (
+          <button
+            onClick={onCancelar}
+            disabled={cancelando}
+            className={styles.btnDeletar}
+            title="Cancelar Solicitacao"
+          >
+            {cancelando ? "..." : <IoMdClose size={18} />}
+          </button>
+        )}
+        <div className={styles.infoGrupo}>
+          <strong className={styles.nomePrincipal}>
+            {nome_prestador || `Prestador ${solicitacao.prestador_id}`}
+          </strong>
+          <span className={styles.badgeTipo}>{tipo_servico}</span>
+        </div>
+        <p className={styles.descricaoTexto}>{descricao}</p>
+
+        <div className={styles.rodapeCard}>
+          <span className={`${styles.statusBadge} ${styles[status]}`}>
+            {status.toUpperCase()}
+          </span>
+          <small className={styles.dataTexto}>
+            {new Date(criado_em).toLocaleDateString("pt-BR")}
+          </small>
+        </div>
       </div>
     </div>
   );
