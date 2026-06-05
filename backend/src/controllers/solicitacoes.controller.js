@@ -109,7 +109,7 @@ async function atualizarStatus(req, res) {
   try {
     const solicitacaoId = req.params.id;
     const novoStatus = req.body.status;
-    const usuarioId = req.usuario.id;
+    const usuarioId = req.user.id;
 
     const statusPermitidos = ["aceita", "recusada", "concluida", "cancelada"];
 

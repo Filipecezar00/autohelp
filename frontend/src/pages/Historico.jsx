@@ -4,6 +4,7 @@ import TelaCarregando from "../components/TelaCarregando.jsx";
 import TelaErro from "../components/TelaErro.jsx";
 import CardSolicitacao from "../components/CardSolicitacao.jsx";
 import { useNavigate } from "react-router-dom";
+import styles from "../Historico.module.css";
 
 export default function Historico() {
   const [solicitacoes, setSolicitacoes] = useState([]);
@@ -60,6 +61,14 @@ export default function Historico() {
     }
   }
 
+  const RetornarParaMapa = () => {
+    navigate("/mapa");
+  };
+
+  const RetornarParaInicio = () => {
+    navigate("/home");
+  };
+
   if (carregando) {
     return <TelaCarregando />;
   }
@@ -68,12 +77,19 @@ export default function Historico() {
   }
 
   return (
-    <div>
-      <h1>Historico de Solicitações</h1>
+    <div className={styles.CardSolicitacao}>
+      <h1 className={styles.Titulo}>Historico de Solicitações</h1>
       {solicitacoes.length === 0 ? (
-        <div>
-          <p>Você ainda não realizou nenhuma solicitação</p>
-          <button onClick={buscarPrestadores}>Buscar Prestadores</button>
+        <div className={styles.CardVazio}>
+          <p className={styles.CardText}>
+            Você ainda não realizou nenhuma solicitação
+          </p>
+          <button
+            className={styles.BtnBuscarPrestadores}
+            onClick={buscarPrestadores}
+          >
+            Buscar Prestadores
+          </button>
         </div>
       ) : (
         solicitacoes.map((solicitacao) => {
@@ -87,6 +103,14 @@ export default function Historico() {
           );
         })
       )}
+      <div className={styles.Btns}>
+        <button className={styles.btnReturnMapa} onClick={RetornarParaMapa}>
+          Retornar para Mapa
+        </button>
+        <button className={styles.btnReturnHome} onClick={RetornarParaInicio}>
+          Retornar para o Inicio
+        </button>
+      </div>
     </div>
   );
 }
