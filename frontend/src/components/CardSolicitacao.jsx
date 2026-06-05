@@ -13,20 +13,20 @@ export default function CardSolicitacao({
     <div className={styles.cardContainer}>
       <div className={styles.cardAlinhamento}>
         {status === "pendente" && (
-          <button
+          <small
             onClick={onCancelar}
             disabled={cancelando}
             className={styles.btnDeletar}
             title="Cancelar Solicitacao"
           >
             {cancelando ? "..." : <IoMdClose size={18} />}
-          </button>
+          </small>
         )}
         <div className={styles.infoGrupo}>
           <strong className={styles.nomePrincipal}>
             {nome_prestador || `Prestador ${solicitacao.prestador_id}`}
           </strong>
-          <span className={styles.badgeTipo}>{tipo_servico}</span>
+          <span className={styles.badgeTipo}> {tipo_servico}</span>
         </div>
         <p className={styles.descricaoTexto}>{descricao}</p>
 

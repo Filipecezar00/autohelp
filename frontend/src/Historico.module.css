@@ -1,16 +1,92 @@
-.CardSolicitacao {
+.tela {
+  min-height: 100vh;
+  background-color: #111318;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  color: #ffffff;
+  text-align: center;
 }
+
+@media (min-width: 640px) {
+  .tela {
+    align-items: center;
+    padding: 40px 24px;
+  }
+}
+
+.CardSolicitacao {
+  width: 100%;
+  max-width: 480px;
+  background-color: #1a1d24;
+  border-radius: 20px;
+  border: 1px solid #252931;
+  padding: 28px 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 36px 32px;
+  }
+}
+
 .Titulo {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0 0 4px;
 }
 .CardVazio {
 }
 .CardText {
 }
-.BtnBuscarPrestadores {
-}
 .Btns {
 }
-.btnReturnMapa {
+
+.btnReturnHome,
+.btnReturnMapa,
+.BtnBuscarPrestadores {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background-color: #1a4fa8;
+  color: #e8f0ff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s,
+    opacity 0.2s;
+  margin-top: 8px;
 }
-.btnReturnHome {
+@media (min-width: 640px) {
+  .btnReturnHome,
+  .btnReturnMapa,
+  .BtnBuscarPrestadores {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    color: #e8f0ff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      transform 0.1s,
+      opacity 0.2s;
+    margin-top: 8px;
+  }
 }

@@ -1,0 +1,59 @@
+.cardContainer {
+  background-color: #111318;
+  border: 1px solid #252931;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 12px;
+}
+.cardAlinhamento {
+}
+.btnDeletar {
+  cursor: pointer;
+}
+.infoGrupo {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #e8eaf0;
+  margin-bottom: 4px;
+  margin: 5px;
+}
+.nomePrincipal {
+}
+
+.badgeTipo {
+  font-size: 0.6875;
+  font-weight: 600;
+  background-color: #1a2a4a;
+  color: #7ab3f4;
+  border: 1px solid #1e3a6a;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin: 10px;
+}
+
+.descricaoTexto {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e8eaf0;
+  margin: 5px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.rodapeCard {
+  margin: 5px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.dataTexto {
+  margin: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}

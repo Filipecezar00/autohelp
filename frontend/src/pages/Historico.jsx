@@ -77,39 +77,41 @@ export default function Historico() {
   }
 
   return (
-    <div className={styles.CardSolicitacao}>
-      <h1 className={styles.Titulo}>Historico de Solicitações</h1>
-      {solicitacoes.length === 0 ? (
-        <div className={styles.CardVazio}>
-          <p className={styles.CardText}>
-            Você ainda não realizou nenhuma solicitação
-          </p>
-          <button
-            className={styles.BtnBuscarPrestadores}
-            onClick={buscarPrestadores}
-          >
-            Buscar Prestadores
+    <div className={styles.tela}>
+      <div className={styles.CardSolicitacao}>
+        <h1 className={styles.Titulo}>Historico de Solicitações</h1>
+        {solicitacoes.length === 0 ? (
+          <div className={styles.CardVazio}>
+            <p className={styles.CardText}>
+              Você ainda não realizou nenhuma solicitação
+            </p>
+            <button
+              className={styles.BtnBuscarPrestadores}
+              onClick={buscarPrestadores}
+            >
+              Buscar Prestadores
+            </button>
+          </div>
+        ) : (
+          solicitacoes.map((solicitacao) => {
+            return (
+              <CardSolicitacao
+                key={solicitacao.id}
+                solicitacao={solicitacao}
+                cancelando={cancelando === solicitacao.id}
+                onCancelar={() => cancelarSolicitacao(solicitacao.id)}
+              />
+            );
+          })
+        )}
+        <div className={styles.Btns}>
+          <button className={styles.btnReturnMapa} onClick={RetornarParaMapa}>
+            Retornar para Mapa
+          </button>
+          <button className={styles.btnReturnHome} onClick={RetornarParaInicio}>
+            Retornar para o Inicio
           </button>
         </div>
-      ) : (
-        solicitacoes.map((solicitacao) => {
-          return (
-            <CardSolicitacao
-              key={solicitacao.id}
-              solicitacao={solicitacao}
-              cancelando={cancelando === solicitacao.id}
-              onCancelar={() => cancelarSolicitacao(solicitacao.id)}
-            />
-          );
-        })
-      )}
-      <div className={styles.Btns}>
-        <button className={styles.btnReturnMapa} onClick={RetornarParaMapa}>
-          Retornar para Mapa
-        </button>
-        <button className={styles.btnReturnHome} onClick={RetornarParaInicio}>
-          Retornar para o Inicio
-        </button>
       </div>
     </div>
   );
