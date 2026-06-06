@@ -1,59 +1,158 @@
-.cardContainer {
+.card {
   background-color: #111318;
   border: 1px solid #252931;
   border-radius: 12px;
   padding: 16px;
-  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
-  text-align: left;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+.card:hover {
+  border-color: #3a4050;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 12px;
 }
-.cardAlinhamento {
+
+.prestadorInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
 }
-.btnDeletar {
-  cursor: pointer;
+
+.avatarIcone {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7ab3f4;
+  flex-shrink: 0;
 }
-.infoGrupo {
-  display: block;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #e8eaf0;
-  margin-bottom: 4px;
-  margin: 5px;
-}
-.nomePrincipal {
+
+.nomePrestador {
+  font-size: medium;
 }
 
 .badgeTipo {
-  font-size: 0.6875;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
   font-weight: 600;
-  background-color: #1a2a4a;
+  background-color: #1a244a;
   color: #7ab3f4;
   border: 1px solid #1e3a6a;
-  padding: 2px 10px;
+  padding: 2px 8px;
   border-radius: 20px;
-  margin: 10px;
 }
 
-.descricaoTexto {
+.btnCancelar {
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: #e8eaf0;
-  margin: 5px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  justify-content: center;
+  background-color: #e05a6a;
+  border: 1px solid #3a2020;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
-.rodapeCard {
-  margin: 5px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+.btnCancelar:hover:not(:disabled) {
+  background-color: #1f1215;
+  border-color: #5a1a22;
 }
 
-.dataTexto {
-  margin: 10px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+.btnCancelarDesabilitado {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinnerPequeno {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(224, 90, 106, 0.3);
+  border-top-color: #e05a6a;
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.descricao {
+  font-size: 0.875rem;
+  color: #7a8494;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #3a4050;
+}
+
+.badgeStatus {
+  font-size: 0.6875;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+
+.pendente {
+  background-color: #2a1f0d;
+  color: #f59e0b;
+  border: 1px solid #3a2f0d;
+}
+
+.aceita {
+  background-color: #0d1f2a;
+  color: #3b7de8;
+  border: 1px solid #e0d2a4;
+}
+
+.recusada {
+  background-color: #1f0d0d;
+  color: #e05a6a;
+  border: 1px solid #3a0d0d;
+}
+
+.concluida {
+  background-color: #0d1f2a;
+  color: #1d9e75;
+  border: 1px solid #0d3a1a;
+}
+
+.cancelada {
+  background-color: #1a1d24;
+  color: #555e6e;
+  border: 1px solid #252931;
 }
