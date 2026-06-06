@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiClock, FiMap } from "react-icons/fi";
 import api from "../services/api.js";
 import TelaCarregando from "../components/TelaCarregando.jsx";
 import TelaErro from "../components/TelaErro.jsx";
@@ -24,6 +25,7 @@ export default function Historico() {
   async function buscarSolicitacoes() {
     try {
       setCarregando(true);
+      setErro(null);
       const resposta = await api.get("/solicitacoes/minhas");
       setSolicitacoes(resposta.data);
     } catch {
@@ -40,75 +42,79 @@ export default function Historico() {
     if (!confirmado) {
       return;
     }
+
     try {
       setCancelando(id);
       await api.patch("/solicitacoes/" + id + "/status", {
         status: "cancelada",
       });
 
-      setSolicitacoes(
-        solicitacoes.map((solicitacao) => {
-          if (solicitacao.id === id) {
-            return { ...solicitacao, status: "cancelada" };
-          }
-          return solicitacao;
-        }),
+      setSolicitacoes((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, status: "cancelada" } : s)),
       );
     } catch {
-      setErro("Não foi possivel cancelar");
+      alert("Não foi possivel cancelar a solicitação. Tente novamente");
     } finally {
       setCancelando(null);
     }
   }
 
-  const RetornarParaMapa = () => {
-    navigate("/mapa");
-  };
-
-  const RetornarParaInicio = () => {
-    navigate("/home");
-  };
-
   if (carregando) {
-    return <TelaCarregando />;
+    return <TelaCarregando mensagem="Carregando seu histórico..." />;
   }
   if (erro) {
-    return <TelaErro />;
+    return <TelaErro mensagem={erro} onTentar={buscarSolicitacoes} />;
   }
 
   return (
     <div className={styles.tela}>
-      <div className={styles.CardSolicitacao}>
-        <h1 className={styles.Titulo}>Historico de Solicitações</h1>
+      <div className={styles.card}>
+        <div className={styles.cabecalho}>
+          <h1 className={styles.titulo}>Historico de Solicitações</h1>
+          <p className={styles.subtitulo}>
+            {solicitacoes.length === 0
+              ? "Nenhuma solicitação ainda"
+              : `${solicitacoes.length} solicitação${solicitacoes.length > 1 ? "ões" : ""} encontrada ${solicitacoes.length > 1 ? "s" : ""}`}
+          </p>
+        </div>
         {solicitacoes.length === 0 ? (
-          <div className={styles.CardVazio}>
-            <p className={styles.CardText}>
+          <div className={styles["estado-vazio"]}>
+            <p className={styles["estado-vazio-titulo"]}>
               Você ainda não realizou nenhuma solicitação
             </p>
             <button
-              className={styles.BtnBuscarPrestadores}
-              onClick={buscarPrestadores}
+              className={`${styles.btn} ${styles["btn-primario"]}`}
+              onClick={() => navigate("/mapa")}
             >
+              <FiMap size={16} />
               Buscar Prestadores
             </button>
           </div>
         ) : (
-          solicitacoes.map((solicitacao) => {
-            return (
+          <div className={styles.lista}>
+            {solicitacoes.map((solicitacao) => (
               <CardSolicitacao
                 key={solicitacao.id}
                 solicitacao={solicitacao}
                 cancelando={cancelando === solicitacao.id}
                 onCancelar={() => cancelarSolicitacao(solicitacao.id)}
               />
-            );
-          })
+            ))}
+          </div>
         )}
-        <div className={styles.Btns}>
-          <button className={styles.btnReturnMapa} onClick={RetornarParaMapa}>
+        <div className={styles.rodape}>
+          <button
+            className={`${styles.btn} ${styles["btn-secundario"]}`}
+            onClick={() => navigate("/mapa")}
+          >
+            <FiMap size={15} />
             Retornar para Mapa
           </button>
-          <button className={styles.btnReturnHome} onClick={RetornarParaInicio}>
+          <button
+            className={`${styles.btn} ${styles["btn-primario"]}`}
+            onClick={() => navigate("/")}
+          >
+            <FiClock size={15} />
             Retornar para o Inicio
           </button>
         </div>
