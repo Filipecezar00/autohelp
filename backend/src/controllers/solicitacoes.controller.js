@@ -163,7 +163,7 @@ async function atualizarStatus(req, res) {
 
     await pool.query(
       `UPDATE solicitacoes 
-       SET status = ?, atualizado_em = NOW()
+       SET status = ?
        WHERE id = ? 
     `,
       [novoStatus, solicitacaoId],
