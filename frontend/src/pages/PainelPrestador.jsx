@@ -76,12 +76,18 @@ export function PainelPrestador() {
         <div className={styles.pendentesfiltradas}>
           {pendentesFiltradas.map((solicitacao) => {
             return (
-              <div className={styles.statusbtns}>
-                <CardSolicitacao />
-                <button onClick={() => atualizarStatus(id, "aceita")}>
-                  Aceitar
+              <div className={styles.statusbtns} key={solicitacao.id}>
+                <CardSolicitacao solicitacao={solicitacao} />
+                <button
+                  disabled={atualizando === solicitacao.id}
+                  onClick={() => atualizarStatus(solicitacao.id, "aceita")}
+                >
+                  {atualizando === solicitacao.id ? "..." : "Aceitar"}
                 </button>
-                <button onClick={() => atualizarStatus(id, "recusada")}>
+                <button
+                  onClick={() => atualizarStatus(solicitacao.id, "recusada")}
+                  disabled={atualizando === solicitacao.id}
+                >
                   Recusar
                 </button>
               </div>
@@ -90,13 +96,19 @@ export function PainelPrestador() {
         </div>
       </div>
       <div className={styles.cardemandamento}>
+        <h2>Em Andamento</h2>
         <div className={styles.solicitacoesemandamento}>
           {aceitasFiltradas.map((solicitacao) => {
             return (
-              <div className={styles.concluir}>
-                <CardSolicitacao />
-                <button onClick={() => atualizarStatus(id, "concluida")}>
-                  Marcar como concluido
+              <div className={styles.concluir} key={solicitacao.id}>
+                <CardSolicitacao solicitacao={solicitacao} />
+                <button
+                  disabled={atualizando === solicitacao.id}
+                  onClick={() => atualizarStatus(solicitacao.id, "concluida")}
+                >
+                  {atualizando === solicitacao.id
+                    ? "..."
+                    : "Marcar como concluído"}
                 </button>
               </div>
             );
@@ -104,9 +116,12 @@ export function PainelPrestador() {
         </div>
       </div>
       <div className={styles.cardhistorico}>
+        <h2>Histórico</h2>
         <div className={styles.historico}>
           {concluidasFiltradas.map((solicitacao) => {
-            return <CardSolicitacao />;
+            return (
+              <CardSolicitacao solicitacao={solicitacao} key={solicitacao.id} />
+            );
           })}
         </div>
       </div>
