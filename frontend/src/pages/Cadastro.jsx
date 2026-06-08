@@ -98,8 +98,6 @@ function Cadastro() {
   const forcaLabel = ["", "Fraca", "Regular", "Boa", "Forte"][forca];
   const forcaCor = ["", "#993c1d", "#854f0b", "#185fa5", "#0f6e56"][forca];
 
-  console.log("etapa:", etapa);
-
   return (
     <div className="tela">
       <div className="card">
