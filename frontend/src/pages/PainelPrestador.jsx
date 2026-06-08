@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import styles from "../../src/PainelPrestador.module.css";
+import AuthContext from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 
 export function PainelPrestador() {
@@ -14,7 +15,7 @@ export function PainelPrestador() {
   const [atualizando, setAtualizando] = useState(null);
 
   useEffect(() => {
-    if (!usuario || usuario.tipo !== "prestador") {
+    if (!usuario || usuario?.tipo !== "prestador") {
       return navigate("/mapa");
     }
   }, [usuario, navigate]);

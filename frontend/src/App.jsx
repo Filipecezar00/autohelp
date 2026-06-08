@@ -3,6 +3,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/PrivateRoute";
+import { PainelPrestador } from "./pages/PainelPrestador";
 import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
@@ -28,6 +29,7 @@ function App() {
               <Route path="/mapa" element={<Mapa />} />
               <Route path="/solicitar/:prestadorId" element={<Solicitacao />} />
               <Route path="/historico" element={<Historico />} />
+              <Route path="/painelPrestador" element={<PainelPrestador />} />
             </Route>
             <Route path="/" element={<Navigate to="/login" replace />}></Route>
             <Route
