@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import styles from "../../src/PainelPrestador.module.css";
-import AuthContext from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 
 export function PainelPrestador() {
@@ -14,11 +14,13 @@ export function PainelPrestador() {
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
 
-  useEffect(() => {
-    if (!usuario || usuario?.tipo !== "prestador") {
-      return navigate("/mapa");
-    }
-  }, [usuario, navigate]);
+  console.log("Quem é o usuário atual? ", usuario);
+
+  // useEffect(() => {
+  //   if (!usuario || usuario?.tipo !== "prestador") {
+  //     return navigate("/mapa");
+  //   }
+  // }, [usuario, navigate]);
 
   useEffect(() => {
     if (usuario?.tipo === "prestador") {
@@ -62,7 +64,13 @@ export function PainelPrestador() {
     (s) => s.status === "concluida",
   );
 
-  if (!usuario || usuario.tipo !== "prestador") return null;
+  if (!usuario || usuario.tipo !== "prestador")
+    return (
+      <p>
+        Aguardando o contexto carregar o usuário... (log atual:{" "}
+        {String(usuario)})
+      </p>
+    );
   if (carregando) return <p>Carregando Painel...</p>;
   if (erro) return <p>{erro}</p>;
 

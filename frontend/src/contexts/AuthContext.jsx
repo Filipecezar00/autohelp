@@ -2,12 +2,16 @@ import { createContext, useState } from "react";
 
 export const AuthContext = createContext({});
 export default function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
 
-  const usuarioSalvo = localStorage.getItem("usuario");
-  const [usuario, setUsuario] = useState(
-    usuarioSalvo ? JSON.parse(usuarioSalvo) : null,
-  );
+  const [usuario, setUsuario] = useState(() => {
+    const usuarioSalvo = localStorage.getItem("usuario");
+    try {
+      return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+    } catch {
+      return null;
+    }
+  });
 
   const login = (dadosDoUsuario, TokenRecebido) => {
     localStorage.setItem("token", TokenRecebido);
