@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../../src/Login.css";
@@ -39,6 +40,8 @@ function Login() {
     setMostrarSenha(!mostrarSenha);
   };
 
+  const { login } = useContext(AuthContext);
+
   const fazerLogin = async (e) => {
     e.preventDefault();
     setErro(null);
@@ -51,11 +54,17 @@ function Login() {
         throw new Error("O servidor não respondeu. verifique sua conexão");
       }
 
-      console.log("CONTEÚDO DA RESPOSTA:", resposta.data);
-
       if (resposta && resposta.data && resposta.data.token) {
-        localStorage.setItem("token", resposta.data.token);
-        navigate("/home");
+        const tokenRecebido = resposta.data.token;
+        const dadosDoUsuario = resposta.data.usuario;
+
+        login(dadosDoUsuario, tokenRecebido);
+
+        if (dadosDoUsuario?.tipo === "prestador") {
+          navigate("/painel");
+        } else {
+          navigate("/mapa");
+        }
       } else {
         throw new Error(
           "Usuário autenticado, mas o token não foi enviado pelo servidor",
@@ -72,7 +81,7 @@ function Login() {
           error.response.data?.mensagem ||
           "Erro no servidor.";
       } else if (error.message) {
-        msgFinal = error.menssage;
+        msgFinal = error.mensage;
       }
       setErro(msgFinal);
     } finally {
