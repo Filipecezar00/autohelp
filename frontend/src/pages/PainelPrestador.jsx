@@ -16,11 +16,11 @@ export function PainelPrestador() {
 
   console.log("Quem é o usuário atual? ", usuario);
 
-  // useEffect(() => {
-  //   if (!usuario || usuario?.tipo !== "prestador") {
-  //     return navigate("/mapa");
-  //   }
-  // }, [usuario, navigate]);
+  useEffect(() => {
+    if (!usuario || usuario?.tipo !== "prestador") {
+      return navigate("/mapa");
+    }
+  }, [usuario, navigate]);
 
   useEffect(() => {
     if (usuario?.tipo === "prestador") {

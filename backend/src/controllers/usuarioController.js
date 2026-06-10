@@ -75,6 +75,7 @@ const login = async (req, res) => {
     const dadosDoToken = {
       id: usuarioEncontrado.id,
       tipo: usuarioEncontrado.tipo,
+      name: usuarioEncontrado.nome,
     };
 
     if (!process.env.JWT_SECRET) {
@@ -85,7 +86,7 @@ const login = async (req, res) => {
       expiresIn: "24h",
     });
 
-    return res.status(200).json({ token: token });
+    return res.status(200).json({ token: token, user: dadosDoToken });
   } catch (error) {
     res.status(500).json({ mensagem: "Erro ao concluir processo de login" });
   }
