@@ -49,6 +49,7 @@ function Login() {
 
     try {
       const resposta = await api.post("/auth/login", form);
+      console.log("O QUE VEM DENTRO DE RESP_DATA?:", resposta.data);
 
       if (!resposta) {
         throw new Error("O servidor não respondeu. verifique sua conexão");
@@ -56,7 +57,7 @@ function Login() {
 
       if (resposta && resposta.data && resposta.data.token) {
         const tokenRecebido = resposta.data.token;
-        const dadosDoUsuario = resposta.data.usuario;
+        const dadosDoUsuario = resposta.data.user;
 
         login(dadosDoUsuario, tokenRecebido);
 

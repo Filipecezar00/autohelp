@@ -5,7 +5,7 @@ export default function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
 
   const [usuario, setUsuario] = useState(() => {
-    const usuarioSalvo = localStorage.getItem("usuario");
+    const usuarioSalvo = localStorage.getItem("user");
     try {
       return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
     } catch {
@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
 
   const login = (dadosDoUsuario, TokenRecebido) => {
     localStorage.setItem("token", TokenRecebido);
-    localStorage.setItem("usuario", JSON.stringify(dadosDoUsuario));
+    localStorage.setItem("user", JSON.stringify(dadosDoUsuario));
 
     setToken(TokenRecebido);
     setUsuario(dadosDoUsuario);
@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("usuario");
+    localStorage.removeItem("user");
 
     setToken(null);
     setUsuario(null);
