@@ -36,7 +36,7 @@ function Cadastro() {
     telefone: "",
     senha: "",
     confirmarSenha: "",
-    tipo: "cliente",
+    tipo: "",
   });
 
   const [etapa, setEtapa] = useState(1);
@@ -76,6 +76,8 @@ function Cadastro() {
     try {
       setCarregando(true);
       setErro(null);
+
+      console.log("O QUE O RECO ESTÁ ENVIANDO PARA O BACKEND?:", form);
 
       await api.post("/auth/cadastro", {
         nome: form.nome,

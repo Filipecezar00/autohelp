@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const cadastrarUsuario = async (req, res) => {
   try {
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, tipo } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!nome || !email || !senha) {
@@ -32,11 +32,10 @@ const cadastrarUsuario = async (req, res) => {
     const saltRounds = 10;
     const senhaProtegida = await bcrypt.hash(senha, saltRounds);
 
-    await pool.query(`INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)`, [
-      nome,
-      email,
-      senhaProtegida,
-    ]);
+    await pool.query(
+      `INSERT INTO usuarios(nome,email,senha,tipo) VALUES(?,?,?,?)`,
+      [nome, email, senhaProtegida, tipo],
+    );
 
     return res.status(201).json({ message: "Usuário cadastrado com sucesso" });
   } catch (error) {
