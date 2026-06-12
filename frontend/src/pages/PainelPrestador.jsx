@@ -39,6 +39,24 @@ export function PainelPrestador() {
   }
 
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          await api.put("/prestadores/localizacao", {
+            latitude,
+            longitude,
+            status: "online",
+          });
+          console.log("LOCALIZAÇÃO DO PRESTADOR ATUALIZADA E ATIVADA!");
+        } catch (error) {
+          console.error("ERRO AO ATUALIZAR LOCALIZAÇÃO NO BANCO", error);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (usuario === undefined) return;
 
     if (usuario === null) {

@@ -32,10 +32,19 @@ const cadastrarUsuario = async (req, res) => {
     const saltRounds = 10;
     const senhaProtegida = await bcrypt.hash(senha, saltRounds);
 
-    await pool.query(
+    const [resultadoUsuario] = await pool.query(
       `INSERT INTO usuarios(nome,email,senha,tipo) VALUES(?,?,?,?)`,
       [nome, email, senhaProtegida, tipo],
     );
+
+    const novoUsuarioId = resultadoUsuario.insertId;
+
+    if (tipo === "prestador") {
+      await pool.query(
+        "INSERT INTO prestadores (usuario_id,status) VALUES (?,'offline')",
+        [novoUsuarioId],
+      );
+    }
 
     return res.status(201).json({ message: "Usuário cadastrado com sucesso" });
   } catch (error) {

@@ -62,4 +62,24 @@ const criar = async (req, res) => {
     res.status(500).json({ mensagem: "Erro ao cadastrar prestador" });
   }
 };
-module.exports = { listar, buscarPorId, criar };
+
+const gerarLocalizacao = async (req, res) => {
+  try {
+    const { latitude, longitude, status } = req.body;
+    const usuarioId = req.user.id;
+
+    await pool.query(
+      `UPDATE prestadores SET latitude = ?, longitude=?, status=? WHERE usuario_id = ?`,
+      [latitude, longitude, status, usuarioId],
+    );
+
+    return res.status(200).json({ message: "Localização gerada com sucesso." });
+  } catch (error) {
+    console.log("ERRO AO GERAR LOCALIZAÇÃO DO PRESTADOR: ", error);
+    return res
+      .status(500)
+      .json({ message: "Erro ao gerar localização do prestador" });
+  }
+};
+
+module.exports = { listar, buscarPorId, criar, gerarLocalizacao };
