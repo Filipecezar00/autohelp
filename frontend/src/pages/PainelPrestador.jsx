@@ -14,10 +14,27 @@ export function PainelPrestador() {
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
 
-  console.log("Quem é o usuário atual? ", usuario);
+  async function buscarSolicitacao() {
+    try {
+      setCarregando(true);
+      const token = localStorage.getItem("token");
+
+      const resposta = await api.get("/solicitacoes/recebidas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSolicitacoes(resposta.data || []);
+    } catch (error) {
+      console.error("Erro ao Buscar solicitações:", error);
+      setErro("Erro ao realizar busca de solicações dos clientes");
+    } finally {
+      setCarregando(false);
+    }
+  }
 
   useEffect(() => {
-    console.log("ESTADO ATUAL DO USUÁRIO NO PAINEL:", usuario);
+    if (usuario === undefined) return;
 
     if (usuario === null) {
       console.log("AGUARDANDO OS DADOS DO USUÁRIO CARREGAREM");
@@ -29,41 +46,11 @@ export function PainelPrestador() {
       return navigate("/mapa");
     }
 
-    console.log("Usuário confirmado como prestador. Disparando busca...");
     buscarSolicitacao();
-  }, [usuario, navigate]);
+  }, [usuario]);
 
-  // useEffect(() => {
-  //   if (!usuario || usuario?.tipo !== "prestador") {
-  //     return navigate("/mapa");
-  //   }
-  // }, [usuario, navigate]);
-
-  // useEffect(() => {
-  //   if (usuario?.tipo === "prestador") {
-  //     buscarSolicitacao();
-  //   }
-  // }, [usuario]);
-
-  async function buscarSolicitacao() {
-    try {
-      setCarregando(true);
-      const token = localStorage.getItem("token");
-      console.log("O TOKEN FOI ENCONTRADO NO STORAGE?:", token);
-
-      const resposta = await api.get("/solicitacoes/recebidas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setSolicitacoes(resposta.data || []);
-      console.log("Solicitações carregadas:", resposta.data);
-    } catch (error) {
-      console.error("Erro ao Buscar solicitações:", error);
-      setErro("Erro ao realizar busca de solicações dos clientes");
-    } finally {
-      setCarregando(false);
-    }
+  if (usuario === undefined) {
+    return <div className="text-center p-5">Carregando perfil...</div>;
   }
 
   async function atualizarStatus(id, novoStatus) {
