@@ -62,7 +62,7 @@ function Login() {
         login(dadosDoUsuario, tokenRecebido);
 
         if (dadosDoUsuario?.tipo === "prestador") {
-          navigate("/painel");
+          navigate("/painelPrestador");
         } else {
           navigate("/mapa");
         }

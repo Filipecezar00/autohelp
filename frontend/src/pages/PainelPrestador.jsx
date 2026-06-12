@@ -17,23 +17,49 @@ export function PainelPrestador() {
   console.log("Quem é o usuário atual? ", usuario);
 
   useEffect(() => {
-    if (!usuario || usuario?.tipo !== "prestador") {
+    console.log("ESTADO ATUAL DO USUÁRIO NO PAINEL:", usuario);
+
+    if (usuario === null) {
+      console.log("AGUARDANDO OS DADOS DO USUÁRIO CARREGAREM");
+      return;
+    }
+
+    if (usuario?.tipo !== "prestador") {
+      console.log("Usuário não é prestador! Expulsando para o /mapa...");
       return navigate("/mapa");
     }
+
+    console.log("Usuário confirmado como prestador. Disparando busca...");
+    buscarSolicitacao();
   }, [usuario, navigate]);
 
-  useEffect(() => {
-    if (usuario?.tipo === "prestador") {
-      buscarSolicitacao();
-    }
-  }, [usuario]);
+  // useEffect(() => {
+  //   if (!usuario || usuario?.tipo !== "prestador") {
+  //     return navigate("/mapa");
+  //   }
+  // }, [usuario, navigate]);
+
+  // useEffect(() => {
+  //   if (usuario?.tipo === "prestador") {
+  //     buscarSolicitacao();
+  //   }
+  // }, [usuario]);
 
   async function buscarSolicitacao() {
     try {
       setCarregando(true);
-      const resposta = await api.get("/solicitacoes/recebidas");
+      const token = localStorage.getItem("token");
+      console.log("O TOKEN FOI ENCONTRADO NO STORAGE?:", token);
+
+      const resposta = await api.get("/solicitacoes/recebidas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setSolicitacoes(resposta.data || []);
-    } catch {
+      console.log("Solicitações carregadas:", resposta.data);
+    } catch (error) {
+      console.error("Erro ao Buscar solicitações:", error);
       setErro("Erro ao realizar busca de solicações dos clientes");
     } finally {
       setCarregando(false);

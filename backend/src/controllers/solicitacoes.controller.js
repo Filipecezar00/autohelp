@@ -70,7 +70,7 @@ async function listarSolicitacoesDoCliente(req, res) {
 
 async function listarSolicitacoesDoPrestador(req, res) {
   try {
-    const usuarioId = req.usuario.id;
+    const usuarioId = req.user.id;
 
     const [Resultadoprestador] = await pool.query(
       "SELECT id FROM prestadores WHERE usuario_id = ?",

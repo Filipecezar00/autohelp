@@ -7,6 +7,10 @@ const usuarioRoutes = require("./src/routes/usuariosRoutes");
 const solicitacoesRoutes = require("./src/routes/solicitacoes.routes");
 
 const app = express();
+app.use((req, res, next) => {
+  console.log(`requisição recebida: [${req.method}] ${req.url}`);
+  next();
+});
 
 app.use(cors());
 app.use(express.json());
@@ -22,4 +26,21 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor Rodando na porta ${PORT}`);
+  if (app._router && app._router.stack) {
+    app._router.stack.forEach((layer) => {
+      if (layer.route) {
+        console.log(
+          `[${Object.keys(layer.route.methods).join(", ").toUpperCase()}] ${layer.route.path}`,
+        );
+      } else if (layer.name === "router") {
+        layer.handle.stack.forEach((stackItem) => {
+          if (stackItem.route) {
+            console.log(
+              `[${Object.keys(stackItem.route.methods).join(", ").toUpperCase()}] ${stackItem.route.path}`,
+            );
+          }
+        });
+      }
+    });
+  }
 });
