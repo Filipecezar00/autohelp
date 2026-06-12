@@ -13,6 +13,7 @@ export function PainelPrestador() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
+  const [perfilIncompleto, setPerfilIncompleto] = useState(false);
 
   async function buscarSolicitacao() {
     try {
@@ -26,8 +27,12 @@ export function PainelPrestador() {
       });
       setSolicitacoes(resposta.data || []);
     } catch (error) {
-      console.error("Erro ao Buscar solicitações:", error);
-      setErro("Erro ao realizar busca de solicações dos clientes");
+      if (erro.response && error.response.status === 404) {
+        setPerfilIncompleto(true);
+      } else {
+        console.error("Erro ao Buscar solicitações:", error);
+        setErro("Erro ao realizar busca de solicações dos clientes");
+      }
     } finally {
       setCarregando(false);
     }
@@ -86,6 +91,18 @@ export function PainelPrestador() {
     );
   if (carregando) return <p>Carregando Painel...</p>;
   if (erro) return <p>{erro}</p>;
+
+  if (perfilIncompleto) {
+    return (
+      <div className={styles.painelboasvindas}>
+        <h2>Olá, {usuario.nome}! Seja bem-vindo ao AutoHelp</h2>
+        <p>
+          Para Começar a receber solicações dos clientes, ative sua localização.
+        </p>
+        <button onClick={EnviarLocalizacao}>Ativar meu Perfil</button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
