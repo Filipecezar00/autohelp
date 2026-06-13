@@ -115,14 +115,10 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       return res.status(400).json({ error: "Coordenadas inválidas" });
     }
 
-    console.log("LOG DO BACKEND");
-    console.log("Latitude recebida:", lat, "Tipo:", typeof lat);
-    console.log("Longitude recebida:", lng, "Tipo:", typeof lng);
-    console.log("Raio recebido: ", raio, "Tipo:", typeof raio);
+    const [prestadores] = await pool.query(
+      `SELECT usuarios.nome, prestadores.id AS prestador_id, prestadores.latitude, prestadores.longitude, prestadores.tipo_servico FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.latitude IS NOT NULL AND prestadores.ativo=TRUE`,
+    );
 
-    const query = `SELECT prestadores.*, usuarios.nome FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.ativo = TRUE AND prestadores.latitude IS NOT NULL AND prestadores.longitude IS NOT NULL`;
-
-    const [prestadores] = await pool.query(query);
     const converterRadianos = (graus) => graus * (Math.PI / 180);
 
     const calcularDistanciaHaversine = (lat1, lon1, lat2, lon2) => {
@@ -155,7 +151,7 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
       }
 
       console.log(
-        `Prestador ID: ${prestador.id} (${prestador.nome}: Distância = ${distancia.toFixed(2)}) km`,
+        `Prestador ID: ${prestador.prestador_id} (${prestador.nome}: Distância = ${distancia.toFixed(2)}) km`,
       );
 
       return {
@@ -169,7 +165,7 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
     );
 
     console.log(
-      `Encontrados ${filtrados.length} prestadores no raio de ${raio} km `,
+      `Encontrados ${prestadoresFiltrados.length} prestadores no raio de ${raio} km `,
     );
 
     return res.status(200).json(prestadoresFiltrados);

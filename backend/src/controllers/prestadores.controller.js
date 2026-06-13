@@ -65,12 +65,12 @@ const criar = async (req, res) => {
 
 const gerarLocalizacao = async (req, res) => {
   try {
-    const { latitude, longitude, status } = req.body;
+    const { latitude, longitude } = req.body;
     const usuarioId = req.user.id;
 
     await pool.query(
-      `UPDATE prestadores SET latitude = ?, longitude=?, status=? WHERE usuario_id = ?`,
-      [latitude, longitude, status, usuarioId],
+      `UPDATE prestadores SET latitude = ?, longitude=?, ativo=? WHERE usuario_id = ?`,
+      [latitude, longitude, true, usuarioId],
     );
 
     return res.status(200).json({ message: "Localização gerada com sucesso." });
