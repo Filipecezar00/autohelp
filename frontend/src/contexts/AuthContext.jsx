@@ -31,7 +31,9 @@ export default function AuthProvider({ children }) {
 
   const estaLogado = !!token;
   return (
-    <AuthContext.Provider value={{ usuario, token, estaLogado, login, logout }}>
+    <AuthContext.Provider
+      value={{ usuario, token, estaLogado, login, logout, setUsuario }}
+    >
       {children}
     </AuthContext.Provider>
   );

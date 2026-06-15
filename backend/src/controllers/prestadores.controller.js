@@ -65,20 +65,20 @@ const criar = async (req, res) => {
 
 const gerarLocalizacao = async (req, res) => {
   try {
-    const { latitude, longitude } = req.body;
+    const { latitude, longitude, tipo_servico } = req.body;
     const usuarioId = req.user.id;
 
     await pool.query(
-      `UPDATE prestadores SET latitude = ?, longitude=?, ativo=? WHERE usuario_id = ?`,
-      [latitude, longitude, true, usuarioId],
+      `UPDATE prestadores SET latitude = ?, longitude=?, tipo_servico=?, ativo=? WHERE usuario_id = ?`,
+      [latitude, longitude, tipo_servico, true, usuarioId],
     );
 
-    return res.status(200).json({ message: "Localização gerada com sucesso." });
-  } catch (error) {
-    console.log("ERRO AO GERAR LOCALIZAÇÃO DO PRESTADOR: ", error);
     return res
-      .status(500)
-      .json({ message: "Erro ao gerar localização do prestador" });
+      .status(200)
+      .json({ message: "Perfil e Localização ativados com sucesso!" });
+  } catch (error) {
+    console.log("ERRO AO ATIVAR PERFIL: ", error);
+    return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };
 

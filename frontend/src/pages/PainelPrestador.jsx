@@ -6,7 +6,12 @@ import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 
 export function PainelPrestador() {
-  const { usuario } = useContext(AuthContext);
+  const { usuario, setUsuario } = useContext(AuthContext);
+  const ferramentasAuth = useContext(AuthContext);
+  console.log("O QUE TEM DENTRO DO USEAUTH?: ", ferramentasAuth);
+  const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
+  const [servicoSelecionado, setServicoSelecionado] = useState("");
+
   const navigate = useNavigate();
 
   const [solicitacoes, setSolicitacoes] = useState([]);
@@ -27,7 +32,7 @@ export function PainelPrestador() {
       });
       setSolicitacoes(resposta.data || []);
     } catch (error) {
-      if (erro.response && error.response.status === 404) {
+      if (error.response && error.response.status === 404) {
         setPerfilIncompleto(true);
       } else {
         console.error("Erro ao Buscar solicitações:", error);
@@ -38,23 +43,42 @@ export function PainelPrestador() {
     }
   }
 
-  useEffect(() => {
+  const finalizarConfiguracaoPerfil = () => {
+    if (!servicoSelecionado) {
+      alert("Por favor, selecione a sua especialidade");
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
+        const token = localStorage.getItem("token");
         try {
-          await api.put("/prestadores/localizacao", {
-            latitude,
-            longitude,
-            status: "online",
+          await api.put(
+            "/prestadores/localizacao",
+            { latitude, longitude, tipo_servico: servicoSelecionado },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          setUsuario({
+            ...usuario,
+            tipo_servico: servicoSelecionado,
           });
-          console.log("LOCALIZAÇÃO DO PRESTADOR ATUALIZADA E ATIVADA!");
+          setPrecisaOnboarding(false);
         } catch (error) {
           console.error("ERRO AO ATUALIZAR LOCALIZAÇÃO NO BANCO", error);
         }
       });
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    if (usuario && !usuario.tipo_servico) {
+      setPrecisaOnboarding(true);
+    }
+  }, [usuario]);
 
   useEffect(() => {
     if (usuario === undefined) return;
@@ -110,14 +134,32 @@ export function PainelPrestador() {
   if (carregando) return <p>Carregando Painel...</p>;
   if (erro) return <p>{erro}</p>;
 
-  if (perfilIncompleto) {
+  if (precisaOnboarding) {
     return (
-      <div className={styles.painelboasvindas}>
-        <h2>Olá, {usuario.nome}! Seja bem-vindo ao AutoHelp</h2>
-        <p>
-          Para Começar a receber solicações dos clientes, ative sua localização.
-        </p>
-        <button onClick={EnviarLocalizacao}>Ativar meu Perfil</button>
+      <div className={styles.containerpaiOnboarding}>
+        <div className={styles.containerfilhoOnboarding}>
+          <h2 className={styles.tituloOnboarding}>Olá, {usuario?.nome}! </h2>
+          <p className={styles.paragrafoOnboarding}>
+            Para começar a receber ordens de serviço no mapa, selecione a sua
+            especialidade abaixo:{" "}
+          </p>
+          <select
+            className={styles.selectServico}
+            value={servicoSelecionado}
+            onChange={(e) => setServicoSelecionado(e.target.value)}
+          >
+            <option value="">Escolha seu serviço</option>
+            <option value="mecanico">Mecânico</option>
+            <option value="guincho">Guincho</option>
+            <option value="borracheiro">Borracheiro</option>
+          </select>
+          <button
+            onClick={finalizarConfiguracaoPerfil}
+            className={styles.botaoOnboarding}
+          >
+            Ativar meu Perfil e Ficar Online
+          </button>
+        </div>
       </div>
     );
   }
