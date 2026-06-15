@@ -78,9 +78,10 @@ async function listarSolicitacoesDoPrestador(req, res) {
     );
 
     if (Resultadoprestador.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Perfil de Prestador não Encontrado" });
+      return res.status(200).json({
+        perfilIncompleto: true,
+        message: "Aguardando configuração inicial de perfil.",
+      });
     }
 
     const prestador = Resultadoprestador[0];

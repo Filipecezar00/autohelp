@@ -30,7 +30,13 @@ export function PainelPrestador() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setSolicitacoes(resposta.data || []);
+
+      if (resposta.data.perfilIncompleto) {
+        setPrecisaOnboarding(true);
+        return;
+      }
+
+      setSolicitacoes(resposta.data);
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setPerfilIncompleto(true);
