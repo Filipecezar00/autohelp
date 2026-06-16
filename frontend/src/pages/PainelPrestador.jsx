@@ -8,7 +8,6 @@ import CardSolicitacao from "../components/CardSolicitacao";
 export function PainelPrestador() {
   const { usuario, setUsuario } = useContext(AuthContext);
   const ferramentasAuth = useContext(AuthContext);
-  console.log("O QUE TEM DENTRO DO USEAUTH?: ", ferramentasAuth);
   const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
   const [servicoSelecionado, setServicoSelecionado] = useState("");
 
@@ -19,7 +18,13 @@ export function PainelPrestador() {
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
   const [perfilIncompleto, setPerfilIncompleto] = useState(false);
+  const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
+  console.log(
+    "O COMPONENTE RENDERIZOU! O serviço atual no contexto é:",
+    usuario?.tipo_servico,
+  );
+  console.log(TIPOS_SERVICO);
   async function buscarSolicitacao() {
     try {
       setCarregando(true);
@@ -68,10 +73,17 @@ export function PainelPrestador() {
               },
             },
           );
+          console.log("O BANCO DE DADOS SALVOU COM SUCESSO!");
+          console.log(
+            "O QUE ESTOU ENVIANDO PARA O CONTEXTO ?",
+            servicoSelecionado,
+          );
           setUsuario({
             ...usuario,
             tipo_servico: servicoSelecionado,
           });
+
+          console.log("PASSEI DA LINHA QUE AVISA O CONTEXTO!");
           setPrecisaOnboarding(false);
         } catch (error) {
           console.error("ERRO AO ATUALIZAR LOCALIZAÇÃO NO BANCO", error);
@@ -140,95 +152,98 @@ export function PainelPrestador() {
   if (carregando) return <p>Carregando Painel...</p>;
   if (erro) return <p>{erro}</p>;
 
-  if (precisaOnboarding) {
+  if (TIPOS_SERVICO.includes(usuario?.tipo_servico)) {
     return (
-      <div className={styles.containerpaiOnboarding}>
-        <div className={styles.containerfilhoOnboarding}>
-          <h2 className={styles.tituloOnboarding}>Olá, {usuario?.nome}! </h2>
-          <p className={styles.paragrafoOnboarding}>
-            Para começar a receber ordens de serviço no mapa, selecione a sua
-            especialidade abaixo:{" "}
-          </p>
-          <select
-            className={styles.selectServico}
-            value={servicoSelecionado}
-            onChange={(e) => setServicoSelecionado(e.target.value)}
-          >
-            <option value="">Escolha seu serviço</option>
-            <option value="mecanico">Mecânico</option>
-            <option value="guincho">Guincho</option>
-            <option value="borracheiro">Borracheiro</option>
-          </select>
-          <button
-            onClick={finalizarConfiguracaoPerfil}
-            className={styles.botaoOnboarding}
-          >
-            Ativar meu Perfil e Ficar Online
-          </button>
+      <div className={styles.container}>
+        <div className={styles.cabecalho}>
+          <h1 className={styles.titulo}>Painel do Prestador</h1>
+          <p className={styles.badge}>{pendentesFiltradas.length} pendentes</p>
+        </div>
+        <div className={styles.cardresposta}>
+          <h2>Aguardando Resposta</h2>
+          <div className={styles.pendentesfiltradas}>
+            {pendentesFiltradas.map((solicitacao) => {
+              return (
+                <div className={styles.statusbtns} key={solicitacao.id}>
+                  <CardSolicitacao solicitacao={solicitacao} />
+                  <button
+                    disabled={atualizando === solicitacao.id}
+                    onClick={() => atualizarStatus(solicitacao.id, "aceita")}
+                  >
+                    {atualizando === solicitacao.id ? "..." : "Aceitar"}
+                  </button>
+                  <button
+                    onClick={() => atualizarStatus(solicitacao.id, "recusada")}
+                    disabled={atualizando === solicitacao.id}
+                  >
+                    Recusar
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={styles.cardemandamento}>
+          <h2>Em Andamento</h2>
+          <div className={styles.solicitacoesemandamento}>
+            {aceitasFiltradas.map((solicitacao) => {
+              return (
+                <div className={styles.concluir} key={solicitacao.id}>
+                  <CardSolicitacao solicitacao={solicitacao} />
+                  <button
+                    disabled={atualizando === solicitacao.id}
+                    onClick={() => atualizarStatus(solicitacao.id, "concluida")}
+                  >
+                    {atualizando === solicitacao.id
+                      ? "..."
+                      : "Marcar como concluído"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={styles.cardhistorico}>
+          <h2>Histórico</h2>
+          <div className={styles.historico}>
+            {concluidasFiltradas.map((solicitacao) => {
+              return (
+                <CardSolicitacao
+                  solicitacao={solicitacao}
+                  key={solicitacao.id}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.cabecalho}>
-        <h1 className={styles.titulo}>Painel do Prestador</h1>
-        <p className={styles.badge}>{pendentesFiltradas.length} pendentes</p>
-      </div>
-      <div className={styles.cardresposta}>
-        <h2>Aguardando Resposta</h2>
-        <div className={styles.pendentesfiltradas}>
-          {pendentesFiltradas.map((solicitacao) => {
-            return (
-              <div className={styles.statusbtns} key={solicitacao.id}>
-                <CardSolicitacao solicitacao={solicitacao} />
-                <button
-                  disabled={atualizando === solicitacao.id}
-                  onClick={() => atualizarStatus(solicitacao.id, "aceita")}
-                >
-                  {atualizando === solicitacao.id ? "..." : "Aceitar"}
-                </button>
-                <button
-                  onClick={() => atualizarStatus(solicitacao.id, "recusada")}
-                  disabled={atualizando === solicitacao.id}
-                >
-                  Recusar
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.cardemandamento}>
-        <h2>Em Andamento</h2>
-        <div className={styles.solicitacoesemandamento}>
-          {aceitasFiltradas.map((solicitacao) => {
-            return (
-              <div className={styles.concluir} key={solicitacao.id}>
-                <CardSolicitacao solicitacao={solicitacao} />
-                <button
-                  disabled={atualizando === solicitacao.id}
-                  onClick={() => atualizarStatus(solicitacao.id, "concluida")}
-                >
-                  {atualizando === solicitacao.id
-                    ? "..."
-                    : "Marcar como concluído"}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.cardhistorico}>
-        <h2>Histórico</h2>
-        <div className={styles.historico}>
-          {concluidasFiltradas.map((solicitacao) => {
-            return (
-              <CardSolicitacao solicitacao={solicitacao} key={solicitacao.id} />
-            );
-          })}
-        </div>
+    <div className={styles.containerpaiOnboarding}>
+      <div className={styles.containerfilhoOnboarding}>
+        <h2 className={styles.tituloOnboarding}>Olá, {usuario?.nome}! </h2>
+        <p className={styles.paragrafoOnboarding}>
+          Para começar a receber ordens de serviço no mapa, selecione a sua
+          especialidade abaixo:{" "}
+        </p>
+        <select
+          className={styles.selectServico}
+          value={servicoSelecionado}
+          onChange={(e) => setServicoSelecionado(e.target.value)}
+        >
+          <option value="">Escolha seu serviço</option>
+          <option value="mecanico">Mecânico</option>
+          <option value="guincho">Guincho</option>
+          <option value="borracheiro">Borracheiro</option>
+        </select>
+        <button
+          onClick={finalizarConfiguracaoPerfil}
+          className={styles.botaoOnboarding}
+        >
+          Ativar meu Perfil e Ficar Online
+        </button>
       </div>
     </div>
   );
