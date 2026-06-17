@@ -41,7 +41,7 @@ const cadastrarUsuario = async (req, res) => {
 
     if (tipo === "prestador") {
       await pool.query(
-        "INSERT INTO prestadores (usuario_id,status) VALUES (?,'offline')",
+        "INSERT INTO prestadores (usuario_id,ativo) VALUES (?,1)",
         [novoUsuarioId],
       );
     }

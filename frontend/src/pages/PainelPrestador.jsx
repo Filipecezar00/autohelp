@@ -6,7 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 
 export function PainelPrestador() {
-  const { usuario, setUsuario } = useContext(AuthContext);
+  const { usuario, setUsuario, loading } = useContext(AuthContext);
   const ferramentasAuth = useContext(AuthContext);
   const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
   const [servicoSelecionado, setServicoSelecionado] = useState("");
@@ -25,6 +25,8 @@ export function PainelPrestador() {
     usuario?.tipo_servico,
   );
   console.log(TIPOS_SERVICO);
+  console.log("DADOS DO USUÁRIO NO F5:", usuario);
+
   async function buscarSolicitacao() {
     try {
       setCarregando(true);
@@ -149,8 +151,14 @@ export function PainelPrestador() {
         {String(usuario)})
       </p>
     );
-  if (carregando) return <p>Carregando Painel...</p>;
   if (erro) return <p>{erro}</p>;
+  if (carregando) {
+    return (
+      <div className={styles.containerCarregando}>
+        <p>Carregando seus dados...</p>
+      </div>
+    );
+  }
 
   if (TIPOS_SERVICO.includes(usuario?.tipo_servico)) {
     return (

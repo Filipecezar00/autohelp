@@ -2,8 +2,9 @@ import { createContext, useState } from "react";
 
 export const AuthContext = createContext({});
 export default function AuthProvider({ children }) {
+  const [loading, setLoading] = useState(true);
+  console.log("ESTADO DO LOADING GLOBAL:", loading);
   const [token, setToken] = useState(() => localStorage.getItem("token"));
-
   const [usuario, setUsuario] = useState(() => {
     const usuarioSalvo = localStorage.getItem("user");
     try {
@@ -32,7 +33,7 @@ export default function AuthProvider({ children }) {
   const estaLogado = !!token;
   return (
     <AuthContext.Provider
-      value={{ usuario, token, estaLogado, login, logout, setUsuario }}
+      value={{ usuario, token, estaLogado, login, logout, setUsuario, loading }}
     >
       {children}
     </AuthContext.Provider>
