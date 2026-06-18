@@ -4,9 +4,10 @@ import api from "../services/api";
 import styles from "../../src/PainelPrestador.module.css";
 import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
+import { TbDoorExit } from "react-icons/tb";
 
 export function PainelPrestador() {
-  const { usuario, setUsuario, loading } = useContext(AuthContext);
+  const { usuario, setUsuario, login, logout } = useContext(AuthContext);
   const ferramentasAuth = useContext(AuthContext);
   const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
   const [servicoSelecionado, setServicoSelecionado] = useState("");
@@ -20,12 +21,13 @@ export function PainelPrestador() {
   const [perfilIncompleto, setPerfilIncompleto] = useState(false);
   const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
-  console.log(
-    "O COMPONENTE RENDERIZOU! O serviço atual no contexto é:",
-    usuario?.tipo_servico,
-  );
+  const storageUser = localStorage.getItem("user");
+  const storageToken = localStorage.getItem("token");
+
   console.log(TIPOS_SERVICO);
   console.log("DADOS DO USUÁRIO NO F5:", usuario);
+
+  console.log("VALOR DE LOGIN:", login);
 
   async function buscarSolicitacao() {
     try {
@@ -75,17 +77,10 @@ export function PainelPrestador() {
               },
             },
           );
-          console.log("O BANCO DE DADOS SALVOU COM SUCESSO!");
-          console.log(
-            "O QUE ESTOU ENVIANDO PARA O CONTEXTO ?",
-            servicoSelecionado,
-          );
           setUsuario({
             ...usuario,
             tipo_servico: servicoSelecionado,
           });
-
-          console.log("PASSEI DA LINHA QUE AVISA O CONTEXTO!");
           setPrecisaOnboarding(false);
         } catch (error) {
           console.error("ERRO AO ATUALIZAR LOCALIZAÇÃO NO BANCO", error);
@@ -133,6 +128,16 @@ export function PainelPrestador() {
       alert("Erro ao Atualizar status");
     } finally {
       setAtualizando(null);
+    }
+  }
+
+  async function deslogar() {
+    const confirmacao = confirm("Você tem certeza que quer deslogar ?");
+    if (confirmacao == true) {
+      logout();
+      navigate("/login");
+    } else {
+      return;
     }
   }
 
@@ -223,6 +228,9 @@ export function PainelPrestador() {
               );
             })}
           </div>
+        </div>
+        <div className={styles.deslogar}>
+          <TbDoorExit onClick={deslogar} />
         </div>
       </div>
     );

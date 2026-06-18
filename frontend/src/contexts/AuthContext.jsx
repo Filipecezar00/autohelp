@@ -1,12 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({});
 export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
-  console.log("ESTADO DO LOADING GLOBAL:", loading);
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [usuario, setUsuario] = useState(() => {
     const usuarioSalvo = localStorage.getItem("user");
+
     try {
       return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
     } catch {
@@ -21,7 +21,6 @@ export default function AuthProvider({ children }) {
     setToken(TokenRecebido);
     setUsuario(dadosDoUsuario);
   };
-
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
