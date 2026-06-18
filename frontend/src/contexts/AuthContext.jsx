@@ -6,7 +6,6 @@ export default function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [usuario, setUsuario] = useState(() => {
     const usuarioSalvo = localStorage.getItem("user");
-
     try {
       return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
     } catch {
@@ -30,6 +29,7 @@ export default function AuthProvider({ children }) {
   };
 
   const estaLogado = !!token;
+
   return (
     <AuthContext.Provider
       value={{ usuario, token, estaLogado, login, logout, setUsuario, loading }}

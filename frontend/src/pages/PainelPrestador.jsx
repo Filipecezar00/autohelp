@@ -7,10 +7,12 @@ import CardSolicitacao from "../components/CardSolicitacao";
 import { TbDoorExit } from "react-icons/tb";
 
 export function PainelPrestador() {
-  const { usuario, setUsuario, login, logout } = useContext(AuthContext);
+  const { usuario, setUsuario, login, logout, loading } =
+    useContext(AuthContext);
   const ferramentasAuth = useContext(AuthContext);
   const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
   const [servicoSelecionado, setServicoSelecionado] = useState("");
+  const [pronto, setPronto] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,13 +23,24 @@ export function PainelPrestador() {
   const [perfilIncompleto, setPerfilIncompleto] = useState(false);
   const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
-  const storageUser = localStorage.getItem("user");
-  const storageToken = localStorage.getItem("token");
-
   console.log(TIPOS_SERVICO);
   console.log("DADOS DO USUÁRIO NO F5:", usuario);
 
   console.log("VALOR DE LOGIN:", login);
+
+  console.log("DEBUG - ESTADO ATUAL:", { usuario, pronto });
+
+  useEffect(() => {
+    console.log("DEBUG - useEffect disparado");
+    setPronto(true);
+  }, []);
+
+  if (!pronto) {
+    console.log("DEBUG - Componente travado no IF de carregamento");
+    return <div>Carregando...</div>;
+  }
+
+  console.log("DEBUG - Carregamento liberado, avaliando IF do Serviço");
 
   async function buscarSolicitacao() {
     try {
