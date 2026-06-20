@@ -23,25 +23,6 @@ export function PainelPrestador() {
   const [perfilIncompleto, setPerfilIncompleto] = useState(false);
   const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
-  console.log(TIPOS_SERVICO);
-  console.log("DADOS DO USUÁRIO NO F5:", usuario);
-
-  console.log("VALOR DE LOGIN:", login);
-
-  console.log("DEBUG - ESTADO ATUAL:", { usuario, pronto });
-
-  useEffect(() => {
-    console.log("DEBUG - useEffect disparado");
-    setPronto(true);
-  }, []);
-
-  if (!pronto) {
-    console.log("DEBUG - Componente travado no IF de carregamento");
-    return <div>Carregando...</div>;
-  }
-
-  console.log("DEBUG - Carregamento liberado, avaliando IF do Serviço");
-
   async function buscarSolicitacao() {
     try {
       setCarregando(true);
