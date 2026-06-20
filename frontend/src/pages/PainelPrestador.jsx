@@ -80,7 +80,14 @@ export function PainelPrestador() {
             tipo_servico: servicoSelecionado,
           });
 
-          setUsuario((prev) => ({ ...prev, tipo_servico: servicoSelecionado }));
+          const usuarioAtualizado = {
+            ...usuario,
+            tipo_servico: servicoSelecionado,
+          };
+
+          setUsuario(usuarioAtualizado);
+
+          localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
 
           setPrecisaOnboarding(false);
         } catch {
