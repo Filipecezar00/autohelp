@@ -6,45 +6,52 @@ import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 import { TbDoorExit } from "react-icons/tb";
 
-export function PainelPrestador() {
-  const { usuario, setUsuario, login, logout, loading } =
-    useContext(AuthContext);
-  const ferramentasAuth = useContext(AuthContext);
-  const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
-  const [servicoSelecionado, setServicoSelecionado] = useState("");
-  const [pronto, setPronto] = useState(false);
+const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
+export function PainelPrestador() {
   const navigate = useNavigate();
+  const { usuario, setUsuario, logout } = useContext(AuthContext);
 
   const [solicitacoes, setSolicitacoes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
-  const [perfilIncompleto, setPerfilIncompleto] = useState(false);
-  const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
+  const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
+  const [servicoSelecionado, setServicoSelecionado] = useState("");
+
+  useEffect(() => {
+    if (!usuario) return;
+
+    if (usuario.tipo !== "prestador") {
+      navigate("/mapa", { replace: true });
+      return;
+    }
+
+    if (
+      !usuario.tipo_servico ||
+      !TIPOS_SERVICO.includes(usuario.tipo_servico)
+    ) {
+      setPrecisaOnboarding(true);
+      setCarregando(false);
+      return;
+    }
+
+    buscarSolicitacao();
+  }, [usuario]);
 
   async function buscarSolicitacao() {
     try {
       setCarregando(true);
-      const token = localStorage.getItem("token");
+      setErro(null);
+      setSolicitacoes([]);
 
-      const resposta = await api.get("/solicitacoes/recebidas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const resposta = await api.get("/solicitacoes/recebidas");
 
-      if (resposta.data.perfilIncompleto) {
-        setPrecisaOnboarding(true);
-        return;
-      }
-
-      setSolicitacoes(resposta.data);
+      setSolicitacoes(Array.isArray(resposta.data) ? resposta.data : []);
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setPerfilIncompleto(true);
+      if (error.response?.status === 404) {
+        setPrecisaOnboarding(true);
       } else {
-        console.error("Erro ao Buscar solicitações:", error);
         setErro("Erro ao realizar busca de solicações dos clientes");
       }
     } finally {
@@ -52,61 +59,39 @@ export function PainelPrestador() {
     }
   }
 
-  const finalizarConfiguracaoPerfil = () => {
+  async function finalizarConfiguracaoPerfil() {
     if (!servicoSelecionado) {
-      alert("Por favor, selecione a sua especialidade");
+      alert("Por favor, selecione a sua especialidade para continuar");
       return;
     }
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        const token = localStorage.getItem("token");
+
+    if (!navigator.geolocation) {
+      alert("Seu dispositivo não suporta geolocalização.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
         try {
-          await api.put(
-            "/prestadores/localizacao",
-            { latitude, longitude, tipo_servico: servicoSelecionado },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          );
-          setUsuario({
-            ...usuario,
+          const { latitude, longitude } = position.coords;
+          await api.put("/prestadores/localizacao", {
+            latitude,
+            longitude,
             tipo_servico: servicoSelecionado,
           });
+
+          setUsuario((prev) => ({ ...prev, tipo_servico: servicoSelecionado }));
+
           setPrecisaOnboarding(false);
-        } catch (error) {
-          console.error("ERRO AO ATUALIZAR LOCALIZAÇÃO NO BANCO", error);
+        } catch {
+          alert("Erro ao salvar o perfil. Tente Novamente.");
         }
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (usuario && !usuario.tipo_servico) {
-      setPrecisaOnboarding(true);
-    }
-  }, [usuario]);
-
-  useEffect(() => {
-    if (usuario === undefined) return;
-
-    if (usuario === null) {
-      console.log("AGUARDANDO OS DADOS DO USUÁRIO CARREGAREM");
-      return;
-    }
-
-    if (usuario?.tipo !== "prestador") {
-      console.log("Usuário não é prestador! Expulsando para o /mapa...");
-      return navigate("/mapa");
-    }
-
-    buscarSolicitacao();
-  }, [usuario]);
-
-  if (usuario === undefined) {
-    return <div className="text-center p-5">Carregando perfil...</div>;
+      },
+      () =>
+        alert(
+          "Não foi possível obter sua localização. Verifiquem as permissões.",
+        ),
+    );
   }
 
   async function atualizarStatus(id, novoStatus) {
@@ -126,134 +111,128 @@ export function PainelPrestador() {
   }
 
   async function deslogar() {
-    const confirmacao = confirm("Você tem certeza que quer deslogar ?");
-    if (confirmacao == true) {
-      logout();
-      navigate("/login");
-    } else {
-      return;
-    }
+    const confirmacao = window.confirm("Você tem certeza que quer deslogar ?");
+    if (!confirmacao) return;
+    logout();
+    navigate("/login");
   }
 
-  const pendentesFiltradas = solicitacoes.filter(
-    (s) => s.status === "pendente",
-  );
-  const aceitasFiltradas = solicitacoes.filter((s) => s.status === "aceita");
-  const concluidasFiltradas = solicitacoes.filter(
-    (s) => s.status === "concluida",
-  );
-
-  if (!usuario || usuario.tipo !== "prestador")
-    return (
-      <p>
-        Aguardando o contexto carregar o usuário... (log atual:{" "}
-        {String(usuario)})
-      </p>
-    );
-  if (erro) return <p>{erro}</p>;
   if (carregando) {
     return (
       <div className={styles.containerCarregando}>
-        <p>Carregando seus dados...</p>
+        <p>Carregando Dados...</p>
       </div>
     );
   }
 
-  if (TIPOS_SERVICO.includes(usuario?.tipo_servico)) {
+  if (erro) {
     return (
-      <div className={styles.container}>
-        <div className={styles.cabecalho}>
-          <h1 className={styles.titulo}>Painel do Prestador</h1>
-          <p className={styles.badge}>{pendentesFiltradas.length} pendentes</p>
-        </div>
-        <div className={styles.cardresposta}>
-          <h2>Aguardando Resposta</h2>
-          <div className={styles.pendentesfiltradas}>
-            {pendentesFiltradas.map((solicitacao) => {
-              return (
-                <div className={styles.statusbtns} key={solicitacao.id}>
-                  <CardSolicitacao solicitacao={solicitacao} />
-                  <button
-                    disabled={atualizando === solicitacao.id}
-                    onClick={() => atualizarStatus(solicitacao.id, "aceita")}
-                  >
-                    {atualizando === solicitacao.id ? "..." : "Aceitar"}
-                  </button>
-                  <button
-                    onClick={() => atualizarStatus(solicitacao.id, "recusada")}
-                    disabled={atualizando === solicitacao.id}
-                  >
-                    Recusar
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className={styles.cardemandamento}>
-          <h2>Em Andamento</h2>
-          <div className={styles.solicitacoesemandamento}>
-            {aceitasFiltradas.map((solicitacao) => {
-              return (
-                <div className={styles.concluir} key={solicitacao.id}>
-                  <CardSolicitacao solicitacao={solicitacao} />
-                  <button
-                    disabled={atualizando === solicitacao.id}
-                    onClick={() => atualizarStatus(solicitacao.id, "concluida")}
-                  >
-                    {atualizando === solicitacao.id
-                      ? "..."
-                      : "Marcar como concluído"}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className={styles.cardhistorico}>
-          <h2>Histórico</h2>
-          <div className={styles.historico}>
-            {concluidasFiltradas.map((solicitacao) => {
-              return (
-                <CardSolicitacao
-                  solicitacao={solicitacao}
-                  key={solicitacao.id}
-                />
-              );
-            })}
-          </div>
-        </div>
-        <div className={styles.deslogar}>
-          <TbDoorExit onClick={deslogar} />
+      <div className={styles.containerErro}>
+        <p>{erro}</p>
+        <button onClick={buscarSolicitacao}>Tentar novamente</button>
+      </div>
+    );
+  }
+
+  if (precisaOnboarding) {
+    return (
+      <div className={styles.containerpaiOnboarding}>
+        <div className={styles.containerfilhoOnboarding}>
+          <h2 className={styles.tituloOnboarding}>Olá, {usuario?.nome}! </h2>
+          <p className={styles.paragrafoOnboarding}>
+            Para começar a receber ordens de serviço no mapa, selecione a sua
+            especialidade abaixo:{" "}
+          </p>
+          <select
+            className={styles.selectServico}
+            value={servicoSelecionado}
+            onChange={(e) => setServicoSelecionado(e.target.value)}
+          >
+            <option value="">Escolha seu serviço</option>
+            <option value="mecanico">Mecânico</option>
+            <option value="guincho">Guincho</option>
+            <option value="borracheiro">Borracheiro</option>
+          </select>
+          <button
+            onClick={finalizarConfiguracaoPerfil}
+            className={styles.botaoOnboarding}
+          >
+            Ativar meu Perfil e Ficar Online
+          </button>
         </div>
       </div>
     );
   }
+
+  const pendentesFiltradas =
+    solicitacoes?.filter((s) => s.status === "pendente") || [];
+  const aceitasFiltradas =
+    solicitacoes?.filter((s) => s.status === "aceita") || [];
+  const concluidasFiltradas =
+    solicitacoes?.filter((s) => s.status === "concluida") || [];
 
   return (
-    <div className={styles.containerpaiOnboarding}>
-      <div className={styles.containerfilhoOnboarding}>
-        <h2 className={styles.tituloOnboarding}>Olá, {usuario?.nome}! </h2>
-        <p className={styles.paragrafoOnboarding}>
-          Para começar a receber ordens de serviço no mapa, selecione a sua
-          especialidade abaixo:{" "}
-        </p>
-        <select
-          className={styles.selectServico}
-          value={servicoSelecionado}
-          onChange={(e) => setServicoSelecionado(e.target.value)}
-        >
-          <option value="">Escolha seu serviço</option>
-          <option value="mecanico">Mecânico</option>
-          <option value="guincho">Guincho</option>
-          <option value="borracheiro">Borracheiro</option>
-        </select>
-        <button
-          onClick={finalizarConfiguracaoPerfil}
-          className={styles.botaoOnboarding}
-        >
-          Ativar meu Perfil e Ficar Online
-        </button>
+    <div className={styles.container}>
+      <div className={styles.cabecalho}>
+        <h1 className={styles.titulo}>Painel do Prestador</h1>
+        <p className={styles.badge}>{pendentesFiltradas.length} pendentes</p>
+      </div>
+      <div className={styles.cardresposta}>
+        <h2>Aguardando Resposta</h2>
+        <div className={styles.pendentesfiltradas}>
+          {pendentesFiltradas.map((solicitacao) => {
+            return (
+              <div className={styles.statusbtns} key={solicitacao.id}>
+                <CardSolicitacao solicitacao={solicitacao} />
+                <button
+                  disabled={atualizando === solicitacao.id}
+                  onClick={() => atualizarStatus(solicitacao.id, "aceita")}
+                >
+                  {atualizando === solicitacao.id ? "..." : "Aceitar"}
+                </button>
+                <button
+                  onClick={() => atualizarStatus(solicitacao.id, "recusada")}
+                  disabled={atualizando === solicitacao.id}
+                >
+                  Recusar
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className={styles.cardemandamento}>
+        <h2>Em Andamento</h2>
+        <div className={styles.solicitacoesemandamento}>
+          {aceitasFiltradas.map((solicitacao) => {
+            return (
+              <div className={styles.concluir} key={solicitacao.id}>
+                <CardSolicitacao solicitacao={solicitacao} />
+                <button
+                  disabled={atualizando === solicitacao.id}
+                  onClick={() => atualizarStatus(solicitacao.id, "concluida")}
+                >
+                  {atualizando === solicitacao.id
+                    ? "..."
+                    : "Marcar como concluído"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className={styles.cardhistorico}>
+        <h2>Histórico</h2>
+        <div className={styles.historico}>
+          {concluidasFiltradas.map((solicitacao) => {
+            return (
+              <CardSolicitacao solicitacao={solicitacao} key={solicitacao.id} />
+            );
+          })}
+        </div>
+      </div>
+      <div className={styles.deslogar}>
+        <TbDoorExit onClick={deslogar} />
       </div>
     </div>
   );
