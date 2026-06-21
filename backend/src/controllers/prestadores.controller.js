@@ -82,4 +82,46 @@ const gerarLocalizacao = async (req, res) => {
   }
 };
 
+const salvarOnboarding = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Token inválido" });
+    }
+    let usuario_id = req.user.id;
+
+    const dados_formulario = req.body;
+    let tipo_servico = dados_formulario.tipo_servico;
+    let descricao = dados_formulario.descricao;
+    let telefone = dados_formulario.telefone;
+    let latitude = dados_formulario.latitude;
+    let longitude = dados_formulario.longitude;
+
+    if (!tipo_servico || !latitude || !longitude) {
+      return res.status(400).json({ message: "Dados obrigatórios faltando" });
+    }
+
+    await pool.query(
+      `INSERT INTO prestador (usuario_id,tipo_servico,descricao,telefone,latitude,longitude,ativo) VALUES(?,?,?,?,?,?,?)`,
+      [
+        usuario_id,
+        tipo_servico,
+        descricao,
+        telefone,
+        latitude,
+        longitude,
+        true,
+      ],
+    );
+
+    await pool.query(`UPDATE usuarios SET tipo = 'prestador'  WHERE id=?`, [
+      usuario_id,
+    ]);
+
+    return res.status(201).json({ message: "Perfil configurado com sucesso!" });
+  } catch (erro) {
+    console.error("Erro Crítico:", erro);
+    return res.status(500).json({ message: "Erro ao salvar dados" });
+  }
+};
+
 module.exports = { listar, buscarPorId, criar, gerarLocalizacao };
