@@ -316,7 +316,10 @@ export default function MapaView({
             {prestadores.map((prestador) => (
               <Marker
                 key={prestador.id}
-                position={[prestador.latitude, prestador.longitude]}
+                position={[
+                  Number(prestador.latitude),
+                  Number(prestador.longitude),
+                ]}
                 icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
               >
                 <Popup>

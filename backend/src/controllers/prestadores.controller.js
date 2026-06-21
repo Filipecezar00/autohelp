@@ -3,7 +3,7 @@ const pool = require("../config/database");
 const listar = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT * FROM prestadores WHERE ativo = TRUE",
+      "SELECT p.id AS prestador_id, p.tipo_servico, p.descricao, p.telefone, p.latitude, p.longitude, u.nome AS nome_prestador, u.email FROM prestador p INNER JOIN usuarios u ON p.usuario_id = u.id WHERE p.ativo =TRUE",
     );
     res.json(rows);
   } catch (error) {
