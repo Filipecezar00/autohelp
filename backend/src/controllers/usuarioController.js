@@ -74,6 +74,16 @@ const login = async (req, res) => {
 
     const usuarioEncontrado = usuarios[0];
 
+    const [prestadores] = await pool.query(
+      "SELECT id FROM prestadores WHERE usuario_id = ?",
+      [usuarioEncontrado.id],
+    );
+
+    let tiporeal = usuarioEncontrado.tipo;
+    if (prestadores.length > 0) {
+      tiporeal = "prestador";
+    }
+
     const senhaCorreta = await bcrypt.compare(senha, usuarioEncontrado.senha);
 
     if (!senhaCorreta) {
@@ -94,8 +104,19 @@ const login = async (req, res) => {
       expiresIn: "24h",
     });
 
-    return res.status(200).json({ token: token, user: dadosDoToken });
+    console.log(usuarioEncontrado);
+
+    return res.status(200).json({
+      token: token,
+      user: {
+        id: usuarioEncontrado.id,
+        nome: usuarioEncontrado.nome,
+        email: usuarioEncontrado.email,
+        tipo: tiporeal,
+      },
+    });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ mensagem: "Erro ao concluir processo de login" });
   }
 };

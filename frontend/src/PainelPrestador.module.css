@@ -68,32 +68,36 @@
   min-height: 100vh;
   background-color: #111318;
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
-  flex-wrap: wrap;
+  padding: 20px 46px;
+  text-align: center;
 }
+
 .cabecalho {
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid #252931;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .titulo {
   font-size: 1.375rem;
   font-weight: 700;
   color: #f0f0f0;
-  margin: 0 0 4px;
-  text-align: center;
+  margin: 0;
+  text-align: left;
 }
 .badge {
   font-size: 0.875rem;
-  color: #555e6e;
+  color: #8f9cae;
   margin: 0;
-  text-align: center;
+  text-align: left;
 }
 .cardresposta,
 .cardemandamento,
 .cardhistorico {
-  background-color: #111318;
+  background-color: #1a1d24;
   border: 1px solid #252931;
   border-radius: 12px;
   padding: 16px;
@@ -101,17 +105,29 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.cardresposta:hover,
+.cardemandamento:hover,
+.cardhistorico:hover {
+  border-color: #1a4fa8;
 }
 .pendentesfiltradas {
+  border: 1px solid #ffffff;
 }
 
 .solicitacoesemandamento {
+  border: 1px solid #ffffff;
 }
 
 .concluir {
+  background-color: #ffffff;
 }
 
 .historico {
+  border: 1px solid #ffffff;
 }
 
 .deslogar {
@@ -121,4 +137,7 @@
   color: #a0aec0;
   justify-content: flex-end;
   cursor: pointer;
+}
+.deslogar:hover {
+  color: #225fc4;
 }
