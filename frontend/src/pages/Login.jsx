@@ -56,12 +56,12 @@ function Login() {
       }
 
       if (resposta && resposta.data && resposta.data.token) {
-        const tokenRecebido = resposta.data.token;
-        const dadosDoUsuario = resposta.data.user;
+        const token = resposta.data.token;
+        const usuario = resposta.data.user;
 
-        login(dadosDoUsuario, tokenRecebido);
+        login(usuario, token);
 
-        if (dadosDoUsuario?.tipo === "prestador") {
+        if (usuario?.tipo === "prestador") {
           navigate("/painelPrestador");
         } else {
           navigate("/mapa");

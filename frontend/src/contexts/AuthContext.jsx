@@ -13,15 +13,12 @@ export default function AuthProvider({ children }) {
     }
   });
 
-  const login = async (dadosDoUsuario, TokenRecebido, email, senha) => {
-    const resposta = await api.post("/login", { email, senha });
-    const { token, usuario } = resposta.data;
+  const login = async (usuario, token) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(usuario));
 
-    localStorage.setItem("token", TokenRecebido);
-    localStorage.setItem("user", JSON.stringify(dadosDoUsuario));
-
-    setToken(TokenRecebido);
-    setUsuario(dadosDoUsuario);
+    setToken(token);
+    setUsuario(usuario);
   };
 
   const logout = () => {

@@ -69,8 +69,15 @@
   background-color: #111318;
   display: flex;
   flex-direction: column;
-  padding: 20px 46px;
-  text-align: center;
+  padding: 20px 24px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px 46px;
+  }
 }
 
 .cabecalho {
@@ -79,7 +86,7 @@
   border-bottom: 1px solid #252931;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .titulo {
   font-size: 1.375rem;
@@ -91,7 +98,7 @@
 .badge {
   font-size: 0.875rem;
   color: #8f9cae;
-  margin: 0;
+  margin: 2px;
   text-align: left;
 }
 .cardresposta,
@@ -115,21 +122,76 @@
   border-color: #1a4fa8;
 }
 .pendentesfiltradas {
-  border: 1px solid #ffffff;
 }
 
 .solicitacoesemandamento {
-  border: 1px solid #ffffff;
 }
 
 .concluir {
-  background-color: #ffffff;
 }
 
 .historico {
-  border: 1px solid #ffffff;
 }
 
+.statusbtns {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.btn_aceitar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+  padding: 14px;
+  background-color: #1a4fa8;
+  color: #e8f0ff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s,
+    opacity 0.2s;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.btn_recusar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+  padding: 14px;
+  background-color: #f25454;
+  color: #e8f0ff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s,
+    opacity 0.2s;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.btn_recusar:hover {
+  background-color: #111318;
+  border: 1px solid #ff0000;
+}
+.btn_aceitar:hover {
+  background-color: #111318;
+  border: 1px solid #1a4fa8;
+}
 .deslogar {
   display: flex;
   flex-direction: row;

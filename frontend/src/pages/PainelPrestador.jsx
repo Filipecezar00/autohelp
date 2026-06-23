@@ -195,12 +195,14 @@ export function PainelPrestador() {
               <div className={styles.statusbtns} key={solicitacao.id}>
                 <CardSolicitacao solicitacao={solicitacao} />
                 <button
+                  className={styles.btn_aceitar}
                   disabled={atualizando === solicitacao.id}
                   onClick={() => atualizarStatus(solicitacao.id, "aceita")}
                 >
                   {atualizando === solicitacao.id ? "..." : "Aceitar"}
                 </button>
                 <button
+                  className={styles.btn_recusar}
                   onClick={() => atualizarStatus(solicitacao.id, "recusada")}
                   disabled={atualizando === solicitacao.id}
                 >
