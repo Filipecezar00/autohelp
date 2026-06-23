@@ -37,6 +37,7 @@ export default function Solicitacao() {
   useEffect(() => {
     async function carregarDadosPrestador() {
       try {
+        console.log("O ID capturado nesta tela é:", prestadorId);
         const resposta = await api.get(`/prestadores/${prestadorId}`);
         setPrestador(resposta.data);
       } catch (err) {

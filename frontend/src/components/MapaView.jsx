@@ -116,23 +116,8 @@ function CardListaPrestador({ prestador }) {
   );
 }
 
-function PopupPrestador({ prestador }) {
+function PopupPrestador({ prestador, onSolicitar }) {
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
-  const navigate = useNavigate();
-
-  const handleSolicitar = () => {
-    if (prestador?.id) {
-      navigate(`/solicitar/${prestador.id}`, {
-        state: {
-          nome: prestador.nome,
-          distancia: prestador.distancia,
-        },
-      });
-    } else {
-      navigate("/mapa");
-    }
-  };
-
   return (
     <div style={{ minWidth: 180, fontFamily: "sans-serif" }}>
       <div
@@ -167,7 +152,7 @@ function PopupPrestador({ prestador }) {
       </div>
 
       <button
-        onClick={handleSolicitar}
+        onClick={onSolicitar}
         style={{
           marginTop: 10,
           width: "100%",
@@ -210,6 +195,7 @@ export default function MapaView({
   if (!centro || centro.length !== 2) return null;
 
   const [valorLocal, setValorLocal] = React.useState(raioAtual);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     setValorLocal(raioAtual);
@@ -313,20 +299,36 @@ export default function MapaView({
               </Popup>
             </Marker>
 
-            {prestadores.map((prestador) => (
-              <Marker
-                key={prestador.id}
-                position={[
-                  Number(prestador.latitude),
-                  Number(prestador.longitude),
-                ]}
-                icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
-              >
-                <Popup>
-                  <PopupPrestador prestador={prestador} />
-                </Popup>
-              </Marker>
-            ))}
+            {prestadores.map((prestador) => {
+              console.log("Investigando Prestador:", {
+                objeto: prestador,
+                chave: prestador.prestador_id,
+              });
+              return (
+                <Marker
+                  key={prestador.prestador_id}
+                  position={[
+                    Number(prestador.latitude),
+                    Number(prestador.longitude),
+                  ]}
+                  icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
+                >
+                  <Popup>
+                    <PopupPrestador
+                      prestador={prestador}
+                      onSolicitar={() =>
+                        navigate(`/solicitar/${prestador.prestador_id}`, {
+                          state: {
+                            nome: prestador.nome,
+                            distancia: prestador.distancia_km,
+                          },
+                        })
+                      }
+                    />
+                  </Popup>
+                </Marker>
+              );
+            })}
           </MapContainer>
         </main>
       </div>

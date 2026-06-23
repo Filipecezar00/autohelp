@@ -23,6 +23,7 @@ export default function AuthProvider({ children }) {
     setToken(TokenRecebido);
     setUsuario(dadosDoUsuario);
   };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
