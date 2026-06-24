@@ -1,0 +1,75 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px;
+}
+.prestadornome,
+.prestadortelefone,
+.icone,
+.vernomapa,
+.km,
+.prestadoresproximos,
+.prestadoresencontrados,
+.raiobusca,
+.distancia,
+.umkm,
+.cinquentakm,
+.tentativaampliar,
+.nenhumprestador,
+.search,
+.resultados,
+.numeroresultados {
+  color: #e8f0ff;
+}
+.prestadorbadge {
+  color: #e8f0ff;
+  border: 1px solid #e8f0ff;
+  border-radius: 5px;
+}
+
+.containerdois {
+  margin: 2px;
+}
+
+.containerpai {
+  border: 3px solid #3a4050;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 5px;
+}
+
+.containerdistancia {
+  display: flex;
+  justify-content: space-between;
+}
+.containerRange {
+  margin: 10px;
+}
+@media (max-width: 612px) {
+  .containerRange {
+    width: 67%;
+    text-align: center;
+  }
+  .prestadoresproximos {
+    font-size: large;
+  }
+  .containerLabel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .containerResultados {
+    width: 70%;
+  }
+}
+
+.containerresultados {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}

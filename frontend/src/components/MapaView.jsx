@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "../../src/MapaView.module.css";
 
 const CONFIG_TIPOS = {
   mecanico: {
@@ -85,30 +86,22 @@ function CardListaPrestador({ prestador }) {
   const Icone = config.icone;
 
   return (
-    <div
-      className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer bg-white hover:shadow-md hover:-translate-y-0.5 ${config.border}`}
-    >
-      <div className="flex justify-between items-start gap-2 mb-2">
-        <h3 className="font-semibold text-slate-800 text-sm leading-tight">
-          {prestador.nome}
-        </h3>
-        <span
-          className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold ${config.bgLight} ${config.textClass} border ${config.border}`}
-        >
-          {config.label}
-        </span>
+    <div className={styles.containerpai}>
+      <div className={styles.container}>
+        <h3 className={styles.prestadornome}>{prestador.nome}</h3>
+        <span className={styles.prestadorbadge}>{config.label}</span>
       </div>
-      <p className="text-xs text-slate-500 mb-3 flex items-center gap-1">
+      <p className={styles.prestadortelefone}>
         {prestador.telefone || "Sem telefone cadastrado"}
       </p>
-      <div className="flex justify-between items-center">
+      <div className={styles.containerdois}>
         <span
           className={`flex items-center gap-1 text-xs font-semibold ${config.textClass}`}
         >
-          <Icone size={12} />
-          Ver no Mapa
+          <Icone size={12} className={styles.icone} />
+          <p className={styles.vernomapa}>Ver no Mapa</p>
         </span>
-        <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+        <span className={styles.km}>
           {Number(prestador.distancia_km ?? 0).toFixed(1)} km
         </span>
       </div>
@@ -175,11 +168,9 @@ function PopupPrestador({ prestador, onSolicitar }) {
 function EstadoVazio() {
   return (
     <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-      <span className="text-4xl mb-3">Search</span>
-      <p className="text-sm font-semibold text-slate-500">
-        Nenhum Prestador nessa categoria
-      </p>
-      <p className="text-xs text-slate-400 mt-1">
+      <span className={styles.search}>Search</span>
+      <p className={styles.nenhumprestador}>Nenhum Prestador nessa categoria</p>
+      <p className={styles.tentativaampliar}>
         Tente ampliar o raio de busca ou selecionar outro tipo
       </p>
     </div>
@@ -201,7 +192,7 @@ export default function MapaView({
     setValorLocal(raioAtual);
   }, [raioAtual]);
   return (
-    <div className="w-full bg-slate-50 p-4 md:p-6">
+    <div className={styles.containerglobal}>
       <span
         style={{
           cursor: "pointer",
@@ -209,33 +200,29 @@ export default function MapaView({
           justifyContent: "flex-start",
           alignItems: "flex-start",
           flexWrap: "wrap",
+          color: "#e8f0ff",
         }}
       >
         <Btn_return />
       </span>
-      <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <header className={styles.header}>
         <div className="space-y-1">
-          <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className={styles.prestadoresproximos}>
             Prestadores proximos a sua região
           </h1>
-          <p className="text-xs md:text-sm text-slate-500 font-medium">
+          <p className={styles.prestadoresencontrados}>
             {prestadores.length === 0
               ? "Nenhum Prestador encontrado nesta área"
               : `${prestadores.length} prestador${prestadores.length > 1 ? "es" : ""}`}
           </p>
         </div>
 
-        <div className="w-full md:max-w-xs bg-slate-50 p-3 rounded-xl border border-slate-200/60 flex flex-col gap-1.5">
-          <div className="flex justify-between items-center">
-            <label
-              htmlFor="raio-busca"
-              className="text-xs font-bold text-slate-600 uppercase tracking-wider"
-            >
+        <div className={styles.containerRange}>
+          <div className={styles.containerLabel}>
+            <label htmlFor="raio-busca" className={styles.raiobusca}>
               Raio de Busca
-            </label>
-            <span className="text-xs font-extrabold text-blue-600 bg-blue-100/80 px-2 py-0.5 rounded-md border border-blue-200">
-              Até {valorLocal} km
-            </span>
+            </label>{" "}
+            <span className={styles.distancia}>Até {valorLocal} km</span>
           </div>
           <input
             id="raio-busca"
@@ -247,29 +234,28 @@ export default function MapaView({
             onChange={(e) => setValorLocal(Number(e.target.value))}
             onMouseUp={() => onAlternarRaio(valorLocal)}
             onTouchEnd={() => onAlternarRaio(valorLocal)}
-            className="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer accent-blue-600 focus:outline-none transition-all"
           />
-          <div className="flex justify-between text-[10px] font-bold text-slate-400 ">
-            <span>1 km</span>
-            <span>50 km</span>
+          <div className={styles.containerdistancia}>
+            <span className={styles.umkm}>1 km</span>
+            <span className={styles.cinquentakm}>50 km</span>
           </div>
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <aside className="lg:col-span-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-            <h2 className="text-sm font-bold text-slate-700">Resultados</h2>
-            <span className="text-xs font-bold bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">
+      <div className={styles.containerResultados}>
+        <aside className={styles.asideResultados}>
+          <div className={styles.containerresultados}>
+            <h2 className={styles.resultados}>Resultados</h2>
+            <span className={styles.numeroresultados}>
               {prestadores.length}
             </span>
           </div>
 
           <div className="p-4 overflow-y-auto flex flex-col gap-3 flex-1 bg-white">
             {prestadores.length === 0 ? (
-              <div className="py-12 text-center">
-                <span className="text-3xl block mb-2">Search</span>
-                <p className="text-sm font-medium text-slate-400">
+              <div className={styles.containerprestadores}>
+                <span className={styles.search}>Search</span>
+                <p className={styles.nenhumprestador}>
                   Nenhum prestador ativo nesta Categoria
                 </p>
               </div>
