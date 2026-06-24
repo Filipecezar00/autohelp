@@ -64,7 +64,7 @@ const login = async (req, res) => {
     }
 
     const [usuarios] = await pool.query(
-      "SELECT * FROM usuarios WHERE email = ?",
+      "SELECT usuarios.id,usuarios.nome,usuarios.email,usuarios.senha,usuarios.tipo, prestadores.tipo_servico FROM usuarios LEFT JOIN prestadores ON prestadores.usuario_id = usuarios.id WHERE usuarios.email = ?",
       [email],
     );
 
@@ -104,15 +104,14 @@ const login = async (req, res) => {
       expiresIn: "24h",
     });
 
-    console.log(usuarioEncontrado);
-
     return res.status(200).json({
       token: token,
       user: {
         id: usuarioEncontrado.id,
         nome: usuarioEncontrado.nome,
         email: usuarioEncontrado.email,
-        tipo: tiporeal,
+        tipo: usuarioEncontrado.tipo,
+        tipo_servico: usuarioEncontrado.tipo_servico ?? null,
       },
     });
   } catch (error) {

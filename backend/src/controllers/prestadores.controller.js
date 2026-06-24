@@ -3,7 +3,7 @@ const pool = require("../config/database");
 const listar = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT p.id AS prestador_id, p.tipo_servico, p.descricao, p.telefone, p.latitude, p.longitude, u.nome AS nome_prestador, u.email FROM prestador p INNER JOIN usuarios u ON p.usuario_id = u.id WHERE p.ativo =TRUE",
+      "SELECT p.id AS prestador_id, p.tipo_servico, p.descricao, p.telefone, p.latitude, p.longitude, u.nome AS nome_prestador, u.email FROM prestadores p INNER JOIN usuarios u ON p.usuario_id = u.id WHERE p.ativo =TRUE",
     );
     res.json(rows);
   } catch (error) {
@@ -101,7 +101,7 @@ const salvarOnboarding = async (req, res) => {
     }
 
     await pool.query(
-      `INSERT INTO prestador (usuario_id,tipo_servico,descricao,telefone,latitude,longitude,ativo) VALUES(?,?,?,?,?,?,?)`,
+      `INSERT INTO prestadores (usuario_id,tipo_servico,descricao,telefone,latitude,longitude,ativo) VALUES(?,?,?,?,?,?,?)`,
       [
         usuario_id,
         tipo_servico,
