@@ -221,6 +221,7 @@ export function PainelPrestador() {
               <div className={styles.concluir} key={solicitacao.id}>
                 <CardSolicitacao solicitacao={solicitacao} />
                 <button
+                  className={styles.btn_concluir}
                   disabled={atualizando === solicitacao.id}
                   onClick={() => atualizarStatus(solicitacao.id, "concluida")}
                 >

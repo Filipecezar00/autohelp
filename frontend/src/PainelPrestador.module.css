@@ -115,18 +115,51 @@
   color: #ffffff;
 }
 .pendentesfiltradas {
-  border: 1px solid #ffffff;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+.statusbtns {
 }
 
-.solicitacoesemandamento {
+.btn_aceitar,
+.btn_recusar,
+.btn_concluir {
+  margin: 10px;
+  text-align: center;
+  border-radius: 5px;
+  width: 150px;
+  padding: 5px;
+  cursor: pointer;
 }
 
-.concluir {
+.btn_aceitar {
+  background-color: #225fc4;
+  color: #e8f0ff;
+  border: 1px solid #1a4fa8;
 }
 
-.historico {
+.btn_recusar {
+  background-color: #e4172f;
+  color: #e8f0ff;
+  border: 1px solid #e05a6a;
 }
 
+.btn_aceitar:hover {
+  background-color: #1a4fa8;
+}
+.btn_recusar:hover {
+  background-color: #9f0315;
+}
+
+.btn_concluir {
+  background-color: #1a4fa8;
+  color: #e8f0ff;
+  border: 1px solid #225fc4;
+}
+.btn_concluir:hover {
+  background-color: #225fc4;
+}
 .deslogar {
   display: flex;
   flex-direction: row;
