@@ -47,7 +47,7 @@
 }
 @media (max-width: 612px) {
   .containerRange {
-    width: 67%;
+    width: 90%;
     text-align: center;
   }
   .prestadoresproximos {
@@ -59,7 +59,7 @@
     justify-content: space-around;
   }
   .containerResultados {
-    width: 70%;
+    width: 100%;
   }
 }
 
