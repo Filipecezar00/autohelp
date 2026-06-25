@@ -84,12 +84,13 @@ const ICONES = {
 function CardListaPrestador({ prestador }) {
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
   const Icone = config.icone;
+  const cor = config.cor;
 
   return (
     <div className={styles.containerpai}>
       <div className={styles.container}>
         <h3 className={styles.prestadornome}>{prestador.nome}</h3>
-        <span className={styles.prestadorbadge}>{config.label}</span>
+        <span style={{ color: cor }}>{config.label}</span>
       </div>
       <p className={styles.prestadortelefone}>
         {prestador.telefone || "Sem telefone cadastrado"}
@@ -98,7 +99,7 @@ function CardListaPrestador({ prestador }) {
         <span
           className={`flex items-center gap-1 text-xs font-semibold ${config.textClass}`}
         >
-          <Icone size={12} className={styles.icone} />
+          <Icone size={12} style={{ color: cor }} />
           <p className={styles.vernomapa}>Ver no Mapa</p>
         </span>
         <span className={styles.km}>
