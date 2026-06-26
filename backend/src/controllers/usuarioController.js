@@ -41,7 +41,7 @@ const cadastrarUsuario = async (req, res) => {
 
     if (tipo === "prestador") {
       await pool.query(
-        "INSERT INTO prestadores (usuario_id,ativo) VALUES (?,1)",
+        "INSERT INTO prestadores (usuario_id,ativo,tipo_servico) VALUES (?,1,NULL)",
         [novoUsuarioId],
       );
     }
@@ -56,7 +56,7 @@ const cadastrarUsuario = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, senha } = req.body;
-
+    [];
     if (!email || !senha) {
       return res
         .status(400)

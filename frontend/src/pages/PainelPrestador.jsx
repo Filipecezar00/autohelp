@@ -5,6 +5,7 @@ import styles from "../../src/PainelPrestador.module.css";
 import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 import { TbDoorExit } from "react-icons/tb";
+import TelaCarregando from "../components/TelaCarregando";
 
 const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
@@ -13,7 +14,7 @@ export function PainelPrestador() {
   const { usuario, setUsuario, logout } = useContext(AuthContext);
 
   const [solicitacoes, setSolicitacoes] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+  const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
   const [atualizando, setAtualizando] = useState(null);
   const [precisaOnboarding, setPrecisaOnboarding] = useState(false);
@@ -70,6 +71,8 @@ export function PainelPrestador() {
       return;
     }
 
+    setCarregando(true);
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
@@ -88,16 +91,17 @@ export function PainelPrestador() {
           setUsuario(usuarioAtualizado);
 
           localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
-
-          setPrecisaOnboarding(false);
         } catch {
           alert("Erro ao salvar o perfil. Tente Novamente.");
+        } finally {
+          setPrecisaOnboarding(false);
+          setCarregando(false);
         }
       },
-      () =>
-        alert(
-          "Não foi possível obter sua localização. Verifiquem as permissões.",
-        ),
+      (error) => setCarregando(false),
+      alert(
+        "Não foi possível obter sua localização. Verifiquem as permissões.",
+      ),
     );
   }
 
@@ -125,11 +129,7 @@ export function PainelPrestador() {
   }
 
   if (carregando) {
-    return (
-      <div className={styles.containerCarregando}>
-        <p>Carregando Dados...</p>
-      </div>
-    );
+    return <TelaCarregando mensagem={"Carregando..."} />;
   }
 
   if (erro) {
