@@ -73,36 +73,30 @@ export function PainelPrestador() {
 
     setCarregando(true);
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          await api.put("/prestadores/localizacao", {
-            latitude,
-            longitude,
-            tipo_servico: servicoSelecionado,
-          });
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      try {
+        const { latitude, longitude } = position.coords;
+        await api.put("/prestadores/localizacao", {
+          latitude,
+          longitude,
+          tipo_servico: servicoSelecionado,
+        });
 
-          const usuarioAtualizado = {
-            ...usuario,
-            tipo_servico: servicoSelecionado,
-          };
+        const usuarioAtualizado = {
+          ...usuario,
+          tipo_servico: servicoSelecionado,
+        };
 
-          setUsuario(usuarioAtualizado);
+        setUsuario(usuarioAtualizado);
 
-          localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
-        } catch {
-          alert("Erro ao salvar o perfil. Tente Novamente.");
-        } finally {
-          setPrecisaOnboarding(false);
-          setCarregando(false);
-        }
-      },
-      (error) => setCarregando(false),
-      alert(
-        "Não foi possível obter sua localização. Verifiquem as permissões.",
-      ),
-    );
+        localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
+      } catch {
+        alert("Erro ao salvar o perfil. Tente Novamente.");
+      } finally {
+        setPrecisaOnboarding(false);
+        setCarregando(false);
+      }
+    });
   }
 
   async function atualizarStatus(id, novoStatus) {
