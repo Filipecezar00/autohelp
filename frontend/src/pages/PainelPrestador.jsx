@@ -192,7 +192,7 @@ export function PainelPrestador() {
               <div className={styles.statusbtns} key={solicitacao.id}>
                 <CardSolicitacao
                   solicitacao={solicitacao}
-                  nomeExibido={solicitacao.cliente_nome}
+                  nomeExibido={solicitacao.nome_cliente}
                 />
                 <button
                   className={styles.btn_aceitar}
@@ -219,7 +219,10 @@ export function PainelPrestador() {
           {aceitasFiltradas.map((solicitacao) => {
             return (
               <div className={styles.concluir} key={solicitacao.id}>
-                <CardSolicitacao solicitacao={solicitacao} />
+                <CardSolicitacao
+                  solicitacao={solicitacao}
+                  nomeExibido={solicitacao.nome_cliente}
+                />
                 <button
                   className={styles.btn_concluir}
                   disabled={atualizando === solicitacao.id}
@@ -239,7 +242,11 @@ export function PainelPrestador() {
         <div className={styles.historico}>
           {concluidasFiltradas.map((solicitacao) => {
             return (
-              <CardSolicitacao solicitacao={solicitacao} key={solicitacao.id} />
+              <CardSolicitacao
+                solicitacao={solicitacao}
+                key={solicitacao.id}
+                nomeExibido={solicitacao.nome_cliente}
+              />
             );
           })}
         </div>

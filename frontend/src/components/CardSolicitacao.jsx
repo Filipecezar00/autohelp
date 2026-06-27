@@ -60,7 +60,7 @@ export default function CardSolicitacao({
             <FiUser size={14} />
           </span>
           <div>
-            <strong className={styles.nomePrestador}>{nomePrestador}</strong>
+            <strong className={styles.nomePrestador}>{nomeExibido}</strong>
             <span className={styles.badgeTipo}>
               <FiTool size={10} />
               {labelTipo}
