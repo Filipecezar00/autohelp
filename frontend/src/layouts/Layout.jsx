@@ -3,6 +3,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { Outlet } from "react-router-dom";
 import styles from "../../src/Layout.module.css";
+import { Sidebar } from "../components/Sidebar";
 
 export function Layout() {
   const [sidebarAberta, setsidebarAberta] = useState(false);
