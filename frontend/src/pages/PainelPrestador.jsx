@@ -111,8 +111,13 @@ export function PainelPrestador() {
       setSolicitacoes((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: novoStatus } : s)),
       );
-    } catch {
-      alert("Erro ao Atualizar status");
+    } catch (error) {
+      if (error.response && error.response.status === 422) {
+        alert("Ops! O cliente cancelou esta solicitação antes de você aceitar");
+        buscarSolicitacao();
+      } else {
+        alert("ocorreu um erro inesperado");
+      }
     } finally {
       setAtualizando(null);
     }

@@ -162,6 +162,13 @@ async function atualizarStatus(req, res) {
       return res.status(422).json({ message: "Transição de status inválida" });
     }
 
+    if (solicitacao.status === "cancelada") {
+      return res.status(422).json({
+        message:
+          "Ops! O cliente cancelou esta solicitação antes de você aceitar",
+      });
+    }
+
     await pool.query(
       `UPDATE solicitacoes 
        SET status = ?
