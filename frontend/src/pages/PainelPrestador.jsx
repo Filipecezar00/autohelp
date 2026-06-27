@@ -187,7 +187,10 @@ export function PainelPrestador() {
           {pendentesFiltradas.map((solicitacao) => {
             return (
               <div className={styles.statusbtns} key={solicitacao.id}>
-                <CardSolicitacao solicitacao={solicitacao} />
+                <CardSolicitacao
+                  solicitacao={solicitacao}
+                  nomeExibido={solicitacao.cliente_nome}
+                />
                 <button
                   className={styles.btn_aceitar}
                   disabled={atualizando === solicitacao.id}

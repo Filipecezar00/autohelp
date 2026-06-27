@@ -35,6 +35,7 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
+  nomeExibido,
 }) {
   const {
     status,
@@ -42,6 +43,7 @@ export default function CardSolicitacao({
     criado_em,
     tipo_servico,
     nome_prestador,
+    cliente_nome,
     prestador_id,
   } = solicitacao;
 

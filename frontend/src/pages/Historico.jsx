@@ -96,6 +96,7 @@ export default function Historico() {
               <CardSolicitacao
                 key={solicitacao.id}
                 solicitacao={solicitacao}
+                nomeExibido={solicitacao.prestador_nome}
                 cancelando={cancelando === solicitacao.id}
                 onCancelar={() => cancelarSolicitacao(solicitacao.id)}
               />
