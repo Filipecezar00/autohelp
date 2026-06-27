@@ -217,6 +217,12 @@ async function cancelarSolicitacao(req, res) {
         .json({ message: "Está solicitação não pode ser cancelada" });
     }
 
+    if (solicitacao.status == "cancelada") {
+      return res
+        .status(422)
+        .json({ message: "Essa solitação já foi cancelada, pelo prestador." });
+    }
+
     await pool.query(
       "UPDATE solicitacoes SET status = 'cancelada', atualizado_em = NOW() WHERE id = ? ",
       [solicitacaoId],

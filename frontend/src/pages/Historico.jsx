@@ -52,8 +52,12 @@ export default function Historico() {
       setSolicitacoes((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: "cancelada" } : s)),
       );
-    } catch {
-      alert("Não foi possivel cancelar a solicitação. Tente novamente");
+    } catch (error) {
+      if (error.response && error.response.status === 422) {
+        alert("Essa solitação já foi cancelada, pelo prestador");
+      } else {
+        alert("Não foi possivel cancelar a solicitação. Tente novamente");
+      }
     } finally {
       setCancelando(null);
     }
