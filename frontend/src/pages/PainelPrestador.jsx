@@ -101,6 +101,9 @@ export function PainelPrestador() {
 
   async function atualizarStatus(id, novoStatus) {
     try {
+      if (novoStatus == "recusada") {
+        alert("Tem certeza que deseja recusar ?");
+      }
       setAtualizando(id);
       await api.patch("/solicitacoes/" + id + "/status", {
         status: novoStatus,
