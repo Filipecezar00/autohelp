@@ -1,30 +1,74 @@
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
+.sidebarBase {
+  display: flex;
+  flex-direction: column;
   width: 260px;
-  transform: translateX(-100%);
-  transition: transform 0.25s ease;
-  z-index: 50;
+  height: 100%;
+  background-color: #1a1a2e;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  transition: transform 0.3s ease-in-out;
 }
 .headerSidebar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-bottom: 1px solid #2d2d44;
 }
 .avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background-color: #3b7de8;
+  border-radius: 50%;
+  font-weight: bold;
 }
 .info {
+  display: flex;
+  flex-direction: column;
 }
 .listaMenu {
+  list-style: none;
+  padding: 20px 0;
+  margin: 0;
+  flex: 1;
 }
 .btn_logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  background: none;
+  border: none;
+  color: #3b7de8;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-top: 1px solid #2d2d44;
+}
+
+.btn_logout:hover {
+  background-color: #011d4c;
 }
 
 .sidebaraberta {
+  composes: sidebarBase;
   transform: translateX(0);
 }
 .sidebarfechada {
+  composes: sidebarBase;
+  transform: translateX(-100%);
 }
 .nomeUsuario {
+  font-size: 1rem;
 }
 .tipoUsuario {
+  font-size: 0.8rem;
+  color: #a0a0b8;
+  text-transform: capitalize;
 }
