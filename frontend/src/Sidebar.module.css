@@ -116,3 +116,10 @@
   background-color: #e94560;
   border-radius: 0 4px 4px 0;
 }
+@media (min-width: 769px) {
+  .sidebaraberta,
+  .sidebarfechada {
+    position: relative;
+    transform: translateX(0);
+  }
+}

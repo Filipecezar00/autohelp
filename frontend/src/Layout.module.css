@@ -46,3 +46,9 @@
 .menuButton:hover {
   background-color: #1a1d24;
 }
+
+@media (min-width: 769px) {
+  .topbar {
+    display: none;
+  }
+}
