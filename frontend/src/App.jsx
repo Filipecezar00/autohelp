@@ -8,7 +8,7 @@ import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
-import Layout from "../src/layouts/Layout";
+import { Layout } from "../src/layouts/Layout";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -24,9 +24,10 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/" element={<Navigate to="login" replace />} />
 
             <Route element={<PrivateRoute />}>
-              <Layout path="/" element={<Layout />}>
+              <Route element={<Layout />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/mapa" element={<Mapa />} />
                 <Route
@@ -35,9 +36,8 @@ function App() {
                 />
                 <Route path="/historico" element={<Historico />} />
                 <Route path="/painelPrestador" element={<PainelPrestador />} />
-              </Layout>
+              </Route>
             </Route>
-            <Route path="/" element={<Navigate to="/login" replace />}></Route>
             <Route
               path="*"
               element={<h2>Erro 404: Página não encontrada</h2>}
