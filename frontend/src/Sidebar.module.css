@@ -72,3 +72,47 @@
   color: #a0a0b8;
   text-transform: capitalize;
 }
+
+.item {
+  position: relative;
+  margin: 4px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+.botaoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 15px;
+  background: none;
+  border: none;
+  color: #3b7de8;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.icone {
+  display: flex;
+  align-items: center;
+}
+
+.item:hover,
+.itemAtivo {
+  background-color: #252542;
+}
+.itemAtivo,
+.botaoItem {
+  font-weight: 500;
+}
+
+.indicadorAtivo {
+  position: absolute;
+  left: 0;
+  top: 15%;
+  width: 4px;
+  height: 70%;
+  background-color: #e94560;
+  border-radius: 0 4px 4px 0;
+}

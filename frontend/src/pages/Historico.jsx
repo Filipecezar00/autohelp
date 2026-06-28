@@ -107,22 +107,6 @@ export default function Historico() {
             ))}
           </div>
         )}
-        <div className={styles.rodape}>
-          <button
-            className={`${styles.btn} ${styles["btn-secundario"]}`}
-            onClick={() => navigate("/mapa")}
-          >
-            <FiMap size={15} />
-            Retornar para Mapa
-          </button>
-          <button
-            className={`${styles.btn} ${styles["btn-primario"]}`}
-            onClick={() => navigate("/")}
-          >
-            <FiClock size={15} />
-            Retornar para o Inicio
-          </button>
-        </div>
       </div>
     </div>
   );

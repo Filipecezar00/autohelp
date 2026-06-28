@@ -3,7 +3,6 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  border: 1px solid #ffffff;
 }
 
 .overlay {
@@ -20,15 +19,12 @@
   flex-direction: column;
   flex: 1;
   height: 100%;
-  background-color: #f8f9fa;
 }
 .topbar {
   display: flex;
   align-items: center;
   height: 60px;
   padding: 0 20px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
 }
 .conteudo {
   flex: 1;
@@ -44,8 +40,9 @@
   justify-content: center;
   padding: 8px;
   border-radius: 4px;
+  color: #0766ff;
 }
 
 .menuButton:hover {
-  background-color: #f0f0f0;
+  background-color: #1a1d24;
 }

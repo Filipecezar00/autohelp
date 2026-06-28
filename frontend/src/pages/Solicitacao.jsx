@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  FiAlertCircle,
-  FiMapPin,
-  FiPhone,
-  FiTool,
-  FiSend,
-} from "react-icons/fi";
+import { FiAlertCircle, FiMapPin, FiPhone, FiTool } from "react-icons/fi";
 import TelaCarregando from "../components/TelaCarregando";
 import TelaErro from "../components/TelaErro";
 import { useNavigate } from "react-router-dom";
@@ -228,16 +222,9 @@ export default function Solicitacao() {
                 </>
               ) : (
                 <>
-                  <FiSend size={16} />
                   {podeEnviar ? "Enviar Solicitação" : "Preencha o campo acima"}
                 </>
               )}
-            </button>
-            <button className={styles.btnHistorico} onClick={IrParaHistorico}>
-              Historico de solicitações
-            </button>
-            <button className={styles.btnVoltar} onClick={voltarParaMapa}>
-              Voltar para o mapa
             </button>
             {descricao.trim().length < 10 && descricao.length > 0 && (
               <p className={styles.dica}>

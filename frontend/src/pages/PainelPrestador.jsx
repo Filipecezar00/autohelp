@@ -182,9 +182,6 @@ export function PainelPrestador() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.deslogar}>
-        <TbDoorExit onClick={deslogar} />
-      </div>
       <div className={styles.cabecalho}>
         <h1 className={styles.titulo}>Painel do Prestador</h1>
         <p className={styles.badge}>{pendentesFiltradas.length} pendentes</p>
