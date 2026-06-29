@@ -1,6 +1,8 @@
+import { memo } from "react";
 import pool from "../config/database";
+import bcrypt from "bcrypt";
 
-async function buscarPerfil(req, res) {
+export async function buscarPerfil(req, res) {
   try {
     const usuarioId = req.user.id;
 
@@ -25,7 +27,7 @@ async function buscarPerfil(req, res) {
   }
 }
 
-async function atualizarDados(req, res) {
+export async function atualizarDados(req, res) {
   try {
     const usuarioId = req.user.id;
     const { nome, telefone, descricao } = req.body;
@@ -62,5 +64,55 @@ async function atualizarDados(req, res) {
   } catch (error) {
     res.status(500).json({ message: "Erro ao realizar atualização dos dados" });
     console.error("ERRO AO REALIZAR ATUALIZAÇÃO DOS DADOS:", error);
+  }
+}
+
+export async function trocarSenha(req, res) {
+  try {
+    const usuarioId = req.user.id;
+    const { senhaAtual, novaSenha } = req.body;
+
+    if (!senhaAtual || !novaSenha) {
+      return res.status(400).json({ message: "Preencha todos os campos" });
+    }
+    if (novaSenha.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "A nova senha deve conter pelo menos 6 caracteres" });
+    }
+    if (senhaAtual === novaSenha) {
+      return res
+        .status(400)
+        .json({ message: "A nova senha deve ser diferente da atual" });
+    }
+    const [usuarios] = await pool.query(
+      `SELECT senha FROM usuarios WHERE id = ?`,
+      [usuarioId],
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ message: "Usuario não encontrado." });
+    }
+    const usuario = usuarios[0];
+
+    const senhaCorreta = await bcrypt.compare(senhaAtual, usuario.senha);
+
+    if (!senhaCorreta) {
+      return res.status(401).json({ message: "Senha atual Incorreta" });
+    }
+
+    const novoHash = await bcrypt.hash(novaSenha, 10);
+
+    await pool.query(
+      `
+    UPDATE usuarios SET senha = ? WHERE ID = ?
+    `,
+      [novoHash, usuarioId],
+    );
+
+    return res.status(200).json({ message: "Senha alterada com sucesso" });
+  } catch (error) {
+    console.error("ERRO AO REALIZAR TROCA DE SENHA: ", error);
+    res.status(500).json({ message: "Erro ao realizar mudança de senha" });
   }
 }
