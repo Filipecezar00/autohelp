@@ -1,7 +1,6 @@
 import { FaUser } from "react-icons/fa";
 
 export function PerfilHeader({ perfil }) {
-  const inicialNome = perfil?.nome ? perfil.nome.charAt(0).toUpperCase() : "?";
   return (
     <div>
       <div>

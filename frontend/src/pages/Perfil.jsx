@@ -5,6 +5,9 @@ import TelaCarregando from "../components/TelaCarregando";
 import TelaErro from "../components/TelaErro";
 import styles from "../Perfil.module.css";
 import { PerfilHeader } from "../components/perfil/PerfilHeader";
+import { PerfilDados } from "../components/perfil/PerfilDados";
+import { PerfilSenha } from "../components/perfil/PerfilSenha";
+import { ZonaPerigo } from "../components/ZonaPerigo";
 
 export function Perfil() {
   const { usuario, setUsuario, logout } = useContext(AuthContext);
