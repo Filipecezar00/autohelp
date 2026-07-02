@@ -1,5 +1,4 @@
-import { memo } from "react";
-import pool from "../config/database";
+import pool from "../config/database.js";
 import bcrypt from "bcrypt";
 
 export async function buscarPerfil(req, res) {
@@ -7,7 +6,7 @@ export async function buscarPerfil(req, res) {
     const usuarioId = req.user.id;
 
     const [usuarios] = await pool.query(
-      `SELECT usuarios.id, usuarios.nome, usuarios.email, usuarios.telefone,
+      `SELECT usuarios.id, usuarios.nome, usuarios.email,
      usuarios.tipo,prestadores.tipo_servico,prestadores.descricao,prestadores.latitude,
      prestadores.longitude,prestadores.ativo FROM usuarios LEFT JOIN prestadores ON prestadores.usuario_id=
      usuarios.id WHERE usuarios.id = ? 

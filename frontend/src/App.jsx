@@ -9,6 +9,7 @@ import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
 import { Layout } from "../src/layouts/Layout";
+import { Perfil } from "../src/pages/Perfil";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -34,6 +35,7 @@ function App() {
                   path="/solicitar/:prestadorId"
                   element={<Solicitacao />}
                 />
+                <Route path="/perfil" element={<Perfil />} />
                 <Route path="/historico" element={<Historico />} />
                 <Route path="/painelPrestador" element={<PainelPrestador />} />
               </Route>

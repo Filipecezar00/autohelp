@@ -4,6 +4,7 @@ import api from "../services/api";
 import TelaCarregando from "../components/TelaCarregando";
 import TelaErro from "../components/TelaErro";
 import styles from "../Perfil.module.css";
+import { PerfilHeader } from "../components/perfil/PerfilHeader";
 
 export function Perfil() {
   const { usuario, setUsuario, logout } = useContext(AuthContext);
@@ -34,7 +35,7 @@ export function Perfil() {
           telefone: resposta.data.telefone ?? "",
           descricao: resposta.data.descricao ?? "",
         });
-      } catch {
+      } catch (error) {
         setErro("ERRO AO CARREGAR PERFIL");
         console.error("Erro ao buscar dados do perfil", error);
       } finally {
