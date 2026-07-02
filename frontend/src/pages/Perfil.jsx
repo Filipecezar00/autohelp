@@ -9,7 +9,7 @@ import { PerfilDados } from "../components/perfil/PerfilDados";
 import { PerfilSenha } from "../components/perfil/PerfilSenha";
 import { ZonaPerigo } from "../components/ZonaPerigo";
 
-export function Perfil() {
+export function Perfil({ handleDeletar }) {
   const { usuario, setUsuario, logout } = useContext(AuthContext);
 
   const [perfil, setPerfil] = useState(null);
@@ -133,7 +133,7 @@ export function Perfil() {
       <ZonaPerigo
         aberta={mostrarDelecao}
         onToggle={() => setmostrarDelecao(!mostrarDelecao)}
-        onConfirmar={handleDeletarConta}
+        onConfirmar={handleDeletar}
       />
     </div>
   );
