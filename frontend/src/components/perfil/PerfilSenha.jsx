@@ -1,0 +1,136 @@
+import { useState } from "react";
+import api from "../../services/api.js";
+import { FaArrowRight } from "react-icons/fa";
+import style from "../../../src/Perfil.module.css";
+
+export function PerfilSenha({ aberta, onToggle }) {
+  const [form, setForm] = useState({
+    senhaAtual: "",
+    novaSenha: "",
+    confirmarSenha: "",
+  });
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState(null);
+  const [sucesso, setSucesso] = useState(false);
+
+  function calcularForcaSenha(senha) {
+    let pontos = 0;
+    if (form.senha >= 6) pontos++;
+    if (form.senha >= 10) pontos++;
+    if (/[A-Z]/.test(senha)) pontos++;
+    if (/[0-9!@#$%]/.test(senha)) pontos++;
+    return pontos;
+  }
+
+  const forca = calcularForcaSenha(form.novaSenha);
+  const forcaLabel = ["", "Fraca", "Regular", "Boa", "Forte"][forca];
+  const cor = ["", "#993c1d", "#854f0b", "#185fa5", "#0f6e56"][forca];
+
+  const handleChange = (campo) => (e) => {
+    setForm((prev) => ({ ...prev, [campo]: e.target.value }));
+    setErro(null);
+  };
+
+  async function handleSubmit() {
+    if (form.novaSenha !== form.confirmarSenha) {
+      setErro("As senhas não coincidem");
+      return;
+    }
+    if (form.novaSenha.length < 6) {
+      setErro("Nova senha deve conter pelo menos 6 caracteres");
+      return;
+    }
+    if (form.senhaAtual === form.novaSenha) {
+      setErro("A nova senha deve ser diferente da atual");
+      return;
+    }
+
+    try {
+      setSalvando(true);
+      setErro(null);
+
+      await api.patch("/perfil/senha", {
+        senhaAtual: form.senhaAtual,
+        novaSenha: form.novaSenha,
+      });
+
+      setSucesso(true);
+      setForm({ senhaAtual: "", novaSenha: "", confirmarSenha: "" });
+    } catch (error) {
+      const mensagemErro =
+        error.response?.data?.message || "Erro ao trocar senha";
+      setErro(mensagemErro);
+      console.error("Erro ao redefinir senha:", error);
+    } finally {
+      setSalvando(false);
+    }
+  }
+  return (
+    <div>
+      <button onClick={onToggle}>
+        Trocar Senha <FaArrowRight />
+      </button>
+      {sucesso ? (
+        <div>
+          <p>Senha alterada com sucesso</p>
+          <button
+            onClick={() => {
+              setSucesso(false);
+              onToggle();
+            }}
+          >
+            Fechar
+          </button>
+        </div>
+      ) : (
+        <div>
+          <label>
+            Senha Atual:{" "}
+            <input
+              type="password"
+              placeholder="Senha Atual"
+              value={form.senhaAtual}
+              onChange={handleChange("senhaAtual")}
+            />
+          </label>
+          <label>
+            Nova Senha :{" "}
+            <input
+              type="password"
+              placeholder="Nova Senha"
+              value={form.novaSenha}
+              onChange={handleChange("novaSenha")}
+            />
+          </label>
+          {form.novaSenha.length > 0 && (
+            <div>
+              <div>
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    style={{ background: i <= forca ? cor : "#1a1d24" }}
+                  ></div>
+                ))}
+              </div>
+              <p style={{ color: cor }}>{forcaLabel}</p>
+            </div>
+          )}
+          <label>
+            Confirmar Nova Senha:{" "}
+            <input
+              type="password"
+              placeholder="Confirmar Senha"
+              value={form.confirmarSenha}
+              onChange={handleChange("confirmarSenha")}
+            />
+          </label>
+
+          {erro && <p>Erro: {erro}</p>}
+          <button disabled={salvando} onClick={handleSubmit}>
+            {salvando ? "Trocando..." : "Confirmar troca"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
