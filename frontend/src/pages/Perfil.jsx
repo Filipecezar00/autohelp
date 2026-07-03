@@ -31,6 +31,7 @@ export function Perfil({ handleDeletar }) {
     async function buscarDadosDoPerfil() {
       try {
         const resposta = await api.get("/perfil");
+        console.log("DADOS QUE CHEGARAM DA API:", resposta.data);
         setPerfil(resposta.data);
 
         setForm({

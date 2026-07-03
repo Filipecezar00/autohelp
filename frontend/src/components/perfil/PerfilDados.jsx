@@ -12,10 +12,12 @@ export function PerfilDados({
   if (!modoEdicao) {
     return (
       <div className={styles.informacoes}>
-        <p> Nome:{perfil.nome}</p>
-        <p> Email: {perfil.email}</p>
-        <p>Telefone: {perfil.telefone ?? "Não informado"}</p>
-        {perfil.tipo == "prestador" && <p>Descrição: {perfil.descricao}</p>}
+        <p> Nome:{perfil.usuario.nome}</p>
+        <p> Email: {perfil.usuario.email}</p>
+        <p>Telefone: {perfil.usuario.telefone ?? "Não informado"}</p>
+        {perfil.usuario.tipo == "prestador" && (
+          <p>Descrição: {perfil.usuario.descricao}</p>
+        )}
         <button onClick={onEditar} className={styles.btns_header}>
           Editar Perfil
         </button>
@@ -24,7 +26,7 @@ export function PerfilDados({
   }
   if (modoEdicao) {
     return (
-      <div className={style.containerBody}>
+      <div className={styles.containerBody}>
         <label className={styles.labels}>
           Nome:
           <input
@@ -38,7 +40,7 @@ export function PerfilDados({
           Email:{" "}
           <input
             type="email"
-            value={perfil.email}
+            value={form.email}
             placeholder="o email não pode ser alterado"
             className={styles.inputs}
             disabled
@@ -65,10 +67,18 @@ export function PerfilDados({
           </label>
         )}
         <div>
-          <button onClick={onCancelar} disabled={salvando}>
+          <button
+            onClick={onCancelar}
+            disabled={salvando}
+            className={styles.cancelar}
+          >
             Cancelar
           </button>
-          <button onClick={onSalvar} disabled={salvando}>
+          <button
+            onClick={onSalvar}
+            disabled={salvando}
+            className={styles.salvar}
+          >
             {salvando ? "Salvando..." : "Salvar Alterações"}
           </button>
         </div>
