@@ -2,10 +2,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
   color: #ffffff;
-  border-radius: 8px;
   font-family: sans-serif;
+  border-bottom: 1px solid #1e293b;
 }
 .containerUser {
   display: flex;
@@ -20,6 +21,15 @@
 .iconeUser {
 }
 .informacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.informacoes p {
+  margin: 0;
+  color: #f1f5f9;
+  font-size: 15px;
 }
 
 .btns_header {
@@ -44,12 +54,12 @@
 }
 
 .labels {
-  color: #e2e8f0;
+  color: #cbd5e1;
   font-size: 14px;
   font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 6px;
 }
 
 .inputs {
