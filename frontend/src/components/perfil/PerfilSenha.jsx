@@ -67,7 +67,7 @@ export function PerfilSenha({ aberta, onToggle }) {
   }
   return (
     <div>
-      <button onClick={onToggle}>
+      <button onClick={onToggle} className={style.btns_header}>
         Trocar Senha <FaArrowRight />
       </button>
       {sucesso ? (
@@ -84,22 +84,24 @@ export function PerfilSenha({ aberta, onToggle }) {
         </div>
       ) : (
         <div>
-          <label>
+          <label className={style.labels}>
             Senha Atual:{" "}
             <input
               type="password"
               placeholder="Senha Atual"
               value={form.senhaAtual}
               onChange={handleChange("senhaAtual")}
+              className={style.inputs}
             />
           </label>
-          <label>
+          <label className={style.labels}>
             Nova Senha :{" "}
             <input
               type="password"
               placeholder="Nova Senha"
               value={form.novaSenha}
               onChange={handleChange("novaSenha")}
+              className={style.inputs}
             />
           </label>
           {form.novaSenha.length > 0 && (
@@ -115,18 +117,23 @@ export function PerfilSenha({ aberta, onToggle }) {
               <p style={{ color: cor }}>{forcaLabel}</p>
             </div>
           )}
-          <label>
+          <label className={style.labels}>
             Confirmar Nova Senha:{" "}
             <input
               type="password"
               placeholder="Confirmar Senha"
               value={form.confirmarSenha}
               onChange={handleChange("confirmarSenha")}
+              className={style.inputs}
             />
           </label>
 
           {erro && <p>Erro: {erro}</p>}
-          <button disabled={salvando} onClick={handleSubmit}>
+          <button
+            disabled={salvando}
+            onClick={handleSubmit}
+            className={style.btns_header}
+          >
             {salvando ? "Trocando..." : "Confirmar troca"}
           </button>
         </div>
