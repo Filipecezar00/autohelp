@@ -76,9 +76,6 @@ export function PerfilSenha({ aberta, onToggle }) {
   }
   return (
     <div>
-      <button onClick={onToggle} className={style.btns_header}>
-        Trocar Senha <FaArrowRight />
-      </button>
       {sucesso ? (
         <div className={style.containerSuccess}>
           <p className={style.messageSuccess}>Senha alterada com sucesso</p>

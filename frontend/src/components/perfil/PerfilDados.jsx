@@ -16,7 +16,7 @@ export function PerfilDados({
         <p> Email: {perfil.usuario.email}</p>
         <p>Telefone: {perfil.usuario.telefone ?? "Não informado"}</p>
         {perfil.usuario.tipo == "prestador" && (
-          <p>Descrição: {perfil.usuario.descricao}</p>
+          <p>Descrição: {perfil.usuario.descricao ?? "Não informado"}</p>
         )}
         <button onClick={onEditar} className={styles.btns_header}>
           Editar Perfil
@@ -27,6 +27,9 @@ export function PerfilDados({
   if (modoEdicao) {
     return (
       <div className={styles.containerBody}>
+        <button onClick={onCancelar} className={styles.btns_header}>
+          Trocar Senha
+        </button>
         <label className={styles.labels}>
           Nome:
           <input
