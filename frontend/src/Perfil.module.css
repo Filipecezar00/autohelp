@@ -78,6 +78,10 @@
 }
 .headerPerfil {
 }
+.nome,
+.tipo {
+  text-align: center;
+}
 
 .containerPerfil {
   max-width: 600px;

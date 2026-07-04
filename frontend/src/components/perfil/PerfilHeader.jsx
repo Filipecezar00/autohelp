@@ -8,13 +8,13 @@ export function PerfilHeader({ perfil }) {
         <span className={styles.iconeUser}>
           <FaUser size={24} />
         </span>
-        <div className={styles.headerPerfil}>
-          <h2>{perfil.nome}</h2>
-          <p>{perfil.tipo}</p>
-        </div>
         {perfil.tipo === "prestador" && (
           <p>Especialidade: {perfil.tipo_servico}</p>
         )}
+      </div>
+      <div className={styles.headerPerfil}>
+        <h2 className={styles.nome}>{perfil.usuario.nome}</h2>
+        <p className={styles.tipo}>{perfil.usuario.tipo}</p>
       </div>
     </div>
   );
