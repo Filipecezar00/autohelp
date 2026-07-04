@@ -1,6 +1,9 @@
 import { useState } from "react";
 import api from "../../services/api.js";
 import { FaArrowRight } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { IoEyeSharp } from "react-icons/io5";
+
 import style from "../../../src/Perfil.module.css";
 
 export function PerfilSenha({ aberta, onToggle }) {
@@ -12,6 +15,7 @@ export function PerfilSenha({ aberta, onToggle }) {
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   function calcularForcaSenha(senha) {
     let pontos = 0;
@@ -29,6 +33,10 @@ export function PerfilSenha({ aberta, onToggle }) {
   const handleChange = (campo) => (e) => {
     setForm((prev) => ({ ...prev, [campo]: e.target.value }));
     setErro(null);
+  };
+
+  const handlePassword = () => {
+    setShowPassword(!showPassword);
   };
 
   async function handleSubmit() {
@@ -87,7 +95,7 @@ export function PerfilSenha({ aberta, onToggle }) {
           <label className={style.labels}>
             Senha Atual:{" "}
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Senha Atual"
               value={form.senhaAtual}
               onChange={handleChange("senhaAtual")}
@@ -97,7 +105,7 @@ export function PerfilSenha({ aberta, onToggle }) {
           <label className={style.labels}>
             Nova Senha :{" "}
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Nova Senha"
               value={form.novaSenha}
               onChange={handleChange("novaSenha")}
@@ -120,12 +128,19 @@ export function PerfilSenha({ aberta, onToggle }) {
           <label className={style.labels}>
             Confirmar Nova Senha:{" "}
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Confirmar Senha"
               value={form.confirmarSenha}
               onChange={handleChange("confirmarSenha")}
               className={style.inputs}
             />
+            <span className={style.containerPassword}>
+              {showPassword ? (
+                <IoEyeSharp onClick={handlePassword} size={18} />
+              ) : (
+                <FaEyeSlash onClick={handlePassword} size={18} />
+              )}
+            </span>
           </label>
 
           {erro && <p>Erro: {erro}</p>}

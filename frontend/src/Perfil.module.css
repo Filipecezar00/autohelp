@@ -83,6 +83,17 @@
   text-align: center;
 }
 
+.containerPassword {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: relative;
+  bottom: 35px;
+  right: 10px;
+  cursor: pointer;
+}
+
 .containerPerfil {
   max-width: 600px;
   margin: 40px auto;
