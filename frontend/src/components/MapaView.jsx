@@ -194,18 +194,6 @@ export default function MapaView({
   }, [raioAtual]);
   return (
     <div className={styles.containerglobal}>
-      <span
-        style={{
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          color: "#e8f0ff",
-        }}
-      >
-        <Btn_return />
-      </span>
       <header className={styles.header}>
         <div className="space-y-1">
           <h1 className={styles.prestadoresproximos}>
