@@ -126,16 +126,20 @@ export function Perfil({ handleDeletar }) {
       />
 
       {usuario.tipo === "prestador" && <PerfilPrestador perfil={perfil} />}
-      <PerfilSenha
-        aberta={mostrarSenha}
-        onToggle={() => setMostrarSenha(!mostrarSenha)}
-      />
+      {!modoEdicao && (
+        <PerfilSenha
+          aberta={mostrarSenha}
+          onToggle={() => setMostrarSenha(!mostrarSenha)}
+        />
+      )}
 
-      <ZonaPerigo
-        aberta={mostrarDelecao}
-        onToggle={() => setmostrarDelecao(!mostrarDelecao)}
-        onConfirmar={handleDeletar}
-      />
+      {!modoEdicao && (
+        <ZonaPerigo
+          aberta={mostrarDelecao}
+          onToggle={() => setmostrarDelecao(!mostrarDelecao)}
+          onConfirmar={handleDeletar}
+        />
+      )}
     </div>
   );
 }
