@@ -3,6 +3,7 @@ import api from "../../services/api.js";
 import { FaArrowRight } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
+import { ImCancelCircle } from "react-icons/im";
 
 import style from "../../../src/Perfil.module.css";
 
@@ -79,16 +80,16 @@ export function PerfilSenha({ aberta, onToggle }) {
         Trocar Senha <FaArrowRight />
       </button>
       {sucesso ? (
-        <div>
-          <p>Senha alterada com sucesso</p>
-          <button
-            onClick={() => {
-              setSucesso(false);
-              onToggle();
-            }}
-          >
-            Fechar
-          </button>
+        <div className={style.containerSuccess}>
+          <p className={style.messageSuccess}>Senha alterada com sucesso</p>
+          <span className={style.icone_fechar}>
+            <ImCancelCircle
+              onClick={() => {
+                setSucesso(false);
+                onToggle();
+              }}
+            />
+          </span>
         </div>
       ) : (
         <div>
