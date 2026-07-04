@@ -143,3 +143,26 @@
   transition: color 0.2s;
   text-align: center;
 }
+
+.forcaContainer {
+}
+
+.forcaBar {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  height: 6px;
+  margin-top: 8px;
+}
+
+.forcaSegmento {
+  flex: 1;
+  height: 100%;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.hint {
+  text-align: center;
+  color: #3a4050;
+}

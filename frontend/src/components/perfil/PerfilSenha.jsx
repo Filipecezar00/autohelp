@@ -20,8 +20,8 @@ export function PerfilSenha({ aberta, onToggle }) {
 
   function calcularForcaSenha(senha) {
     let pontos = 0;
-    if (form.senha >= 6) pontos++;
-    if (form.senha >= 10) pontos++;
+    if (form.novaSenha.length >= 6) pontos++;
+    if (form.novaSenha.length >= 10) pontos++;
     if (/[A-Z]/.test(senha)) pontos++;
     if (/[0-9!@#$%]/.test(senha)) pontos++;
     return pontos;
@@ -114,16 +114,19 @@ export function PerfilSenha({ aberta, onToggle }) {
             />
           </label>
           {form.novaSenha.length > 0 && (
-            <div>
-              <div>
+            <div className={style.forcaContainer}>
+              <div className={style.forcaBar}>
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
                     style={{ background: i <= forca ? cor : "#1a1d24" }}
+                    className={style.forcaSegmento}
                   ></div>
                 ))}
               </div>
-              <p style={{ color: cor }}>{forcaLabel}</p>
+              <p style={{ color: cor }} className={style.hint}>
+                {forcaLabel}
+              </p>
             </div>
           )}
           <label className={style.labels}>
