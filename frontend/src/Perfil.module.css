@@ -166,3 +166,14 @@
   text-align: center;
   color: #3a4050;
 }
+
+.badgePrestador {
+  display: flex;
+  flex-direction: row;
+  background-color: #059669;
+  border-radius: 15px;
+  padding: 5px;
+}
+.tipoPrestador {
+  font-family: sans-serif;
+}

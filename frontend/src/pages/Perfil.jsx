@@ -7,6 +7,7 @@ import styles from "../Perfil.module.css";
 import { PerfilHeader } from "../components/perfil/PerfilHeader";
 import { PerfilDados } from "../components/perfil/PerfilDados";
 import { PerfilSenha } from "../components/perfil/PerfilSenha";
+// import { PerfilPrestador } from "../components/perfil/PerfilPrestador";
 import { ZonaPerigo } from "../components/ZonaPerigo";
 
 export function Perfil({ handleDeletar }) {
@@ -125,7 +126,7 @@ export function Perfil({ handleDeletar }) {
         onChange={(campo, valor) => setForm({ ...form, [campo]: valor })}
       />
 
-      {usuario.tipo === "prestador" && <PerfilPrestador perfil={perfil} />}
+      {/* {usuario.tipo === "prestador" && <PerfilPrestador perfil={perfil} />} */}
       {!modoEdicao && (
         <PerfilSenha
           aberta={mostrarSenha}

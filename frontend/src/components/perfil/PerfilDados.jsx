@@ -55,8 +55,9 @@ export function PerfilDados({
             className={styles.inputs}
           />
         </label>
-        {perfil.tipo === "prestador" && (
+        {perfil.usuario.tipo === "prestador" && (
           <label className={styles.labels}>
+            Descrição:
             <textarea
               name="descricao"
               value={form.descricao}

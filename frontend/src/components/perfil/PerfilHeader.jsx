@@ -8,14 +8,16 @@ export function PerfilHeader({ perfil }) {
         <span className={styles.iconeUser}>
           <FaUser size={24} />
         </span>
-        {perfil.tipo === "prestador" && (
-          <p>Especialidade: {perfil.tipo_servico}</p>
-        )}
       </div>
       <div className={styles.headerPerfil}>
         <h2 className={styles.nome}>{perfil.usuario.nome}</h2>
         <p className={styles.tipo}>{perfil.usuario.tipo}</p>
       </div>
+      {perfil.usuario.tipo === "prestador" && (
+        <span className={styles.badgePrestador}>
+          <p className={styles.tipoPrestador}>{perfil.usuario.tipo_servico}</p>
+        </span>
+      )}
     </div>
   );
 }
