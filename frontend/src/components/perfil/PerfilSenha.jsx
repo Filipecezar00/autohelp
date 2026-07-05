@@ -14,7 +14,7 @@ export function PerfilSenha({ aberta }) {
     confirmarSenha: "",
   });
   const [salvando, setSalvando] = useState(false);
-  const [erro, setErro] = useState(true);
+  const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
