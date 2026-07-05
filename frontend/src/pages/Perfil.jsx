@@ -7,7 +7,6 @@ import styles from "../Perfil.module.css";
 import { PerfilHeader } from "../components/perfil/PerfilHeader";
 import { PerfilDados } from "../components/perfil/PerfilDados";
 import { PerfilSenha } from "../components/perfil/PerfilSenha";
-// import { PerfilPrestador } from "../components/perfil/PerfilPrestador";
 import { ZonaPerigo } from "../components/ZonaPerigo";
 
 export function Perfil({ handleDeletar }) {
@@ -36,9 +35,9 @@ export function Perfil({ handleDeletar }) {
         setPerfil(resposta.data);
 
         setForm({
-          nome: resposta.data.nome,
-          telefone: resposta.data.telefone ?? "",
-          descricao: resposta.data.descricao ?? "",
+          nome: resposta.data.usuario?.nome ?? "",
+          telefone: resposta.data.usuario?.telefone ?? "",
+          descricao: resposta.data.usuario?.descricao ?? "",
         });
       } catch (error) {
         setErro("ERRO AO CARREGAR PERFIL");
@@ -51,10 +50,6 @@ export function Perfil({ handleDeletar }) {
   }, []);
 
   async function handleSalvar() {
-    if (form.nome.trim().length < 2) {
-      setErro("Nome muito curto");
-      return;
-    }
     try {
       setSalvando(true);
       setErro(null);
@@ -87,9 +82,9 @@ export function Perfil({ handleDeletar }) {
 
   async function handleCancelar() {
     setForm({
-      nome: perfil.nome,
-      telefone: perfil.telefone ?? "",
-      descricao: perfil.descricao ?? "",
+      nome: perfil.usuario.nome,
+      telefone: perfil.usuario.telefone ?? "",
+      descricao: perfil.usuario.descricao ?? "",
     });
     setmodoEdicao(false);
     setErro(null);
@@ -126,7 +121,6 @@ export function Perfil({ handleDeletar }) {
         onChange={(campo, valor) => setForm({ ...form, [campo]: valor })}
       />
 
-      {/* {usuario.tipo === "prestador" && <PerfilPrestador perfil={perfil} />} */}
       {!modoEdicao && (
         <PerfilSenha
           aberta={mostrarSenha}

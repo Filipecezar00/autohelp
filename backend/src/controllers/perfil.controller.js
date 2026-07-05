@@ -31,18 +31,26 @@ export async function atualizarDados(req, res) {
     const usuarioId = req.user.id;
     const { nome, telefone, descricao } = req.body;
 
+    const [usuarios] = await pool.query(
+      "SELECT nome FROM usuarios WHERE id = ?",
+      [usuarioId],
+    );
+    const usuarioAtual = usuarios[0];
+
+    const nomeFinal = nome && nome.trim() !== "" ? nome : usuarioAtual.nome;
     if (!nome || nome.trim().length < 2) {
       return res.status(400).json({ message: "Nome Inválido" });
     }
 
     await pool.query(`UPDATE usuarios SET nome = ?,telefone=? WHERE id = ?`, [
-      nome,
+      nomeFinal,
       telefone,
       usuarioId,
     ]);
+
     if (req.user.tipo === "prestador") {
       await pool.query(
-        `UPDATE prestadores SET descricao = ?, WHERE usuario_id = ?`,
+        `UPDATE prestadores SET descricao = ? WHERE usuario_id = ?`,
         [descricao, usuarioId],
       );
     }
