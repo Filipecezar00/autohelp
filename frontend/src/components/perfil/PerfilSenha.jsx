@@ -7,14 +7,14 @@ import { ImCancelCircle } from "react-icons/im";
 
 import style from "../../../src/Perfil.module.css";
 
-export function PerfilSenha({ aberta, onToggle }) {
+export function PerfilSenha({ aberta }) {
   const [form, setForm] = useState({
     senhaAtual: "",
     novaSenha: "",
     confirmarSenha: "",
   });
   const [salvando, setSalvando] = useState(false);
-  const [erro, setErro] = useState(null);
+  const [erro, setErro] = useState(true);
   const [sucesso, setSucesso] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
@@ -38,8 +38,12 @@ export function PerfilSenha({ aberta, onToggle }) {
 
   const handlePassword = () => {
     setShowPassword(!showPassword);
+    setSucesso(false);
   };
 
+  const handleToogle = () => {
+    setErro(false);
+  };
   async function handleSubmit() {
     if (form.novaSenha !== form.confirmarSenha) {
       setErro("As senhas não coincidem");
@@ -80,12 +84,7 @@ export function PerfilSenha({ aberta, onToggle }) {
         <div className={style.containerSuccess}>
           <p className={style.messageSuccess}>Senha alterada com sucesso</p>
           <span className={style.icone_fechar}>
-            <ImCancelCircle
-              onClick={() => {
-                setSucesso(false);
-                onToggle();
-              }}
-            />
+            <ImCancelCircle onClick={handleToogle} />
           </span>
         </div>
       ) : (
@@ -144,7 +143,14 @@ export function PerfilSenha({ aberta, onToggle }) {
             </span>
           </label>
 
-          {erro && <p>Erro: {erro}</p>}
+          {erro && (
+            <span className={style.containerErro}>
+              <p className={style.erro}>Erro: {erro}</p>
+              <span className={style.icone_fechar}>
+                <ImCancelCircle onClick={handleToogle} />
+              </span>
+            </span>
+          )}
           <button
             disabled={salvando}
             onClick={handleSubmit}
