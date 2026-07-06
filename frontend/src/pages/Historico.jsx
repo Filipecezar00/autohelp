@@ -71,7 +71,6 @@ export default function Historico() {
     return <TelaErro mensagem={erro} onTentar={buscarSolicitacoes} />;
   }
 
-  console.log("Valor da API: ", solicitacoes);
   return (
     <div className={styles.tela}>
       <div className={styles.card}>

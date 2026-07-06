@@ -55,8 +55,6 @@ export default function CardSolicitacao({
     solicitacao.nome_prestador ||
     "Usuário Desconhecido";
 
-  console.log("NOME QUE VAI PARA O CARD:", nomeExibido);
-
   return (
     <div className={styles.card}>
       <div className={styles.cabecalho}>
