@@ -35,7 +35,6 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
-  nomeExibido,
 }) {
   const {
     status,
@@ -51,6 +50,12 @@ export default function CardSolicitacao({
   const labelTipo = LABEL_TIPO[tipo_servico] ?? tipo_servico;
   const nomePrestador = nome_prestador ?? `Prestador ${prestador_id}`;
   const podeCancelar = status === "pendente" && !cancelando;
+  const nomeExibido =
+    solicitacao.nome_cliente ||
+    solicitacao.nome_prestador ||
+    "Usuário Desconhecido";
+
+  console.log("NOME QUE VAI PARA O CARD:", nomeExibido);
 
   return (
     <div className={styles.card}>

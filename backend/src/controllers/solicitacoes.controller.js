@@ -55,7 +55,7 @@ async function listarSolicitacoesDoCliente(req, res) {
       `SELECT solicitacoes.*,
         usuarios.nome AS nome_prestador,
         prestadores.tipo_servico,
-        prestadores.telefone FROM solicitacoes
+        usuarios.telefone FROM solicitacoes
         JOIN prestadores ON solicitacoes.prestador_id = prestadores.id
         JOIN usuarios ON prestadores.usuario_id = usuarios.id
         WHERE solicitacoes.cliente_id = ? ORDER BY solicitacoes.criado_em DESC`,
@@ -89,7 +89,8 @@ async function listarSolicitacoesDoPrestador(req, res) {
     const [solicitacoes] = await pool.query(
       `SELECT solicitacoes.*,
               usuarios.nome AS nome_cliente,
-              usuarios.email AS email_cliente
+              usuarios.email AS email_cliente,
+              usuarios.telefone AS cliente_telefone
               FROM solicitacoes JOIN usuarios ON 
               solicitacoes.cliente_id = usuarios.id WHERE
               solicitacoes.prestador_id = ?
@@ -98,6 +99,8 @@ async function listarSolicitacoesDoPrestador(req, res) {
               solicitacoes.criado_em DESC`,
       [prestador.id],
     );
+
+    console.log(solicitacoes);
 
     return res.status(200).json(solicitacoes);
   } catch (error) {

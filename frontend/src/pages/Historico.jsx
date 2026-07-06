@@ -27,6 +27,7 @@ export default function Historico() {
       setCarregando(true);
       setErro(null);
       const resposta = await api.get("/solicitacoes/minhas");
+
       setSolicitacoes(resposta.data);
     } catch {
       setErro("Erro ao carregar historico");
@@ -70,6 +71,7 @@ export default function Historico() {
     return <TelaErro mensagem={erro} onTentar={buscarSolicitacoes} />;
   }
 
+  console.log("Valor da API: ", solicitacoes);
   return (
     <div className={styles.tela}>
       <div className={styles.card}>
@@ -100,7 +102,6 @@ export default function Historico() {
               <CardSolicitacao
                 key={solicitacao.id}
                 solicitacao={solicitacao}
-                nomeExibido={solicitacao.prestador_nome}
                 cancelando={cancelando === solicitacao.id}
                 onCancelar={() => cancelarSolicitacao(solicitacao.id)}
               />
