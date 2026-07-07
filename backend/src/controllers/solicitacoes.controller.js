@@ -242,6 +242,22 @@ async function cancelarSolicitacao(req, res) {
   }
 }
 
+async function esconderSolicitacao(req, res) {
+  const solicitacaoId = req.params.id;
+  try {
+    const [resultado] = await pool.query(
+      "UPDATE solicitacoes SET visivel_prestador = false WHERE id = ?",
+      [solicitacaoId],
+    );
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ message: "Solicitação não encontrada" });
+    }
+    return res.status(200).json({ message: "Sucesso: Histórico atualizado" });
+  } catch (error) {
+    return res.status(500).json({ message: "Erro interno no servidor" });
+  }
+}
+
 module.exports = {
   criarSolicitacao,
   listarSolicitacoesDoCliente,

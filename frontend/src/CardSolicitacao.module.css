@@ -56,6 +56,13 @@
   margin: 10px;
 }
 
+.containerDelete {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #ffffff;
+}
+
 .btnCancelar {
   width: 28px;
   height: 28px;

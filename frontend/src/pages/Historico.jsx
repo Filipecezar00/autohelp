@@ -22,6 +22,16 @@ export default function Historico() {
     navigate("/mapa");
   }
 
+  async function deletarSolicitacoes(id) {
+    try {
+      await api.put("/solicitacoes/" + id + "/esconder");
+      const novas_solicitacoes = solicitacoes.filter((item) => item.id !== id);
+      setSolicitacoes(novas_solicitacoes);
+    } catch (error) {
+      setErro("Não foi possível remover esse item do histórico.");
+    }
+  }
+
   async function buscarSolicitacoes() {
     try {
       setCarregando(true);
@@ -103,6 +113,7 @@ export default function Historico() {
                 solicitacao={solicitacao}
                 cancelando={cancelando === solicitacao.id}
                 onCancelar={() => cancelarSolicitacao(solicitacao.id)}
+                deletarSolicitacoes={() => deletarSolicitacoes(solicitacao.id)}
               />
             ))}
           </div>

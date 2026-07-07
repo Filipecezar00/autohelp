@@ -1,5 +1,6 @@
 import styles from "../CardSolicitacao.module.css";
 import { FiX, FiClock, FiTool, FiUser } from "react-icons/fi";
+import { FaTrashAlt } from "react-icons/fa";
 
 const CONFIG_STATUS = {
   pendente: { label: "Aguardando", classe: "pendente" },
@@ -35,6 +36,7 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
+  deletarSolicitacoes,
 }) {
   const {
     status,
@@ -62,7 +64,7 @@ export default function CardSolicitacao({
           <span className={styles.avatarIcone}>
             <FiUser size={14} />
           </span>
-          <div>
+          <div className={styles.containerHeader}>
             <strong className={styles.nomePrestador}>{nomeExibido}</strong>
             <span className={styles.badgeTipo}>
               <FiTool size={10} />
@@ -70,7 +72,7 @@ export default function CardSolicitacao({
             </span>
           </div>
         </div>
-        {status === "pendente" && (
+        {status === "pendente" ? (
           <button
             className={`${styles.btnCancelar} ${!podeCancelar ? styles.btnCancelarDesabilitado : ""}`}
             onClick={onCancelar}
@@ -83,6 +85,13 @@ export default function CardSolicitacao({
             ) : (
               <FiX size={16} />
             )}
+          </button>
+        ) : (
+          <button
+            className={styles.containerDelete}
+            onClick={deletarSolicitacoes}
+          >
+            <FaTrashAlt className={styles.btn_excluir} size={16} />
           </button>
         )}
       </div>
