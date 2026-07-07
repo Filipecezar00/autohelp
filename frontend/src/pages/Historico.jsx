@@ -23,6 +23,7 @@ export default function Historico() {
   }
 
   async function deletarSolicitacoes(id) {
+    alert("O PAI RECEBEU O CLIQUE PARA O ID: " + id);
     try {
       await api.put("/solicitacoes/" + id + "/esconder");
       const novas_solicitacoes = solicitacoes.filter((item) => item.id !== id);
@@ -107,15 +108,23 @@ export default function Historico() {
           </div>
         ) : (
           <div className={styles.lista}>
-            {solicitacoes.map((solicitacao) => (
-              <CardSolicitacao
-                key={solicitacao.id}
-                solicitacao={solicitacao}
-                cancelando={cancelando === solicitacao.id}
-                onCancelar={() => cancelarSolicitacao(solicitacao.id)}
-                deletarSolicitacoes={() => deletarSolicitacoes(solicitacao.id)}
-              />
-            ))}
+            {solicitacoes.map((solicitacao) => {
+              console.log(
+                "Enviando para o card ID:",
+                solicitacao.id,
+                "A função existe aqui?",
+                deletarSolicitacoes,
+              );
+              return (
+                <CardSolicitacao
+                  key={solicitacao.id}
+                  solicitacao={solicitacao}
+                  cancelando={cancelando === solicitacao.id}
+                  onCancelar={() => cancelarSolicitacao(solicitacao.id)}
+                  funcaoDeletar={() => deletarSolicitacoes(solicitacao.id)}
+                />
+              );
+            })}
           </div>
         )}
       </div>

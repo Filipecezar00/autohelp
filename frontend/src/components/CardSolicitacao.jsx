@@ -36,8 +36,9 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
-  deletarSolicitacoes,
+  funcaoDeletar,
 }) {
+  console.log("A função chegou?", funcaoDeletar);
   const {
     status,
     descricao,
@@ -87,10 +88,7 @@ export default function CardSolicitacao({
             )}
           </button>
         ) : (
-          <button
-            className={styles.containerDelete}
-            onClick={deletarSolicitacoes}
-          >
+          <button className={styles.containerDelete} onClick={funcaoDeletar}>
             <FaTrashAlt className={styles.btn_excluir} size={16} />
           </button>
         )}

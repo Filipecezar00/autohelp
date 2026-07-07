@@ -264,4 +264,5 @@ module.exports = {
   listarSolicitacoesDoPrestador,
   atualizarStatus,
   cancelarSolicitacao,
+  esconderSolicitacao,
 };
