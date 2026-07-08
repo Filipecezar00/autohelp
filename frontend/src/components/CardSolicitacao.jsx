@@ -1,8 +1,9 @@
 import styles from "../CardSolicitacao.module.css";
 import { FiX, FiClock, FiTool, FiUser } from "react-icons/fi";
 import { FaTrashAlt } from "react-icons/fa";
-import { useState } from "react";
 import api from "../services/api.js";
+import { useState, useEffect } from "react";
+import { CiClock1 } from "react-icons/ci";
 
 const CONFIG_STATUS = {
   pendente: { label: "Aguardando", classe: "pendente" },
@@ -50,7 +51,31 @@ export default function CardSolicitacao({
     prestador_id,
   } = solicitacao;
 
+  const [estaExpirado, setEstaExpirado] = useState(false);
+  const [tempoRestante, setTempoRestante] = useState(() =>
+    CalcularTempoRestante(solicitacao.criado_em),
+  );
   const [erro, setErro] = useState(null);
+
+  useEffect(() => {
+    const temporizador = setInterval(() => {
+      setTempoRestante((tempoAnterior) => {
+        if (tempoAnterior > 1) {
+          return tempoAnterior - 1;
+        } else {
+          setEstaExpirado(true);
+          clearInterval(temporizador);
+
+          setSolicitacoes((listaAnterior) => {
+            listaAnterior.filter((item) => item.id !== solicitacao.id);
+          });
+          return 0;
+        }
+      });
+    }, 1000);
+    return () => clearInterval(temporizador);
+  }, [solicitacao.id, setSolicitacoes]);
+
   async function deletarSolicitacoes() {
     try {
       const token = localStorage.getItem("token");
@@ -80,6 +105,13 @@ export default function CardSolicitacao({
     solicitacao.nome_cliente ||
     solicitacao.nome_prestador ||
     "Usuário Desconhecido";
+
+  const FormatarParaMinutosESegundos = (totalSegundos) => {
+    const minutos = Math.floor(totalSegundos / 60);
+    const segundos = totalSegundos % 60;
+
+    return `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+  };
 
   return (
     <div className={styles.card}>
@@ -129,6 +161,13 @@ export default function CardSolicitacao({
         <span className={styles.data}>
           <FiClock size={11} />
           {formatarData(criado_em)}
+        </span>
+        <span>
+          {estaExpirado === true ? null : (
+            <>
+              <CiClock1 /> {FormatarParaMinutosESegundos(tempoRestante)}
+            </>
+          )}
         </span>
       </div>
     </div>

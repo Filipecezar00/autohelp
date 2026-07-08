@@ -6,6 +6,8 @@ async function criarSolicitacao(req, res) {
     const descricao = req.body.descricao;
     const pool = require("../config/database");
 
+    const tempoAtual = new Date();
+
     if (!prestadorId) {
       return res.status(400).json({ message: "O prestador é obrigatorio" });
     }
@@ -33,8 +35,8 @@ async function criarSolicitacao(req, res) {
     }
 
     const [resultado] = await pool.query(
-      "INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status) VALUES (?,?,?,'pendente')",
-      [clienteId, prestadorId, descricao],
+      "INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status,criado_em) VALUES (?,?,?,'pendente',?)",
+      [clienteId, prestadorId, descricao, tempoAtual],
     );
 
     return res.status(201).json({
@@ -58,7 +60,9 @@ async function listarSolicitacoesDoCliente(req, res) {
         usuarios.telefone FROM solicitacoes
         JOIN prestadores ON solicitacoes.prestador_id = prestadores.id
         JOIN usuarios ON prestadores.usuario_id = usuarios.id
-        WHERE solicitacoes.cliente_id = ? ORDER BY solicitacoes.criado_em DESC`,
+        WHERE solicitacoes.cliente_id = ? AND solicitacoes.visivel_prestador = 1 
+        AND TIMESTAMPDIFF(MINUTE, solicitacoes.criado_em,NOW()) <= 30
+        ORDER BY solicitacoes.criado_em DESC`,
       [clienteId],
     );
     return res.status(200).json(solicitacoes);
@@ -93,7 +97,8 @@ async function listarSolicitacoesDoPrestador(req, res) {
               usuarios.telefone AS cliente_telefone
               FROM solicitacoes JOIN usuarios ON 
               solicitacoes.cliente_id = usuarios.id WHERE
-              solicitacoes.prestador_id = ?
+              solicitacoes.prestador_id = ? AND solicitacoes.visivel_prestador = 1
+              AND TIMESTAMPDIFF(MINUTE,solicitacoes.criado_em,NOW()) <=30
               ORDER BY CASE status WHEN 'pendente'
               THEN 1 WHEN 'aceita' THEN 2 ELSE 3 END,
               solicitacoes.criado_em DESC`,
