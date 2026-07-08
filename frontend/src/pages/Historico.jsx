@@ -22,17 +22,6 @@ export default function Historico() {
     navigate("/mapa");
   }
 
-  async function deletarSolicitacoes(id) {
-    alert("O PAI RECEBEU O CLIQUE PARA O ID: " + id);
-    try {
-      await api.put("/solicitacoes/" + id + "/esconder");
-      const novas_solicitacoes = solicitacoes.filter((item) => item.id !== id);
-      setSolicitacoes(novas_solicitacoes);
-    } catch (error) {
-      setErro("Não foi possível remover esse item do histórico.");
-    }
-  }
-
   async function buscarSolicitacoes() {
     try {
       setCarregando(true);
@@ -109,19 +98,13 @@ export default function Historico() {
         ) : (
           <div className={styles.lista}>
             {solicitacoes.map((solicitacao) => {
-              console.log(
-                "Enviando para o card ID:",
-                solicitacao.id,
-                "A função existe aqui?",
-                deletarSolicitacoes,
-              );
               return (
                 <CardSolicitacao
                   key={solicitacao.id}
                   solicitacao={solicitacao}
                   cancelando={cancelando === solicitacao.id}
                   onCancelar={() => cancelarSolicitacao(solicitacao.id)}
-                  funcaoDeletar={() => deletarSolicitacoes(solicitacao.id)}
+                  setSolicitacoes={setSolicitacoes}
                 />
               );
             })}

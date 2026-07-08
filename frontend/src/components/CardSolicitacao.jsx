@@ -1,6 +1,8 @@
 import styles from "../CardSolicitacao.module.css";
 import { FiX, FiClock, FiTool, FiUser } from "react-icons/fi";
 import { FaTrashAlt } from "react-icons/fa";
+import { useState } from "react";
+import api from "../services/api.js";
 
 const CONFIG_STATUS = {
   pendente: { label: "Aguardando", classe: "pendente" },
@@ -36,9 +38,8 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
-  funcaoDeletar,
+  setSolicitacoes,
 }) {
-  console.log("A função chegou?", funcaoDeletar);
   const {
     status,
     descricao,
@@ -48,6 +49,28 @@ export default function CardSolicitacao({
     cliente_nome,
     prestador_id,
   } = solicitacao;
+
+  const [erro, setErro] = useState(null);
+  async function deletarSolicitacoes() {
+    try {
+      const token = localStorage.getItem("token");
+      await api.put(
+        "/solicitacoes/" + solicitacao.id + "/esconder",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setSolicitacoes((listaAnterior) =>
+        listaAnterior.filter((item) => item.id !== solicitacao.id),
+      );
+    } catch (error) {
+      setErro("Não foi possível remover esse item do histórico.");
+    }
+  }
 
   const configStatus = CONFIG_STATUS[status] ?? CONFIG_STATUS.pendente;
   const labelTipo = LABEL_TIPO[tipo_servico] ?? tipo_servico;
@@ -73,7 +96,7 @@ export default function CardSolicitacao({
             </span>
           </div>
         </div>
-        {status === "pendente" ? (
+        {solicitacao.status === "pendente" && (
           <button
             className={`${styles.btnCancelar} ${!podeCancelar ? styles.btnCancelarDesabilitado : ""}`}
             onClick={onCancelar}
@@ -87,11 +110,13 @@ export default function CardSolicitacao({
               <FiX size={16} />
             )}
           </button>
-        ) : (
-          <button className={styles.containerDelete} onClick={funcaoDeletar}>
-            <FaTrashAlt className={styles.btn_excluir} size={16} />
-          </button>
         )}
+        <button
+          className={styles.containerDelete}
+          onClick={deletarSolicitacoes}
+        >
+          <FaTrashAlt className={styles.btn_excluir} size={16} />
+        </button>
       </div>
       <p className={styles.descricao}>{descricao}</p>
 
