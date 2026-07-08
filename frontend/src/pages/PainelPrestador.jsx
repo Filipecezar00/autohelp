@@ -248,6 +248,7 @@ export function PainelPrestador() {
                 solicitacao={solicitacao}
                 key={solicitacao.id}
                 nomeExibido={solicitacao.nome_cliente}
+                setSolicitacoes={setSolicitacoes}
               />
             );
           })}
