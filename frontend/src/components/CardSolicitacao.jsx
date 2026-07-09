@@ -52,7 +52,9 @@ export default function CardSolicitacao({
   } = solicitacao;
 
   const [estaExpirado, setEstaExpirado] = useState(false);
-  const [tempoRestante, setTempoRestante] = useState(1800);
+  const [tempoRestante, setTempoRestante] = useState(() => {
+    return CalcularTempoRestante(criado_em);
+  });
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
@@ -73,6 +75,29 @@ export default function CardSolicitacao({
     }, 1000);
     return () => clearInterval(temporizador);
   }, [solicitacao.id, setSolicitacoes]);
+
+  function CalcularTempoRestante(dataDeCriacaoDaSolicitacao) {
+    if (
+      !dataDeCriacaoDaSolicitacao ||
+      isNaN(new Date(dataDeCriacaoDaSolicitacao).getTime())
+    ) {
+      return 1800;
+    }
+    const horaDaCriacao = new Date(dataDeCriacaoDaSolicitacao).getTime();
+    const horaDeAgora = new Date().getTime();
+
+    const diferencaMilissegundos = Math.floor(horaDeAgora - horaDaCriacao);
+    const segundosPassados = Math.trunc(diferencaMilissegundos / 1000);
+
+    const limiteMaximoSegundos = 30 * 60;
+    const segundosRestantes = limiteMaximoSegundos - segundosPassados;
+
+    if (segundosRestantes > 0) {
+      return segundosRestantes;
+    } else {
+      return 0;
+    }
+  }
 
   async function deletarSolicitacoes() {
     try {
