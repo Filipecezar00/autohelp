@@ -167,6 +167,8 @@
 .cronometro {
   font-weight: bold;
   transition: color 0.5 ease;
+  display: flex;
+  gap: 5px;
 }
 
 .cronometro-verde {
