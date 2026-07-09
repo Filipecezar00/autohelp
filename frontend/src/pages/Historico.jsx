@@ -79,7 +79,7 @@ export default function Historico() {
           <p className={styles.subtitulo}>
             {solicitacoes.length === 0
               ? "Nenhuma solicitação ainda"
-              : `${solicitacoes.length} solicitaç${solicitacoes.length > 1 ? "ões" : ""} encontrada${solicitacoes.length > 1 ? "s" : ""}`}
+              : `${solicitacoes.length} solicitaç${solicitacoes.length > 1 ? "ões" : "ão"} encontrada${solicitacoes.length > 1 ? "s" : ""}`}
           </p>
         </div>
         {solicitacoes.length === 0 ? (

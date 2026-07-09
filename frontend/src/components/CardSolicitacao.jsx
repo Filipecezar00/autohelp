@@ -52,9 +52,7 @@ export default function CardSolicitacao({
   } = solicitacao;
 
   const [estaExpirado, setEstaExpirado] = useState(false);
-  const [tempoRestante, setTempoRestante] = useState(() =>
-    CalcularTempoRestante(solicitacao.criado_em),
-  );
+  const [tempoRestante, setTempoRestante] = useState(1800);
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
