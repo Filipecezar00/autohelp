@@ -164,3 +164,27 @@
   color: #555e6e;
   border: 1px solid #252931;
 }
+.cronometro {
+  font-weight: bold;
+  transition: color 0.5 ease;
+}
+
+.cronometro-verde {
+  color: #2ecc71;
+}
+.cronometro-amarelo {
+  color: #f1c40f;
+}
+.cronometro-vermelho {
+  color: #e74c3c;
+  animation: piscar 1s infinite alternate;
+}
+
+@keyframes piscar {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

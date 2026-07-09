@@ -135,6 +135,19 @@ export default function CardSolicitacao({
 
     return `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
   };
+  const corDoCronometro = (totalSegundos) => {
+    const minutos = Math.floor(totalSegundos / 60);
+
+    if (minutos > 20) {
+      return "cronometro-verde";
+    } else if (minutos > 10) {
+      return "cronometro-amarelo";
+    } else {
+      return "cronometro-vermelho";
+    }
+  };
+
+  const classeCor = styles[corDoCronometro(tempoRestante)];
 
   return (
     <div className={styles.card}>
@@ -185,10 +198,11 @@ export default function CardSolicitacao({
           <FiClock size={11} />
           {formatarData(criado_em)}
         </span>
-        <span>
+        <span className={`${styles.cronometro} ${classeCor}`}>
           {estaExpirado === true ? null : (
             <>
-              <CiClock1 /> {FormatarParaMinutosESegundos(tempoRestante)}
+              <CiClock1 style={{}} />{" "}
+              {FormatarParaMinutosESegundos(tempoRestante)}
             </>
           )}
         </span>
