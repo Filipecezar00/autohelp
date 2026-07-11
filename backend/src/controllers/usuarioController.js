@@ -136,7 +136,7 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
     }
 
     const [prestadores] = await pool.query(
-      `SELECT usuarios.nome, prestadores.id AS prestador_id, prestadores.latitude, prestadores.longitude, prestadores.tipo_servico FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.latitude IS NOT NULL AND prestadores.ativo=TRUE`,
+      `SELECT usuarios.nome, prestadores.id AS prestador_id, prestadores.usuario_id, prestadores.latitude, prestadores.longitude, prestadores.tipo_servico FROM prestadores JOIN usuarios ON prestadores.usuario_id = usuarios.id WHERE prestadores.latitude IS NOT NULL AND prestadores.ativo=TRUE`,
     );
 
     const converterRadianos = (graus) => graus * (Math.PI / 180);

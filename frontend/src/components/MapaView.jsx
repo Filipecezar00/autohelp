@@ -292,16 +292,6 @@ export default function MapaView({
                   icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
                 >
                   <Popup>
-                    <div>
-                      <p>
-                        ID do Contexto:
-                        {String(usuarioLogado?.id || "Não Encontrado")}
-                      </p>
-                      <p>
-                        ID do Prestador:{" "}
-                        {String(prestador?.usuario_id || "Não encontrado")}
-                      </p>
-                    </div>
                     {SameUser ? (
                       <div>
                         <p>{prestador.nome}</p>
