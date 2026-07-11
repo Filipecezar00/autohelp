@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import api from "../services/api";
 import MapaView from "../components/MapaView";
 import { FiltroServico } from "../components/FiltroServico";
@@ -20,6 +21,9 @@ export default function Mapa() {
     erro: erroGeo,
     carregando: buscandoGeo,
   } = useGeolocalizacao();
+
+  const { usuario } = useContext(AuthContext);
+  const idUsuario = usuario?.id;
 
   const [prestadores, setPrestadores] = useState([]);
   const [carregandoAPI, setCarregandoAPI] = useState(false);
@@ -96,6 +100,7 @@ export default function Mapa() {
           onAlternar={alternarFiltro}
           raioAtual={raio}
           onAlternarRaio={setRaio}
+          usuarioLogado={usuario}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function PrestadorCard({ prestador }) {
+function PrestadorCard({ prestador, usuario }) {
   const tipoInfo = {
     mecanico: { label: "Mêcanico", cor: "#1a73e8" },
     borracheiro: { label: "Borracheiro", cor: "#e67e00" },
@@ -12,8 +12,15 @@ function PrestadorCard({ prestador }) {
   };
 
   const navigate = useNavigate();
+  const usuarioLogadoId = usuario.id;
 
   const solicitarServico = () => {
+    console.log("DEBUG CARD PRESTADOR", {
+      ID_Logado: usuarioLogadoId,
+      Tipo_Id_Logado: typeof usuarioLogadoId,
+      Objeto_Prestador_Inteiro: prestador,
+      Usuario_Id_No_Prestador: prestador?.usuario_id,
+    });
     if (prestador?.id) {
       navigate(`/solicitar/${prestador.id}`, {
         state: {
@@ -42,9 +49,13 @@ function PrestadorCard({ prestador }) {
         Lat:{prestador.latitude},Lng:{prestador.longitude}
       </p>
 
-      <button style={styles.botao} onClick={solicitarServico}>
-        Solicitar Serviço
-      </button>
+      {prestador?.usuario_id !== usuarioLogadoId ? (
+        <button style={styles.botao} onClick={solicitarServico}>
+          Solicitar Serviço
+        </button>
+      ) : (
+        <span style={{}}>Este é o seu Perfil</span>
+      )}
     </div>
   );
 }

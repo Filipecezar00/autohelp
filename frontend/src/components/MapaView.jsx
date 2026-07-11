@@ -5,7 +5,7 @@ import Btn_return from "./RetornarHome";
 import { PiTire } from "react-icons/pi";
 import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../src/MapaView.module.css";
 
@@ -136,7 +136,7 @@ function PopupPrestador({ prestador, onSolicitar }) {
           margimBottom: 4,
         }}
       >
-        {prestador.nome}
+        {prestador?.nome}
       </div>
       <div style={{ fontSize: 12, color: "#64748b", marginBottom: 4 }}>
         {prestador.telefone || "Sem telefone"}
@@ -183,11 +183,14 @@ export default function MapaView({
   prestadores = [],
   raioAtual = 10,
   onAlternarRaio,
+  usuarioLogado,
 }) {
   if (!centro || centro.length !== 2) return null;
 
   const [valorLocal, setValorLocal] = React.useState(raioAtual);
   const navigate = useNavigate();
+
+  const idUsuario = usuarioLogado?.id;
 
   React.useEffect(() => {
     setValorLocal(raioAtual);
@@ -275,10 +278,10 @@ export default function MapaView({
             </Marker>
 
             {prestadores.map((prestador) => {
-              console.log("Investigando Prestador:", {
-                objeto: prestador,
-                chave: prestador.prestador_id,
-              });
+              const SameUser =
+                usuarioLogado.id &&
+                prestador.usuario_id &&
+                String(usuarioLogado.id) === String(prestador.usuario_id);
               return (
                 <Marker
                   key={prestador.prestador_id}
@@ -289,17 +292,35 @@ export default function MapaView({
                   icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
                 >
                   <Popup>
-                    <PopupPrestador
-                      prestador={prestador}
-                      onSolicitar={() =>
-                        navigate(`/solicitar/${prestador.prestador_id}`, {
-                          state: {
-                            nome: prestador.nome,
-                            distancia: prestador.distancia_km,
-                          },
-                        })
-                      }
-                    />
+                    <div>
+                      <p>
+                        ID do Contexto:
+                        {String(usuarioLogado?.id || "Não Encontrado")}
+                      </p>
+                      <p>
+                        ID do Prestador:{" "}
+                        {String(prestador?.usuario_id || "Não encontrado")}
+                      </p>
+                    </div>
+                    {SameUser ? (
+                      <div>
+                        <p>{prestador.nome}</p>
+                        <p>Este é o seu perfil</p>
+                      </div>
+                    ) : (
+                      <PopupPrestador
+                        prestador={prestador}
+                        usuario={usuarioLogado}
+                        onSolicitar={() =>
+                          navigate(`/solicitar/${prestador.prestador_id}`, {
+                            state: {
+                              nome: prestador.nome,
+                              distancia: prestador.distancia_km,
+                            },
+                          })
+                        }
+                      />
+                    )}
                   </Popup>
                 </Marker>
               );
