@@ -11,8 +11,8 @@
     "tsx": "^4.23.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "tsx watch server.ts",
+    "dev": "tsx watch server.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
