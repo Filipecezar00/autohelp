@@ -4,6 +4,9 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
+const jwt = require("jsonwebtoken");
+
+import { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
 
 import prestadoresRoutes from "./src/routes/prestadores.routes.js";
 import usuarioRoutes from "./src/routes/usuariosRoutes.js";
@@ -13,20 +16,38 @@ import perfilRoutes from "./src/routes/perfil.routes.js";
 const app = express();
 const httpServer = createServer(app);
 
-const io = new Server(httpServer, {
+const io = new Server<EventosCliente, EventosServidor>(httpServer, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
 
-app.use((req, res, next) => {
-  console.log(`requisição recebida: [${req.method}] ${req.url}`);
-  next();
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token;
+
+  if (!token) {
+    return next(new Error("Token não fornecido"));
+  }
+  try {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    const dadosDoToken = jwt.verify(token, JWT_SECRET);
+
+    socket.data.usuario = dadosDoToken;
+
+    next();
+  } catch (error) {
+    return next(new Error("Token inválido"));
+  }
 });
 
 app.use(cors());
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(`requisição recebida: [${req.method}] ${req.url}`);
+  next();
+});
 
 app.use("/api/prestadores", prestadoresRoutes);
 app.use("/api/auth", usuarioRoutes);
