@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 import { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
 
-import { configurarChat } from "./src/socket/chat.socket.js";
+import { registrarEventosChat } from "./src/socket/chat.socket.js";
 
 import prestadoresRoutes from "./src/routes/prestadores.routes.js";
 import usuarioRoutes from "./src/routes/usuariosRoutes.js";
@@ -60,7 +60,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
 });
 
-configurarChat(io);
+registrarEventosChat(io);
 
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {

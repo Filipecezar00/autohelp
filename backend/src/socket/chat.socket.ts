@@ -88,7 +88,7 @@ export function registrarEventosChat(
       );
     });
   });
-  export function emitirStatusAtualizado(
+  function emitirStatusAtualizado(
     io: Server<EventosCliente, EventosServidor>,
     solicitacaoId: number,
     status: StatusSolicitacao,

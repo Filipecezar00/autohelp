@@ -30,13 +30,13 @@ export async function buscarMensagens(req: Request, res: Response) {
       return res.status(403).json({ message: "Acesso negado" });
     }
 
-    const [mensagensRows] = await pool.query(
+    const [mensagensRows]: any = await (pool.query(
       `SELECT mensagens.id,mensagens.texto,mensagens.criado_em,mensagens.remetente_id,usuarios.nome
      AS remetente_nome FROM mensagens JOIN usuarios ON mensagens.remetente_id = usuarios.id
      WHERE mensagens.solicitacao_id = ?, ORDER BY mensagens.criado_em ASC LIMIT 100
      `,
       [solicitacaoId],
-    );
+    ) as any);
     return res.status(200).json({ mensagens: mensagensRows });
   } catch (error) {
     console.error("Erro ao buscar histórico de mensagens:", error);
