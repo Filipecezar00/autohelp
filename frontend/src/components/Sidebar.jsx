@@ -11,6 +11,7 @@ const MENUS_POR_PERFIL = {
     { label: "Mapa", path: "/mapa", icone: FaMap },
     { label: "Histórico", path: "/historico", icone: FaHistory },
     { label: "Perfil", path: "/perfil", icone: FaUser },
+    
   ],
 
   prestador: [

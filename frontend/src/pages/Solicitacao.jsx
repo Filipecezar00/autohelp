@@ -16,7 +16,7 @@ const LABEL_TIPO = {
 };
 
 export default function Solicitacao() {
-  const { prestadorId } = useParams();
+  const { prestadorId, solicitacaoId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const dadosVindosDoMapa = location.state;
@@ -53,6 +53,16 @@ export default function Solicitacao() {
 
   const IrParaMapa = () => {
     navigate("/mapa");
+  };
+
+  if (!solicitacaoId) {
+    console.error(
+      "Não foi possível abrir o chat: ID da solicitação está ausente.",
+    );
+    return;
+  }
+  const Entrar_Contato = () => {
+    navigate(`/mensagens/${solicitacaoId}`);
   };
 
   async function handleSubmit(e) {
@@ -225,6 +235,9 @@ export default function Solicitacao() {
                   {podeEnviar ? "Enviar Solicitação" : "Preencha o campo acima"}
                 </>
               )}
+            </button>
+            <button className={styles.btnContato} onClick={Entrar_Contato}>
+              Entrar em contato
             </button>
             {descricao.trim().length < 10 && descricao.length > 0 && (
               <p className={styles.dica}>

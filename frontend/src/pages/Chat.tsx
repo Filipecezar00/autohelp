@@ -31,6 +31,11 @@ export function Chat() {
       setTexto("");
     }
 
+    console.log("Caminho atual da URL (pathname):", window.location.pathname);
+
+    const params = useParams();
+    console.log("Parâmetros lidos pelo react router:", params);
+
     return (
       <div>
         <div>

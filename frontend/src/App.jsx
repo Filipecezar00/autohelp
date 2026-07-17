@@ -10,6 +10,7 @@ import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
 import { Layout } from "../src/layouts/Layout";
 import { Perfil } from "../src/pages/Perfil";
+import { Chat } from "./pages/Chat";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/perfil" element={<Perfil />} />
                 <Route path="/historico" element={<Historico />} />
                 <Route path="/painelPrestador" element={<PainelPrestador />} />
+                <Route path="/mensagens/:solicitacaoId" element={<Chat />} />
               </Route>
             </Route>
             <Route
