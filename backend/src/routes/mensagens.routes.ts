@@ -1,12 +1,8 @@
-const express = require("express");
+import express from "express";
+import { buscarMensagens } from "../controllers/mensagens.controller";
+import autenticarToken = require("../middlewares/authMiddleware");
 const router = express.Router();
-const mensagemController = require("../controllers/mensagens.controller");
-const autenticarToken = require("../middlewares/authMiddleware");
 
-router.get(
-  "/mensagens/:solicitacaoId",
-  autenticarToken,
-  mensagemController.buscarMensagens,
-);
+router.get("/mensagens/:solicitacaoId", autenticarToken, buscarMensagens);
 
-module.exports = router;
+export const mensagensRoutes = router;

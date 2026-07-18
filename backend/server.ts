@@ -14,6 +14,7 @@ import prestadoresRoutes from "./src/routes/prestadores.routes.js";
 import usuarioRoutes from "./src/routes/usuariosRoutes.js";
 import solicitacoesRoutes from "./src/routes/solicitacoes.routes.js";
 import perfilRoutes from "./src/routes/perfil.routes.js";
+import { mensagensRoutes } from "./src/routes/mensagens.routes.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -55,6 +56,7 @@ app.use("/api/prestadores", prestadoresRoutes);
 app.use("/api/auth", usuarioRoutes);
 app.use("/api/solicitacoes", solicitacoesRoutes);
 app.use("/api/perfil", perfilRoutes);
+app.use("/api/mensagens", mensagensRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });

@@ -36,10 +36,10 @@ function App() {
                   path="/solicitar/:prestadorId"
                   element={<Solicitacao />}
                 />
+                <Route path="/mensagens/:solicitacaoId" element={<Chat />} />
                 <Route path="/perfil" element={<Perfil />} />
                 <Route path="/historico" element={<Historico />} />
                 <Route path="/painelPrestador" element={<PainelPrestador />} />
-                <Route path="/mensagens/:solicitacaoId" element={<Chat />} />
               </Route>
             </Route>
             <Route
