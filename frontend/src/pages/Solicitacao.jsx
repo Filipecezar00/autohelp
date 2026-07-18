@@ -16,7 +16,7 @@ const LABEL_TIPO = {
 };
 
 export default function Solicitacao() {
-  const { prestadorId, solicitacaoId } = useParams();
+  const { prestadorId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const dadosVindosDoMapa = location.state;
@@ -31,7 +31,6 @@ export default function Solicitacao() {
   useEffect(() => {
     async function carregarDadosPrestador() {
       try {
-        console.log("O ID capturado nesta tela é:", prestadorId);
         const resposta = await api.get(`/prestadores/${prestadorId}`);
         setPrestador(resposta.data);
       } catch (err) {
@@ -55,16 +54,6 @@ export default function Solicitacao() {
     navigate("/mapa");
   };
 
-  if (!solicitacaoId) {
-    console.error(
-      "Não foi possível abrir o chat: ID da solicitação está ausente.",
-    );
-    return;
-  }
-  const Entrar_Contato = () => {
-    navigate(`/mensagens/${solicitacaoId}`);
-  };
-
   async function handleSubmit(e) {
     if (e) e.preventDefault();
     if (!descricao.trim()) {
@@ -80,12 +69,16 @@ export default function Solicitacao() {
       setEnviando(true);
       setErro(null);
 
-      await api.post("/solicitacoes", {
+      const resposta = await api.post("/solicitacoes", {
         prestador_id: prestadorId,
         descricao: descricao.trim(),
       });
 
+      const idDaSolicitacaoCriada = resposta.data.id;
+
       setSucesso(true);
+
+      navigate(`/mensagens/${idDaSolicitacaoCriada}`);
     } catch (erro) {
       if (erro.response && erro.response?.status === 409) {
         setErro("Você já tem uma solicitação ativa com esse prestador.");
@@ -236,7 +229,7 @@ export default function Solicitacao() {
                 </>
               )}
             </button>
-            <button className={styles.btnContato} onClick={Entrar_Contato}>
+            <button className={styles.btnContato} onClick={handleSubmit}>
               Entrar em contato
             </button>
             {descricao.trim().length < 10 && descricao.length > 0 && (

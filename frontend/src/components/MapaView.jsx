@@ -111,7 +111,9 @@ function CardListaPrestador({ prestador }) {
 }
 
 function PopupPrestador({ prestador, onSolicitar }) {
+  const navigate = useNavigate();
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
+
   return (
     <div style={{ minWidth: 180, fontFamily: "sans-serif" }}>
       <div
