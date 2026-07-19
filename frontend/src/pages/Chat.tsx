@@ -7,11 +7,11 @@ import { BolhaMensagem } from "../components/chat/BolhaMensagem";
 import { InputMensagem } from "../components/chat/InputMensagem";
 
 export function Chat() {
-  const { solicitacaoId } = useParams<{ solicitacaoId: string }>();
-  const { usuario } = useContext(AuthContext);
+  const { prestadorId } = useParams<{ prestadorId: string }>();
+  const usuarioid = useContext(AuthContext);
 
   const { Mensagens, Conectado, Carregando, erro, enviarMensagem } = useChat(
-    Number(solicitacaoId),
+    Number(prestadorId),
   );
 
   const [texto, setTexto] = useState<string>("");
@@ -34,7 +34,7 @@ export function Chat() {
     return (
       <div>
         <div>
-          <h1>Chat Solicitação - {solicitacaoId}</h1>
+          <h1>Chat Solicitação - {prestadorId}</h1>
           <span>{Conectado ? "Conectado" : "Reconectando..."}</span>
         </div>
         {erro && <div>{erro}</div>}
@@ -43,7 +43,7 @@ export function Chat() {
             <BolhaMensagem
               key={Mensagem.id}
               mensagem={Mensagem}
-              ehMinha={Mensagem.remetenteId === usuario?.id}
+              ehMinha={Mensagem.remetenteId === usuarioid}
             />
           ))}
           <div ref={refFinal} />

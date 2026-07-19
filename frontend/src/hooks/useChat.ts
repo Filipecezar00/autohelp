@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import socket from "../services/socket";
 import api from "../services/api";
 
-export function useChat(solicitacaoId: number) {
+export function useChat(prestadorId: number) {
   const [Mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [Conectado, setConectado] = useState<boolean>(false);
   const [Carregando, setCarregando] = useState<boolean>(true);
@@ -12,7 +12,7 @@ export function useChat(solicitacaoId: number) {
   useEffect(() => {
     async function handleSocket() {
       socket.connect();
-      socket.emit("entrar_sala", solicitacaoId);
+      socket.emit("entrar_sala", prestadorId);
 
       socket.on("nova_mensagem", (mensagem: Mensagem) => {
         setMensagens((prev: any) => [...prev, mensagem]);
@@ -29,9 +29,7 @@ export function useChat(solicitacaoId: number) {
       socket.on("disconnect", () => setConectado(false));
 
       try {
-        const resposta = await api.get<Mensagem[]>(
-          `/mensagens/${solicitacaoId}`,
-        );
+        const resposta = await api.get<Mensagem[]>(`/mensagens/${prestadorId}`);
         setMensagens(resposta.data);
       } catch {
         setCarregando(false);
@@ -41,7 +39,7 @@ export function useChat(solicitacaoId: number) {
     handleSocket();
 
     function limpezaFunção() {
-      socket.emit("sair_sala", solicitacaoId);
+      socket.emit("sair_sala", prestadorId);
       socket.off("connect");
       socket.off("disconnect");
       socket.off("nova_mensagem");
@@ -51,7 +49,7 @@ export function useChat(solicitacaoId: number) {
     }
 
     return limpezaFunção;
-  }, [solicitacaoId]);
+  }, [prestadorId]);
 
   function enviarMensagem(texto: string): void {
     if (texto.trim().length === 0) return;
@@ -59,7 +57,7 @@ export function useChat(solicitacaoId: number) {
 
     socket.emit("enviar_mensagem", {
       texto: texto.trim(),
-      solicitacaoId,
+      prestadorId,
     });
   }
   return { Mensagens, Conectado, Carregando, erro, enviarMensagem };

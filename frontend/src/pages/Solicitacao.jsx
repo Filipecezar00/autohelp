@@ -229,9 +229,6 @@ export default function Solicitacao() {
                 </>
               )}
             </button>
-            <button className={styles.btnContato} onClick={handleSubmit}>
-              Entrar em contato
-            </button>
             {descricao.trim().length < 10 && descricao.length > 0 && (
               <p className={styles.dica}>
                 Mínimo 10 caracteres - {10 - descricao.trim().length} restantes

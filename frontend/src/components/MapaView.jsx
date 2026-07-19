@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../src/MapaView.module.css";
+import { IoChatboxEllipses } from "react-icons/io5";
 
 const CONFIG_TIPOS = {
   mecanico: {
@@ -113,6 +114,13 @@ function CardListaPrestador({ prestador }) {
 function PopupPrestador({ prestador, onSolicitar }) {
   const navigate = useNavigate();
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
+  console.log("Objeto do prestador:", prestador);
+
+  function handleIniciarContato() {
+    console.log("Iniciando chat com o prestador ID:", prestador);
+
+    navigate(`/mensagens/${prestador.prestador_id}`);
+  }
 
   return (
     <div style={{ minWidth: 180, fontFamily: "sans-serif" }}>
@@ -146,6 +154,10 @@ function PopupPrestador({ prestador, onSolicitar }) {
       <div style={{ fontSize: 12, fontWeight: 700, color: config.cor }}>
         {Number(prestador.distancia_km ?? 0).toFixed(1)} km de você
       </div>
+
+      <span onClick={handleIniciarContato}>
+        <IoChatboxEllipses /> Envie uma mensagem
+      </span>
 
       <button
         onClick={onSolicitar}

@@ -1,6 +1,6 @@
 export interface Mensagem {
   id: number;
-  solicitacaoId: number;
+  prestadorId: number;
   remetenteId: number;
   remetenteNome: string;
   texto: string;
@@ -17,14 +17,14 @@ export type StatusSolicitacao =
 export interface EventosServidor {
   nova_mensagem: (mensagem: Mensagem) => void;
   status_atualizado: (dados: {
-    solicitacaoId: number;
+    prestadorId: number;
     status: StatusSolicitacao;
   }) => void;
   erro: (mensagem: string) => void;
 }
 
 export interface EventosCliente {
-  entrar_sala: (solicitacaoId: number) => void;
-  enviar_mensagem: (dados: { texto: string; solicitacaoId: number }) => void;
-  sair_sala: (solicitacaoId: number) => void;
+  entrar_sala: (prestadorId: number) => void;
+  enviar_mensagem: (dados: { texto: string; prestadorId: number }) => void;
+  sair_sala: (prestadorId: number) => void;
 }
