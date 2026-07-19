@@ -3,6 +3,6 @@ import { buscarMensagens } from "../controllers/mensagens.controller";
 import autenticarToken = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.get("/mensagens/:prestadorId", autenticarToken, buscarMensagens);
+router.get("/:prestadorId", autenticarToken, buscarMensagens);
 
 export const mensagensRoutes = router;
