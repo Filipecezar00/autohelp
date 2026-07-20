@@ -14,12 +14,9 @@ export async function buscarMensagens(req: Request, res: Response) {
       return res.status(401).json({ message: "Usuário não autenticado" });
     }
 
-    const [mensagens]: any = await pool.query(querySQL, [
-      prestadorId,
-      usuarioId,
-      usuarioId,
-      prestadorId,
-    ]);
+    const [mensagens]: any = await pool
+      .promise()
+      .execute(querySQL, [prestadorId, usuarioId, usuarioId, prestadorId]);
     const mensagem = mensagens[0];
 
     if (!mensagem) {

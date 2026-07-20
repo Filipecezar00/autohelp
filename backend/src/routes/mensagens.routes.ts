@@ -4,5 +4,5 @@ import autenticarToken = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 router.get("/:prestadorId", autenticarToken, buscarMensagens);
-
+console.log("Mensagens.routes carregado");
 export const mensagensRoutes = router;
