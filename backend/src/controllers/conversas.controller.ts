@@ -38,8 +38,8 @@ async function buscarOuCriarConversa(req: Request, res: Response) {
         .json({ conversa_id: (conversa as any).id, nova: false });
     }
 
-    const resultado: any = await pool.query(
-      `INSERT INTO ? conversas (cliente_id, prestador_id) VALUES (?,?)`,
+    const [resultado]: any = await pool.query(
+      `INSERT INTO conversas (cliente_id, prestador_id) VALUES (?,?)`,
       [clienteId, PrestadorId],
     );
 
@@ -49,5 +49,46 @@ async function buscarOuCriarConversa(req: Request, res: Response) {
   } catch (error) {
     console.error("Erro ao buscar ou Criar conversa.", error);
     res.status(500).json({ message: "Erro ao buscar ou criar conversa." });
+  }
+}
+async function buscarMensagens(req: Request, res: Response) {
+  try {
+    const conversaId = Number((req as any).user.id);
+    const usuarioId = (req as any).user.id;
+
+    const [conversas]: any = await pool.query(
+      `SELECT * FROM conversas WHERE id = ?`,
+      [conversaId],
+    );
+
+    const conversa = conversas[0];
+
+    if (!conversa) {
+      return res.status(404).json({ message: "Conversa não encontrada" });
+    }
+
+    const ehParticipante =
+      conversa.cliente_id === usuarioId || conversa.prestador_id === usuarioId;
+
+    if (!ehParticipante) {
+      return res.status(403).json({ message: "Acesso Negado!" });
+    }
+
+    const [mensagens]: any = await pool.query(
+      `SELECT mensagens.id,mensagens.texto,mensagens.criado_em,mensagens.remetente_id,usuarios.nome 
+       AS remetente_nome FROM mensagens JOIN usuarios ON
+       mensagens.remetente_id = usuarios.id WHERE mensagens.conversa_id = ?
+       ORDER BY mensagens.criado_em ASC LIMIT 100`,
+      [usuarioId],
+    );
+
+    const mensagem = mensagens[0];
+
+    return res.status(200).json({ message: mensagem });
+  } catch (error) {
+    console.error("Erro ao realizar busca por mensagens", error);
+    res
+      .status(500)
+      .json({ message: "Erro ao realizar a busca por mensagens!" });
   }
 }
