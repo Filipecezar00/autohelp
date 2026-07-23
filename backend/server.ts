@@ -14,6 +14,7 @@ import prestadoresRoutes from "./src/routes/prestadores.routes.js";
 import usuarioRoutes from "./src/routes/usuariosRoutes.js";
 import solicitacoesRoutes from "./src/routes/solicitacoes.routes.js";
 import perfilRoutes from "./src/routes/perfil.routes.js";
+import conversasRoutes from "./src/routes/conversas.routes.js";
 import { mensagensRoutes } from "./src/routes/mensagens.routes.js";
 
 const app = express();

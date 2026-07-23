@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import pool = require("../config/database");
 
-async function buscarOuCriarConversa(req: Request, res: Response) {
+export async function buscarOuCriarConversa(req: Request, res: Response) {
   try {
     const clienteId = (req as any).user?.id;
     const PrestadorId = Number((req as any).body.prestador_id);
@@ -51,7 +51,7 @@ async function buscarOuCriarConversa(req: Request, res: Response) {
     res.status(500).json({ message: "Erro ao buscar ou criar conversa." });
   }
 }
-async function buscarMensagens(req: Request, res: Response) {
+export async function buscarMensagens(req: Request, res: Response) {
   try {
     const conversaId = Number((req as any).params.id);
     const usuarioId = (req as any).user.id;
