@@ -57,7 +57,7 @@ export function registrarEventosChat(
       try {
         const [resultado]: any = await pool.query(
           `
-            INSERT INTO mensagens (solicitacao_id,remetente_id,texto) VALUES
+            INSERT INTO mensagens (conversa_id,remetente_id,texto) VALUES
             (?,?,?)
         `,
           [conversaId, usuarioConectado.id, texto.trim()],
