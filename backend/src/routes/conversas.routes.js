@@ -4,6 +4,6 @@ import { buscarOuCriarConversa } from "../controllers/conversas.controller.ts";
 
 const router = express.Router();
 
-router.post("/conversas", autenticarToken, buscarOuCriarConversa);
+router.post("/", autenticarToken, buscarOuCriarConversa);
 
-export default router;
+export const conversaRoutes = router;

@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../src/MapaView.module.css";
+import api from "../services/api";
 import { IoChatboxEllipses } from "react-icons/io5";
 
 const CONFIG_TIPOS = {
@@ -116,10 +117,18 @@ function PopupPrestador({ prestador, onSolicitar }) {
   const config = CONFIG_TIPOS[prestador.tipo_servico] ?? CONFIG_TIPOS.mecanico;
   console.log("Objeto do prestador:", prestador);
 
-  function handleIniciarContato() {
-    console.log("Iniciando chat com o prestador ID:", prestador);
+  async function handleEntrarEmContato() {
+    try {
+      const resposta = await api.post("/conversas", {
+        prestador_id: prestador.usuario_id,
+      });
 
-    navigate(`/mensagens/${prestador.prestador_id}`);
+      const { conversa_id } = resposta.data;
+
+      navigate(`/chat/${conversa_id}`);
+    } catch (error) {
+      console.log("ERRO AO REALIZAR CONTATO COM O PRESTADOR", error);
+    }
   }
 
   return (
@@ -155,7 +164,7 @@ function PopupPrestador({ prestador, onSolicitar }) {
         {Number(prestador.distancia_km ?? 0).toFixed(1)} km de você
       </div>
 
-      <span onClick={handleIniciarContato}>
+      <span onClick={handleEntrarEmContato}>
         <IoChatboxEllipses /> Envie uma mensagem
       </span>
 

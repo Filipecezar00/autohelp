@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
 
 function PrestadorCard({ prestador, usuario }) {
   const tipoInfo = {
@@ -15,27 +14,7 @@ function PrestadorCard({ prestador, usuario }) {
   const navigate = useNavigate();
   const usuarioLogadoId = usuario.id;
 
-  async function handleEntrarEmContato() {
-    try {
-      const resposta = await api.post("/conversas", {
-        prestador_id: prestador.usuario_id,
-      });
-
-      const { conversa_id } = resposta.data;
-
-      navigate(`/chat/${conversa_id}`);
-    } catch (error) {
-      console.log("ERRO AO REALIZAR CONTATO COM O PRESTADOR", error);
-    }
-  }
-
   const solicitarServico = () => {
-    console.log("DEBUG CARD PRESTADOR", {
-      ID_Logado: usuarioLogadoId,
-      Tipo_Id_Logado: typeof usuarioLogadoId,
-      Objeto_Prestador_Inteiro: prestador,
-      Usuario_Id_No_Prestador: prestador?.usuario_id,
-    });
     if (prestador?.id) {
       navigate(`/solicitar/${prestador.id}`, {
         state: {
