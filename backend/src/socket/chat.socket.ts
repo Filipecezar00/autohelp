@@ -13,11 +13,11 @@ export function registrarEventosChat(
   io.on("connection", (socket: Socket<EventosCliente, EventosServidor>) => {
     const usuarioConectado = socket.data.usuario;
 
-    socket.on("entrar_sala", async (solicitacaoId: number) => {
+    socket.on("entrar_sala", async (conversaId: number) => {
       try {
         const [rows]: any = await pool.query(
           "SELECT * FROM solicitacoes WHERE id = ?",
-          [solicitacaoId],
+          [conversaId],
         );
 
         const solicitacao = rows[0];
@@ -35,7 +35,7 @@ export function registrarEventosChat(
           socket.emit("erro", "Acesso negado a esta sala");
           return;
         }
-        const nomeDaSala = `solicitacao_${solicitacaoId}`;
+        const nomeDaSala = `conversa_${conversaId}`;
         socket.join(nomeDaSala);
         console.log(
           `Usuário ${usuarioConectado.id} entrou na sala: ${nomeDaSala}`,
@@ -45,7 +45,7 @@ export function registrarEventosChat(
       }
     });
     socket.on("enviar_mensagem", async (dados) => {
-      const { texto, solicitacaoId } = dados;
+      const { texto, conversaId } = dados;
       if (!texto || texto.trim().length === 0) {
         socket.emit("erro", "Mensagem não pode ser vazia");
         return;
@@ -60,26 +60,26 @@ export function registrarEventosChat(
             INSERT INTO mensagens (solicitacao_id,remetente_id,texto) VALUES
             (?,?,?)
         `,
-          [solicitacaoId, usuarioConectado.id, texto.trim()],
+          [conversaId, usuarioConectado.id, texto.trim()],
         );
         const idGerado = resultado.insertId;
 
         const mensagemCompleta: Mensagem = {
           id: idGerado,
-          solicitacaoId: solicitacaoId,
+          conversaId: conversaId,
           remetenteId: usuarioConectado.id,
           remetenteNome: usuarioConectado.nome || "Usuário",
           texto: texto.trim(),
           criadoEm: new Date().toISOString(),
         };
-        const nomeDaSala = `solicitacao_${solicitacaoId}`;
+        const nomeDaSala = `conversa_${conversaId}`;
         io.to(nomeDaSala).emit("nova_mensagem", mensagemCompleta);
       } catch {
         socket.emit("erro", "Erro ao salvar mensagem");
       }
     });
-    socket.on("sair_sala", (solicitacaoId: number) => {
-      const nomeDaSala = `solicitacao_${solicitacaoId}`;
+    socket.on("sair_sala", (conversaId: number) => {
+      const nomeDaSala = `conversa_${conversaId}`;
       socket.leave(nomeDaSala);
     });
     socket.on("disconnect", () => {
@@ -90,10 +90,10 @@ export function registrarEventosChat(
   });
   function emitirStatusAtualizado(
     io: Server<EventosCliente, EventosServidor>,
-    solicitacaoId: number,
+    conversaId: number,
     status: StatusSolicitacao,
   ) {
-    const nomeDaSala = `Solicitacao_${solicitacaoId}`;
-    io.to(nomeDaSala).emit("status_atualizado", { solicitacaoId, status });
+    const nomeDaSala = `Conversa_${conversaId}`;
+    io.to(nomeDaSala).emit("status_atualizado", { conversaId, status });
   }
 }
