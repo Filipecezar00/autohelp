@@ -53,8 +53,12 @@ async function buscarOuCriarConversa(req: Request, res: Response) {
 }
 async function buscarMensagens(req: Request, res: Response) {
   try {
-    const conversaId = Number((req as any).user.id);
+    const conversaId = Number((req as any).params.id);
     const usuarioId = (req as any).user.id;
+
+    if (!conversaId || isNaN(conversaId)) {
+      return res.status(400).json({ message: "ID de conversa inválido" });
+    }
 
     const [conversas]: any = await pool.query(
       `SELECT * FROM conversas WHERE id = ?`,
@@ -79,12 +83,12 @@ async function buscarMensagens(req: Request, res: Response) {
        AS remetente_nome FROM mensagens JOIN usuarios ON
        mensagens.remetente_id = usuarios.id WHERE mensagens.conversa_id = ?
        ORDER BY mensagens.criado_em ASC LIMIT 100`,
-      [usuarioId],
+      [conversaId],
     );
 
     const mensagem = mensagens[0];
 
-    return res.status(200).json({ message: mensagem });
+    return res.status(200).json(mensagem);
   } catch (error) {
     console.error("Erro ao realizar busca por mensagens", error);
     res
