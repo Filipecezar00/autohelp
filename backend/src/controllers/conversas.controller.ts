@@ -53,16 +53,22 @@ export async function buscarOuCriarConversa(req: Request, res: Response) {
 }
 export async function buscarMensagens(req: Request, res: Response) {
   try {
-    const conversaId = Number((req as any).params.id);
+    const conversaId = (req as any).params.conversaId;
+    const conversa_Id = Number(conversaId);
     const usuarioId = (req as any).user.id;
 
-    if (!conversaId || isNaN(conversaId)) {
+    console.log("DEBUG BUSCAR MENSAGENS");
+    console.log("req.params:", req.params);
+    console.log("conversaId:", conversaId);
+    console.log("usuarioId:", usuarioId);
+
+    if (!conversa_Id || isNaN(conversa_Id)) {
       return res.status(400).json({ message: "ID de conversa inválido" });
     }
 
     const [conversas]: any = await pool.query(
       `SELECT * FROM conversas WHERE id = ?`,
-      [conversaId],
+      [conversa_Id],
     );
 
     const conversa = conversas[0];
@@ -83,7 +89,7 @@ export async function buscarMensagens(req: Request, res: Response) {
        AS remetente_nome FROM mensagens JOIN usuarios ON
        mensagens.remetente_id = usuarios.id WHERE mensagens.conversa_id = ?
        ORDER BY mensagens.criado_em ASC LIMIT 100`,
-      [conversaId],
+      [conversa_Id],
     );
 
     const mensagem = mensagens[0];

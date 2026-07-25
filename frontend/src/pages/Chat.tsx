@@ -37,17 +37,19 @@ export function Chat() {
           <h1>Chat Solicitação - {prestadorId}</h1>
           <span>{Conectado ? "Conectado" : "Reconectando..."}</span>
         </div>
-        {erro && <div>{erro}</div>}
-        <div>
-          {Mensagens.map((Mensagem) => (
+        {Mensagens.length === 0 ? (
+          <p>Nenhuma mensagem ainda, mande um Oi!</p>
+        ) : (
+          Mensagens.map((msg) => (
             <BolhaMensagem
-              key={Mensagem.id}
-              mensagem={Mensagem}
-              ehMinha={Mensagem.remetenteId === usuarioid}
+              key={msg.id}
+              mensagem={msg}
+              ehMinha={msg.remetenteId === usuarioid}
             />
-          ))}
-          <div ref={refFinal} />
-        </div>
+          ))
+        )}
+        <div ref={refFinal} />
+        {erro && <div>{erro}</div>}
         <InputMensagem onEnviar={handleEnviar} conectado={Conectado} />
       </div>
     );
