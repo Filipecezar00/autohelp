@@ -57,11 +57,6 @@ export async function buscarMensagens(req: Request, res: Response) {
     const conversa_Id = Number(conversaId);
     const usuarioId = (req as any).user.id;
 
-    console.log("DEBUG BUSCAR MENSAGENS");
-    console.log("req.params:", req.params);
-    console.log("conversaId:", conversaId);
-    console.log("usuarioId:", usuarioId);
-
     if (!conversa_Id || isNaN(conversa_Id)) {
       return res.status(400).json({ message: "ID de conversa inválido" });
     }
@@ -94,7 +89,7 @@ export async function buscarMensagens(req: Request, res: Response) {
 
     const mensagem = mensagens[0];
 
-    return res.status(200).json(mensagem);
+    return res.status(200).json(mensagens);
   } catch (error) {
     console.error("Erro ao realizar busca por mensagens", error);
     res

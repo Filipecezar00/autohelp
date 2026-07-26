@@ -7,11 +7,11 @@ import { BolhaMensagem } from "../components/chat/BolhaMensagem";
 import { InputMensagem } from "../components/chat/InputMensagem";
 
 export function Chat() {
-  const { prestadorId } = useParams<{ prestadorId: string }>();
+  const { conversaId } = useParams<{ conversaId: string }>();
   const usuarioid = useContext(AuthContext);
 
   const { Mensagens, Conectado, Carregando, erro, enviarMensagem } = useChat(
-    Number(prestadorId),
+    Number(conversaId),
   );
 
   const [texto, setTexto] = useState<string>("");
@@ -26,32 +26,42 @@ export function Chat() {
   }
 
   function handleEnviar() {
-    if (texto.trim().length >= 0) {
+    if (texto.trim().length > 0) {
       enviarMensagem(texto);
       setTexto("");
     }
-
-    return (
-      <div>
-        <div>
-          <h1>Chat Solicitação - {prestadorId}</h1>
-          <span>{Conectado ? "Conectado" : "Reconectando..."}</span>
-        </div>
-        {Mensagens.length === 0 ? (
-          <p>Nenhuma mensagem ainda, mande um Oi!</p>
-        ) : (
-          Mensagens.map((msg) => (
-            <BolhaMensagem
-              key={msg.id}
-              mensagem={msg}
-              ehMinha={msg.remetenteId === usuarioid}
-            />
-          ))
-        )}
-        <div ref={refFinal} />
-        {erro && <div>{erro}</div>}
-        <InputMensagem onEnviar={handleEnviar} conectado={Conectado} />
-      </div>
-    );
   }
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        width: "100%",
+        backgroundColor: "#121214",
+        color: "#ffffff",
+        padding: "20px",
+      }}
+    >
+      <div>
+        <h1>Chat Solicitação - {conversaId}</h1>
+        <span>{Conectado ? "Conectado" : "Reconectando..."}</span>
+      </div>
+      {Mensagens.length === 0 ? (
+        <p>Nenhuma mensagem ainda, mande um Oi!</p>
+      ) : (
+        Mensagens.map((msg) => (
+          <BolhaMensagem
+            key={msg.id}
+            mensagem={msg}
+            ehMinha={msg.remetenteId === usuarioid}
+          />
+        ))
+      )}
+      <div ref={refFinal} />
+
+      {erro && <div>{erro}</div>}
+      <InputMensagem onEnviar={handleEnviar} conectado={Conectado} />
+    </div>
+  );
 }

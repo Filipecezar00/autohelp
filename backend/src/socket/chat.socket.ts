@@ -16,20 +16,20 @@ export function registrarEventosChat(
     socket.on("entrar_sala", async (conversaId: number) => {
       try {
         const [rows]: any = await pool.query(
-          "SELECT * FROM solicitacoes WHERE id = ?",
+          "SELECT * FROM conversas WHERE id = ?",
           [conversaId],
         );
 
-        const solicitacao = rows[0];
+        const conversa = rows[0];
 
-        if (!solicitacao) {
+        if (!conversa) {
           socket.emit("erro", "Solicitação não encontrada");
           return;
         }
 
         const ehParticipante =
-          solicitacao.cliente_id === usuarioConectado.id ||
-          solicitacao.prestador_usuario_id === usuarioConectado.id;
+          Number(conversa.cliente_id) === Number(usuarioConectado.id) ||
+          Number(conversa.prestador_usuario_id) === Number(usuarioConectado.id);
 
         if (!ehParticipante) {
           socket.emit("erro", "Acesso negado a esta sala");

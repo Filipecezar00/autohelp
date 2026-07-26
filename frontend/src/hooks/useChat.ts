@@ -32,7 +32,6 @@ export function useChat(conversaId: number) {
         const resposta = await api.get<Mensagem[]>(
           `/conversas/${conversaId}/mensagens`,
         );
-        console.log("Mensagens recebidas no React:", resposta.data);
         setMensagens(resposta.data);
       } catch (error) {
         console.error("ERRO AO CARREGAR MENSAGENS NO REACT:", error);
