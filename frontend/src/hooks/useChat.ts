@@ -37,7 +37,6 @@ export function useChat(conversaId: number) {
         console.error("ERRO AO CARREGAR MENSAGENS NO REACT:", error);
         setErro("Erro durante o processo.");
       } finally {
-        console.log("FINALLY EXECUTOU");
         setCarregando(false);
       }
     }
