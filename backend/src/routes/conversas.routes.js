@@ -9,5 +9,5 @@ const router = express.Router();
 
 router.post("/", autenticarToken, buscarOuCriarConversa);
 router.get("/:conversaId/mensagens", autenticarToken, buscarMensagens);
-
+router.get("/minhas", autenticarToken);
 export const conversaRoutes = router;
