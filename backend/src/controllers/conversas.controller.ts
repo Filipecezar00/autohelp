@@ -97,3 +97,41 @@ export async function buscarMensagens(req: Request, res: Response) {
       .json({ message: "Erro ao realizar a busca por mensagens!" });
   }
 }
+
+export async function listarMinhasConversas(req: Request, res: Response) {
+  try {
+    const usuarioId = (req as any).user.id;
+
+    const [conversas]: any = await pool.query(
+      `
+      SELECT conversas.id AS conversa_id,
+      usuarios.nome AS nome_outro_usuario,
+      mensagens.texto AS ultima_mensagem, 
+      mensagens.criado_em AS data_ultima_mensagem
+      FROM conversas
+  
+      INNER JOIN usuarios ON usuarios.id =
+      IF(conversas.cliente_id = ?,conversas.prestador_id, conversas.cliente_id)
+
+      LEFT JOIN mensagens ON mensagens.id = (
+      SELECT id FROM mensagens 
+      WHERE conversa_id = conversas.id 
+      ORDER BY id DESC 
+      LIMIT 1
+      )
+
+      WHERE conversas.cliente_id = ? OR conversas.prestador_id = ? 
+
+      ORDER BY mensagens.id DESC; 
+      `,
+      [usuarioId, usuarioId, usuarioId],
+    );
+    return res.status(200).json(conversas);
+  } catch (error) {
+    console.log(
+      "ERRO AO REALIZAR CHAMADA DA FUNÇÃO 'listarMinhasConversas'",
+      error,
+    );
+    res.status(500).json({ message: "Erro ao listar conversas" });
+  }
+}
