@@ -62,6 +62,7 @@ export function registrarEventosChat(
         `,
           [conversaId, usuarioConectado.id, texto.trim()],
         );
+
         const idGerado = resultado.insertId;
 
         const mensagemCompleta: Mensagem = {
@@ -93,7 +94,7 @@ export function registrarEventosChat(
     conversaId: number,
     status: StatusSolicitacao,
   ) {
-    const nomeDaSala = `Conversa_${conversaId}`;
+    const nomeDaSala = `conversa_${conversaId}`;
     io.to(nomeDaSala).emit("status_atualizado", { conversaId, status });
   }
 }

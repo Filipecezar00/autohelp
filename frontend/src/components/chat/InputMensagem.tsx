@@ -10,6 +10,7 @@ export function InputMensagem({ onEnviar, conectado }: InputMensagemProps) {
   const [erro, setErro] = useState<string>("");
 
   const handleEnviar = () => {
+
     if (texto.trim().length == 0) {
       setErro("Digite algo para enviar a mensagem");
       return;
