@@ -68,7 +68,7 @@ export function registrarEventosChat(
           id: idGerado,
           conversaId: conversaId,
           remetenteId: usuarioConectado.id,
-          remetenteNome: usuarioConectado.nome || "Usuário",
+          remetenteNome: usuarioConectado.name || "Usuário",
           texto: texto.trim(),
           criadoEm: new Date().toISOString(),
         };
