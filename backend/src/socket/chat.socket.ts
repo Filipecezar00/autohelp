@@ -29,7 +29,7 @@ export function registrarEventosChat(
 
         const ehParticipante =
           Number(conversa.cliente_id) === Number(usuarioConectado.id) ||
-          Number(conversa.prestador_usuario_id) === Number(usuarioConectado.id);
+          Number(conversa.prestador_id) === Number(usuarioConectado.id);
 
         if (!ehParticipante) {
           socket.emit("erro", "Acesso negado a esta sala");

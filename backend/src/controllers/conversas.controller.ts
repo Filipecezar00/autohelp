@@ -87,8 +87,6 @@ export async function buscarMensagens(req: Request, res: Response) {
       [conversa_Id],
     );
 
-    const mensagem = mensagens[0];
-
     return res.status(200).json(mensagens);
   } catch (error) {
     console.error("Erro ao realizar busca por mensagens", error);
