@@ -5,13 +5,14 @@ import { TbDoorExit } from "react-icons/tb";
 import styles from "../../src/Sidebar.module.css";
 import { SidebarItem } from "./SidebarItem";
 import { FaMap, FaHistory, FaUser, FaTachometerAlt } from "react-icons/fa";
+import { IoMdChatboxes } from "react-icons/io";
 
 const MENUS_POR_PERFIL = {
   cliente: [
     { label: "Mapa", path: "/mapa", icone: FaMap },
     { label: "Histórico", path: "/historico", icone: FaHistory },
     { label: "Perfil", path: "/perfil", icone: FaUser },
-    
+    { label: "Conversas", path: "/conversas/minhas", icone: IoMdChatboxes },
   ],
 
   prestador: [
@@ -19,6 +20,7 @@ const MENUS_POR_PERFIL = {
     { label: "Mapa", path: "/mapa", icone: FaMap },
     { label: "Histórico", path: "/historico", icone: FaHistory },
     { label: "Perfil", path: "/perfil", icone: FaUser },
+    { label: "Conversas", path: "/conversas/minhas", icone: IoMdChatboxes },
   ],
 };
 

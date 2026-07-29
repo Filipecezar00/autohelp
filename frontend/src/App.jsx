@@ -11,6 +11,7 @@ import Historico from "./pages/Historico";
 import { Layout } from "../src/layouts/Layout";
 import { Perfil } from "../src/pages/Perfil";
 import { Chat } from "./pages/Chat";
+import { ListaConversas } from "./components/listaConversas";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/perfil" element={<Perfil />} />
                 <Route path="/historico" element={<Historico />} />
                 <Route path="/painelPrestador" element={<PainelPrestador />} />
+                <Route path="/conversas/minhas" element={<ListaConversas />} />
               </Route>
             </Route>
             <Route
