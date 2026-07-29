@@ -56,8 +56,22 @@ export function useChat(conversaId: number) {
   }, [conversaId]);
 
   function enviarMensagem(texto: string): void {
-    if (texto.trim().length === 0) return;
-    if (Conectado === false) return;
+    console.log("[useChat] enviarMensagem foi acionada!", {
+      textoRecebido: texto,
+      statusConectado: Conectado,
+      conversaIdAtual: conversaId,
+    });
+
+    if (texto.trim().length === 0) {
+      console.log("Interrompido: o texto está vazio.");
+      return;
+    }
+    if (Conectado === false) {
+      console.log("Interrompido: A variável Conectado é FALSE!");
+      return;
+    }
+
+    console.log("Passou por todas as travas! Disparando socket.emit...");
 
     socket.emit("enviar_mensagem", {
       texto: texto.trim(),

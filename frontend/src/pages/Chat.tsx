@@ -61,7 +61,7 @@ export function Chat() {
       <div ref={refFinal} />
 
       {erro && <div>{erro}</div>}
-      <InputMensagem onEnviar={handleEnviar} conectado={Conectado} />
+      <InputMensagem onEnviar={enviarMensagem} conectado={Conectado} />
     </div>
   );
 }
