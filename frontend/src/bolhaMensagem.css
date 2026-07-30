@@ -1,0 +1,43 @@
+.bolha-minha {
+  background-color: #00b4d8;
+  color: #ffffff;
+  border-radius: 16px 16px 0px 16px;
+}
+.bolha-outra {
+  background-color: #2b2d42;
+  color: #ffffff;
+  border-radius: 16px 16px 16px 0px;
+}
+.bolha {
+  max-width: 70%;
+  padding: 10px 14px;
+  word-break: break-word;
+}
+.mensagem-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  width: 100%;
+}
+.mensagem-container.minha {
+  align-items: flex-end;
+}
+.mensagem-container.outra {
+  align-items: flex-start;
+}
+.nome-remetente {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin-bottom: 4px;
+  padding-left: 4px;
+}
+.mensagem {
+  color: #ffffff;
+}
+.horario {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 4px;
+  text-align: right;
+  opacity: 0.7;
+}

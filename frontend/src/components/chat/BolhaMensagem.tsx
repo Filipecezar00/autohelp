@@ -1,5 +1,5 @@
 import { Mensagem } from "../../types/chat.types";
-
+import "../../../src/bolhaMensagem.css";
 interface Props {
   mensagem: Mensagem;
   ehMinha: boolean;
@@ -7,8 +7,10 @@ interface Props {
 
 export function BolhaMensagem({ mensagem, ehMinha }: Props) {
   const formatarHorario = (dataIso: string) => {
+    if (!dataIso) return "";
     try {
       const data = new Date(dataIso);
+      if (isNaN(data.getTime())) return "";
       return data.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -19,11 +21,15 @@ export function BolhaMensagem({ mensagem, ehMinha }: Props) {
   };
 
   return (
-    <div className={ehMinha ? "direita" : "esquerda"}>
-      {!ehMinha && <span>{mensagem.remetenteNome}</span>}
-      <div className={ehMinha ? "bolha-minha" : "bolha-outra"}>
-        <p>{mensagem.texto}</p>
-        <span>Horário:{formatarHorario(mensagem.criadoEm)}</span>
+    <div className={`mensagem-container ${ehMinha ? "minha" : "outra"}`}>
+      {!ehMinha && (
+        <span className="nome-remetente">{mensagem.remetenteNome}</span>
+      )}
+      <div className={`bolha ${ehMinha ? "bolha-minha" : "bolha-outra"}`}>
+        <p className="texto-mensagem">{mensagem.texto}</p>
+        <span className="horario">
+          Horário:{formatarHorario(mensagem.criadoEm)}
+        </span>
       </div>
     </div>
   );

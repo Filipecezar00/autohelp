@@ -5,6 +5,7 @@ import { useChat } from "../hooks/useChat";
 import TelaCarregando from "../components/TelaCarregando";
 import { BolhaMensagem } from "../components/chat/BolhaMensagem";
 import { InputMensagem } from "../components/chat/InputMensagem";
+import styles from "../../src/Chat.module.css";
 
 export function Chat() {
   const { conversaId } = useParams<{ conversaId: string }>();
@@ -32,23 +33,15 @@ export function Chat() {
     }
   }
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        width: "100%",
-        backgroundColor: "#121214",
-        color: "#ffffff",
-        padding: "20px",
-      }}
-    >
-      <div>
-        <h1>Chat Solicitação - {conversaId}</h1>
-        <span>{Conectado ? "Conectado" : "Reconectando..."}</span>
+    <div className={styles.container}>
+      <div className={styles.cabecalho}>
+        <h1 className={styles.title}>Chat Solicitação - {conversaId}</h1>
+        <span className={styles.badge}>
+          {Conectado ? "Conectado" : "Reconectando..."}
+        </span>
       </div>
       {Mensagens.length === 0 ? (
-        <p>Nenhuma mensagem ainda, mande um Oi!</p>
+        <p className={styles.advice}>Nenhuma mensagem ainda, mande um Oi!</p>
       ) : (
         Mensagens.map((msg) => (
           <BolhaMensagem

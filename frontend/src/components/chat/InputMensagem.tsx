@@ -1,4 +1,5 @@
 import { useState, KeyboardEvent } from "react";
+import styles from "../../../src/Chat.module.css";
 
 interface InputMensagemProps {
   onEnviar: (texto: string) => void;
@@ -10,7 +11,6 @@ export function InputMensagem({ onEnviar, conectado }: InputMensagemProps) {
   const [erro, setErro] = useState<string>("");
 
   const handleEnviar = () => {
-
     if (texto.trim().length == 0) {
       setErro("Digite algo para enviar a mensagem");
       return;
@@ -28,7 +28,7 @@ export function InputMensagem({ onEnviar, conectado }: InputMensagemProps) {
   };
 
   return (
-    <div>
+    <div className={styles.containerInput}>
       <input
         type="text"
         placeholder={conectado ? "Digite sua mensagem..." : "Conectando..."}
@@ -36,10 +36,12 @@ export function InputMensagem({ onEnviar, conectado }: InputMensagemProps) {
         onKeyDown={handleKeyDown}
         onChange={(e) => setTexto(e.target.value)}
         disabled={!conectado}
+        className={styles.input}
       />
       <button
         onClick={handleEnviar}
         disabled={!conectado || texto.trim().length === 0}
+        className={styles.btn_enviar}
       >
         Enviar
       </button>

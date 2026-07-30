@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.cabecalho,
+.advice {
+  color: #ffffff;
+  text-align: center;
+  margin: 10px;
+}
+.containerInput {
+  display: flex;
+  align-items: center;
+}
+.input {
+  margin: 10px;
+  padding: 10px;
+}
+.btn_enviar {
+  padding: 10px;
+  width: 130px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.btn_enviar:hover {
+  background-color: #3b7de8;
+  color: black;
+  cursor: pointer;
+}
+
+.direita {
+  text-align: right;
+}
+.esquerda {
+  text-align: left;
+}
