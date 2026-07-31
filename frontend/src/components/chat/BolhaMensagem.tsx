@@ -23,12 +23,12 @@ export function BolhaMensagem({ mensagem, ehMinha }: Props) {
   return (
     <div className={`mensagem-container ${ehMinha ? "minha" : "outra"}`}>
       {!ehMinha && (
-        <span className="nome-remetente">{mensagem.remetenteNome}</span>
+        <span className="nome-remetente">{mensagem.remetente_nome}</span>
       )}
       <div className={`bolha ${ehMinha ? "bolha-minha" : "bolha-outra"}`}>
         <p className="texto-mensagem">{mensagem.texto}</p>
         <span className="horario">
-          Horário:{formatarHorario(mensagem.criadoEm)}
+          Horário:{formatarHorario(mensagem.criadoEm ?? mensagem.criado_em)}
         </span>
       </div>
     </div>

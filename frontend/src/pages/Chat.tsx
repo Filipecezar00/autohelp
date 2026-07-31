@@ -10,12 +10,12 @@ import styles from "../../src/Chat.module.css";
 export function Chat() {
   const { conversaId } = useParams<{ conversaId: string }>();
   const usuarioid = useContext(AuthContext);
+  const { usuario } = usuarioid;
 
   const { Mensagens, Conectado, Carregando, erro, enviarMensagem } = useChat(
     Number(conversaId),
   );
 
-  const [texto, setTexto] = useState<string>("");
   const refFinal = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,12 +26,6 @@ export function Chat() {
     return <TelaCarregando mensagem={"carregando"} />;
   }
 
-  function handleEnviar() {
-    if (texto.trim().length > 0) {
-      enviarMensagem(texto);
-      setTexto("");
-    }
-  }
   return (
     <div className={styles.container}>
       <div className={styles.cabecalho}>
@@ -47,7 +41,7 @@ export function Chat() {
           <BolhaMensagem
             key={msg.id}
             mensagem={msg}
-            ehMinha={msg.remetenteId === usuarioid}
+            ehMinha={msg.remetenteId ?? msg.remetente_id == usuario.id}
           />
         ))
       )}
