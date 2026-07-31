@@ -11,14 +11,19 @@ export function useChat(conversaId: number) {
 
   useEffect(() => {
     async function handleSocket() {
-      socket.connect();
-      socket.emit("entrar_sala", conversaId);
+      if (socket.connected == true) {
+        setConectado(true);
+        socket.emit("entrar_sala", conversaId);
+      }
 
       socket.on("nova_mensagem", (mensagem: Mensagem) => {
         setMensagens((prev: any) => [...prev, mensagem]);
       });
 
-      socket.on("connect", () => setConectado(true));
+      socket.on("connect", () => {
+        setConectado(true);
+        socket.emit("entrar_sala", conversaId);
+      });
 
       socket.on("status_atualizado", (dados) => {});
 
@@ -28,6 +33,7 @@ export function useChat(conversaId: number) {
 
       socket.on("disconnect", () => setConectado(false));
 
+      socket.connect();
       try {
         const resposta = await api.get<Mensagem[]>(
           `/conversas/${conversaId}/mensagens`,
