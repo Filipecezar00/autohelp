@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import styles from "../../src/Chat.module.css";
 
 export function ListaConversas() {
   const [conversas, setConversas] = useState([]);
@@ -23,26 +24,21 @@ export function ListaConversas() {
   }, []);
 
   return (
-    <div className="container-lista">
-      <h2>Sua lista de conversa</h2>
+    <div className={styles.container_lista}>
+      <h2 className={styles.lista}>Sua lista de conversa</h2>
       {carregando ? (
         <p>Carregando conversas....</p>
       ) : (
-        <div className="cards-wrapper">
+        <div className={styles.cards}>
           {conversas.map((conversa: any) => (
             <div
               key={conversa.conversa_id}
               onClick={() => navigate(`/chat/${conversa.conversa_id}`)}
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                marginBottom: "10px",
-                cursor: "pointer",
-              }}
+              className={styles.conversa}
             >
               {" "}
               <h3>{conversa.nome_outro_usuario}</h3>
-              <p>{conversa.ultima_mensagem || "Nenhuma mensagem ainda..."}</p>
+              <p>{conversa.ultima_mensagem || "Nenhuma mensagem"}</p>
             </div>
           ))}
         </div>
