@@ -11,6 +11,8 @@ export function useChat(conversaId: number) {
 
   useEffect(() => {
     async function handleSocket() {
+      setMensagens([]);
+      setCarregando(true);
       if (socket.connected == true) {
         setConectado(true);
         socket.emit("entrar_sala", conversaId);
@@ -55,19 +57,12 @@ export function useChat(conversaId: number) {
       socket.off("nova_mensagem");
       socket.off("status_atualizado");
       socket.off("erro");
-      socket.disconnect();
     }
 
     return limpezaFunção;
   }, [conversaId]);
 
   function enviarMensagem(texto: string): void {
-    console.log("[useChat] enviarMensagem foi acionada!", {
-      textoRecebido: texto,
-      statusConectado: Conectado,
-      conversaIdAtual: conversaId,
-    });
-
     if (texto.trim().length === 0) {
       console.log("Interrompido: o texto está vazio.");
       return;
