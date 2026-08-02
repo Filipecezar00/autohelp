@@ -13,6 +13,14 @@ export function registrarEventosChat(
   io.on("connection", (socket: Socket<EventosCliente, EventosServidor>) => {
     const usuarioConectado = socket.data.usuario;
 
+    if (usuarioConectado?.id) {
+      const salaPessoal = `usuario_${usuarioConectado.id}`;
+      socket.join(salaPessoal);
+      console.log(
+        `Usuário ${usuarioConectado.id} conectado à sua sala pessoal:${salaPessoal}`,
+      );
+    }
+
     socket.on("entrar_sala", async (conversaId: number) => {
       try {
         const [rows]: any = await pool.query(
