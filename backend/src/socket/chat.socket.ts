@@ -104,11 +104,6 @@ export function registrarEventosChat(
           remetenteNome: usuarioConectado.name || "Alguém",
           texto: texto.trim(),
         });
-
-        console.log(`Mensagem enviada para: conversa_${conversaId}`);
-        console.log(
-          `Notificação emitida para sala pessoal: usuario_${destinatarioId}`,
-        );
       } catch {
         socket.emit("erro", "Erro ao salvar mensagem");
       }
