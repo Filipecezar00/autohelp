@@ -8,16 +8,40 @@ import AuthProvider from "./contexts/AuthContext";
 import { Suspense, lazy } from "react";
 import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
-import { Layout } from "../src/layouts/Layout";
-import { Perfil } from "../src/pages/Perfil";
+import { Layout } from "./layouts/Layout";
+import { Perfil } from "./pages/Perfil";
 import { Chat } from "./pages/Chat";
 import { ListaConversas } from "./components/listaConversas";
+import socket from "./services/socket";
+import { useEffect } from "react";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
 const Solicitacao = lazy(() => import("./pages/Solicitacao"));
 
-function App() {
+export function App() {
+  useEffect(() => {
+    socket.auth = { token: localStorage.getItem("token") };
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    function tratarNovaNotificacao(dados: {
+      conversaId: number;
+      remetenteNome: string;
+      texto: string;
+    }) {
+      console.log("ALERTA RECEBIDO NO FRONTEND:", dados);
+      alert(`${dados.remetenteNome}:${dados.texto}`);
+    }
+    socket.on("notificacao_mensagem", tratarNovaNotificacao);
+
+    return () => {
+      socket.off("notificacao_mensagem", tratarNovaNotificacao);
+    };
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
