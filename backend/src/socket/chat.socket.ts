@@ -6,7 +6,6 @@ import {
   EventosServidor,
   EventosCliente,
 } from "./tipos";
-
 export function registrarEventosChat(
   io: Server<EventosCliente, EventosServidor>,
 ) {
@@ -43,6 +42,7 @@ export function registrarEventosChat(
           socket.emit("erro", "Acesso negado a esta sala");
           return;
         }
+
         const nomeDaSala = `conversa_${conversaId}`;
         socket.join(nomeDaSala);
         console.log(
@@ -54,6 +54,7 @@ export function registrarEventosChat(
     });
     socket.on("enviar_mensagem", async (dados) => {
       const { texto, conversaId } = dados;
+
       if (!texto || texto.trim().length === 0) {
         socket.emit("erro", "Mensagem não pode ser vazia");
         return;
@@ -63,6 +64,14 @@ export function registrarEventosChat(
         return;
       }
       try {
+        const [rows]: any = await pool.query(
+          `SELECT * FROM conversas WHERE id = ?
+          `,
+          [conversaId],
+        );
+
+        const conversa = rows[0];
+
         const [resultado]: any = await pool.query(
           `
             INSERT INTO mensagens (conversa_id,remetente_id,texto) VALUES
@@ -83,8 +92,23 @@ export function registrarEventosChat(
           texto: texto.trim(),
           criadoEm: new Date().toISOString(),
         };
-        const nomeDaSala = `conversa_${conversaId}`;
-        io.to(nomeDaSala).emit("nova_mensagem", mensagemCompleta);
+
+        const destinatarioId =
+          Number(conversa.cliente_id) === Number(usuarioConectado.id)
+            ? Number(conversa.prestador_id)
+            : Number(conversa.cliente_id);
+
+        io.to(`conversa_${conversaId}`).emit("nova_mensagem", mensagemCompleta);
+        io.to(`usuario_${destinatarioId}`).emit("notificacao_mensagem", {
+          conversaId: conversaId,
+          remetenteNome: usuarioConectado.name || "Alguém",
+          texto: texto.trim(),
+        });
+
+        console.log(`Mensagem enviada para: conversa_${conversaId}`);
+        console.log(
+          `Notificação emitida para sala pessoal: usuario_${destinatarioId}`,
+        );
       } catch {
         socket.emit("erro", "Erro ao salvar mensagem");
       }
