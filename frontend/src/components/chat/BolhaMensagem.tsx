@@ -1,11 +1,17 @@
 import { Mensagem } from "../../types/chat.types";
 import "../../../src/bolhaMensagem.css";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useContext } from "react";
+
 interface Props {
   mensagem: Mensagem;
   ehMinha: boolean;
 }
 
 export function BolhaMensagem({ mensagem, ehMinha }: Props) {
+  const usuarioid = useContext(AuthContext);
+  const { usuario } = usuarioid;
+
   const formatarHorario = (dataIso: string) => {
     if (!dataIso) return "";
     try {
@@ -19,6 +25,12 @@ export function BolhaMensagem({ mensagem, ehMinha }: Props) {
       return "";
     }
   };
+  console.log("Comparando identidades:", {
+    texto: mensagem.texto,
+    remetenteId_da_msg: mensagem.remetenteId,
+    tipo_remetente: typeof mensagem.remetenteId,
+    saoIguais: Number(mensagem.remetenteId) === Number(usuario.id),
+  });
 
   return (
     <div className={`mensagem-container ${ehMinha ? "minha" : "outra"}`}>

@@ -68,7 +68,9 @@ export function registrarEventosChat(
         const mensagemCompleta: Mensagem = {
           id: idGerado,
           conversaId: conversaId,
+          conversa_id: conversaId,
           remetenteId: usuarioConectado.id,
+          remetente_id: usuarioConectado.id,
           remetenteNome: usuarioConectado.name || "Usuário",
           texto: texto.trim(),
           criadoEm: new Date().toISOString(),

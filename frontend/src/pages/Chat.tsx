@@ -26,6 +26,11 @@ export function Chat() {
     return <TelaCarregando mensagem={"carregando"} />;
   }
 
+  console.log("Comparando identidades:", {
+    meu_id_logado: usuarioid,
+    tipo_meu_id: typeof usuarioid,
+  });
+
   return (
     <div className={styles.container}>
       <div className={styles.cabecalho}>
@@ -41,7 +46,7 @@ export function Chat() {
           <BolhaMensagem
             key={msg.id}
             mensagem={msg}
-            ehMinha={msg.remetenteId ?? msg.remetente_id == usuario.id}
+            ehMinha={Number(msg.remetente_id) == Number(usuario.id)}
           />
         ))
       )}

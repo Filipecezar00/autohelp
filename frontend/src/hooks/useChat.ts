@@ -35,6 +35,7 @@ export function useChat(conversaId: number) {
 
       socket.on("disconnect", () => setConectado(false));
 
+      socket.auth = { token: localStorage.getItem("token") };
       socket.connect();
       try {
         const resposta = await api.get<Mensagem[]>(

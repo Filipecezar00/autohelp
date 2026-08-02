@@ -8,7 +8,9 @@ export type StatusSolicitacao =
 export interface Mensagem {
   id: number;
   conversaId: number;
+  conversa_id: number;
   remetenteId: number;
+  remetente_id: number;
   remetenteNome: string;
   texto: string;
   criadoEm: string;
