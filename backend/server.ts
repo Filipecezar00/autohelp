@@ -47,6 +47,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
+  (req as any).io = io;
   console.log(`requisição recebida: [${req.method}] ${req.url}`);
   next();
 });
@@ -59,6 +60,22 @@ app.use("/api/conversas", conversaRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
+});
+
+app.get("/api/teste-notificacao/:usuarioId", (req, res) => {
+  const { usuarioId } = req.params;
+  console.log(`HTTP CHAMOU! TENTANDO EMITIR PARA A SALA: usuario_${usuarioId}`);
+
+  (req as any).io.to(`usuario_${usuarioId}`).emit("status_atualizado", {
+    solicitacaoId: 999,
+    novoStatus: "EM_ANDAMENTO",
+    mensagem: "Teste com sucesso! Essa notificação veio de uma rota HTTP",
+  });
+
+  return res.json({
+    sucesso: true,
+    mensagem: `Evento disparado para a sala pessoal: usuario_${usuarioId}`,
+  });
 });
 
 registrarEventosChat(io);

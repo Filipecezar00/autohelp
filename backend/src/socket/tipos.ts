@@ -18,11 +18,11 @@ export interface Mensagem {
 
 export interface EventosServidor {
   nova_mensagem: (mensagem: Mensagem) => void;
-  notificacao_mensagem: (
-    conversaId: number,
-    remetenteNome: string,
-    texto: string,
-  ) => void;
+  notificacao_mensagem: (dados: {
+    conversaId: number;
+    remetenteNome: string;
+    texto: string;
+  }) => void;
   status_atualizado: (dados: {
     conversaId: number;
     status: StatusSolicitacao;

@@ -27,18 +27,23 @@ export function App() {
       socket.connect();
     }
 
-    function tratarNovaNotificacao(dados: {
-      conversaId: number;
-      remetenteNome: string;
-      texto: string;
-    }) {
-      console.log("ALERTA RECEBIDO NO FRONTEND:", dados);
+    socket.on("connect", () => {
+      console.log("React conectado ao Socket! ID da conexão:", socket.id);
+    });
+    socket.on("notificacao_mensagem", (dados) => {
       alert(`${dados.remetenteNome}:${dados.texto}`);
+    });
+
+    function tratarNovaNotificacao(dados) {
+      console.log("Objeto completo recebido no backend:", dados);
+      if (dados?.mensagem) {
+        alert(`[${dados.novoStatus || "AVISO"}] ${dados.mensagem}`);
+      }
     }
-    socket.on("notificacao_mensagem", tratarNovaNotificacao);
+    socket.on("status_atualizado", tratarNovaNotificacao);
 
     return () => {
-      socket.off("notificacao_mensagem", tratarNovaNotificacao);
+      socket.off("status_atualizado", tratarNovaNotificacao);
     };
   }, []);
 

@@ -194,6 +194,32 @@ async function atualizarStatus(req, res) {
   }
 }
 
+export async function aceitarSolicitacao(req, res) {
+  try {
+    const { solicitacaoId } = req.params;
+    const prestadorId = req.usuario.id;
+
+    (await pool.query(`UPDATE solicitacoes SET status = 'ACEITO' WHERE id = ?`),
+      [solicitacaoId]);
+
+    const [rows] = await pool.query(
+      `SELECT cliente_id FROM solicitacoes WHERE id = ?`,
+      [solicitacaoId],
+    );
+    const clienteId = rows[0].cliente_id;
+
+    req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
+      solicitacaoId: Number(solicitacaoId),
+      novoStatus: "ACEITO",
+      mensagem: "O prestador aceitou a sua solicitação de serviço",
+    });
+
+    return res.json({ sucesso: true, mensagem: "Solicitação aceita!" });
+  } catch (error) {
+    return res.status(500).json({ erro: "Erro ao aceitar a solicitação" });
+  }
+}
+
 async function cancelarSolicitacao(req, res) {
   try {
     const solicitacaoId = req.params.id;
