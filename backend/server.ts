@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { createServer } from "http";
+import pool from "./src/config/database.js";
 import { Server } from "socket.io";
 const jwt = require("jsonwebtoken");
 
@@ -62,20 +63,35 @@ app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
 });
 
-app.get("/api/teste-notificacao/:usuarioId", (req, res) => {
-  const { usuarioId } = req.params;
-  console.log(`HTTP CHAMOU! TENTANDO EMITIR PARA A SALA: usuario_${usuarioId}`);
+app.get("/api/teste-notificacao/:usuarioId", async (req, res) => {
+  try {
+    const { usuarioId } = req.params;
+    const titulo = "Atualização de Status";
+    const mensagem = "Notificação salva no banco e enviada em tempo real!";
 
-  (req as any).io.to(`usuario_${usuarioId}`).emit("status_atualizado", {
-    solicitacaoId: 999,
-    novoStatus: "EM_ANDAMENTO",
-    mensagem: "Teste com sucesso! Essa notificação veio de uma rota HTTP",
-  });
+    const [resultado]: any = await pool.query(
+      `INSERT INTO notificacoes (usuario_id,titulo,mensagem)VALUES(?,?,?)`,
+      [usuarioId, titulo, mensagem],
+    );
+    const novaNotificacao = {
+      id: resultado.insertId,
+      usuarioId: Number(usuarioId),
+      titulo,
+      mensagem,
+      lida: false,
+      criadoEm: new Date(),
+    };
+    (req as any).io
+      .to(`usuario_${usuarioId}`)
+      .emit("status_atualizado", novaNotificacao);
 
-  return res.json({
-    sucesso: true,
-    mensagem: `Evento disparado para a sala pessoal: usuario_${usuarioId}`,
-  });
+    return res.json({
+      sucesso: true,
+      mensagem: ``,
+    });
+  } catch (error) {
+    console.log("Erro ao salvar historico de notificação", error);
+  }
 });
 
 registrarEventosChat(io);
