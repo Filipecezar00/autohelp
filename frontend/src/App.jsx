@@ -10,10 +10,13 @@ import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
 import { Layout } from "./layouts/Layout";
 import { Perfil } from "./pages/Perfil";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Chat } from "./pages/Chat";
 import { ListaConversas } from "./components/listaConversas";
 import socket from "./services/socket";
 import { useEffect } from "react";
+import { TbTable } from "react-icons/tb";
 
 const Home = lazy(() => import("./pages/Home"));
 const Mapa = lazy(() => import("./pages/Mapa"));
@@ -31,13 +34,13 @@ export function App() {
       console.log("React conectado ao Socket! ID da conexão:", socket.id);
     });
     socket.on("notificacao_mensagem", (dados) => {
-      alert(`${dados.remetenteNome}:${dados.texto}`);
+      toast.success(`${dados.remetenteNome}:${dados.texto}`);
     });
 
     function tratarNovaNotificacao(dados) {
       console.log("Objeto completo recebido no backend:", dados);
       if (dados?.mensagem) {
-        alert(`[${dados.novoStatus || "AVISO"}] ${dados.mensagem}`);
+        toast.success(`[${dados.novoStatus || "AVISO"}] ${dados.mensagem}`);
       }
     }
     socket.on("status_atualizado", tratarNovaNotificacao);
@@ -78,6 +81,7 @@ export function App() {
               element={<h2>Erro 404: Página não encontrada</h2>}
             ></Route>
           </Routes>
+          <ToastContainer />
         </Suspense>
       </BrowserRouter>
     </AuthProvider>
