@@ -63,6 +63,28 @@ app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
 });
 
+app.get("/api/notificacoes/:usuarioId", async (req, res) => {
+  try {
+    const { usuarioId } = req.params;
+
+    const [notificacoes]: any = await pool.query(
+      `SELECT id,titulo,mensagem,criado_em FROM notificacoes WHERE usuario_id = ? AND lida=FALSE ORDER BY criado_em DESC`,
+      [usuarioId],
+    );
+
+    return res.json({
+      sucesso: true,
+      totalNaoLidas: notificacoes.length,
+      dados: notificacoes,
+    });
+  } catch (error) {
+    console.log("Erro ao realizar busca por notificações", error);
+    return res
+      .status(500)
+      .json({ message: "Erro ao realizar busca por notificações" });
+  }
+});
+
 app.get("/api/teste-notificacao/:usuarioId", async (req, res) => {
   try {
     const { usuarioId } = req.params;
