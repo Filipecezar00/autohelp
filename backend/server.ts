@@ -85,6 +85,30 @@ app.get("/api/notificacoes/:usuarioId", async (req, res) => {
   }
 });
 
+app.patch("/api/notificacoes/:id/lida", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [notificacoesLidas]: any = await pool.query(
+      `
+      UPDATE notificacoes SET lida = TRUE WHERE id = ?
+    `,
+      [id],
+    );
+    if (notificacoesLidas.affectedRows === 0) {
+      return res.status(404).json("Notificação não encontrada");
+    } else {
+      return res
+        .status(200)
+        .json({ message: "Sucesso ao realizar leitura da mensagem" });
+    }
+  } catch (error) {
+    console.error("ERRO AO REALIZAR LEITURA DA MENSAGEM", error);
+    return res
+      .status(500)
+      .json({ message: "ERRO AO REALIZAR TROCA DE STATUS DA MENSAGEM" });
+  }
+});
+
 app.get("/api/teste-notificacao/:usuarioId", async (req, res) => {
   try {
     const { usuarioId } = req.params;
