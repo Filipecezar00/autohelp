@@ -85,6 +85,32 @@ app.get("/api/notificacoes/:usuarioId", async (req, res) => {
   }
 });
 
+app.post("/api/notificacoes", async (req, res) => {
+  try {
+    const { usuarioId, titulo, mensagem } = req.body;
+
+    const [resultado]: any = await pool.query(
+      `INSERT INTO notificacoes (usuario_id,titulo,mensagem,lida)
+       VALUES (?,?,?,FALSE)`,
+      [usuarioId, titulo, mensagem],
+    );
+
+    const novaNotificacao = {
+      id: resultado.insertId,
+      usuarioId: usuarioId,
+      titulo: titulo,
+      mensagem: mensagem,
+      lida: false,
+    };
+
+    io.emit("status_atualizado", novaNotificacao);
+    return res.status(201).json(novaNotificacao);
+  } catch (error) {
+    console.error("ERRO AO EXECUTAR POST DA API DE NOTIFICAÇÕES", error);
+    return res.status(500).json({ message: "ERRO AO CONCLUIR OPERAÇÃO" });
+  }
+});
+
 app.patch("/api/notificacoes/:id/lida", async (req, res) => {
   try {
     const { id } = req.params;

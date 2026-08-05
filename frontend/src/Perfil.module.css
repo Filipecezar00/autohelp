@@ -193,12 +193,11 @@
 .headerNotificacoes {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  flex-direction: row;
 }
 .listaNotificacoes {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-}
-.titleNotificacoes {
 }
