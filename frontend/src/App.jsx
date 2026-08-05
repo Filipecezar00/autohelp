@@ -5,7 +5,7 @@ import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/PrivateRoute";
 import { PainelPrestador } from "./pages/PainelPrestador";
 import AuthProvider from "./contexts/AuthContext";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import Historico from "./pages/Historico";
 import { Layout } from "./layouts/Layout";
@@ -44,9 +44,8 @@ export function App() {
       }
     }
     socket.on("status_atualizado", tratarNovaNotificacao);
-
     return () => {
-      socket.off("status_atualizado", tratarNovaNotificacao);
+      socket.off("status_atualizado");
     };
   }, []);
 
@@ -60,7 +59,6 @@ export function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/" element={<Navigate to="login" replace />} />
-
             <Route element={<PrivateRoute />}>
               <Route element={<Layout />}>
                 <Route path="/home" element={<Home />} />

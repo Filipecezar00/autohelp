@@ -190,3 +190,15 @@
 .tipoPrestador {
   font-family: sans-serif;
 }
+.headerNotificacoes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.listaNotificacoes {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.titleNotificacoes {
+}
