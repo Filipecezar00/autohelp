@@ -24,6 +24,7 @@ const Solicitacao = lazy(() => import("./pages/Solicitacao"));
 
 export function App() {
   useEffect(() => {
+    console.log("[APP.jsx] Registrando ouvinte do Socket");
     socket.auth = { token: localStorage.getItem("token") };
 
     if (!socket.connected) {
@@ -37,15 +38,10 @@ export function App() {
       toast.success(`${dados.remetenteNome}:${dados.texto}`);
     });
 
-    function tratarNovaNotificacao(dados) {
-      console.log("Objeto completo recebido no backend:", dados);
-      if (dados?.mensagem) {
-        toast.success(`[${dados.novoStatus || "AVISO"}] ${dados.mensagem}`);
-      }
-    }
-    socket.on("status_atualizado", tratarNovaNotificacao);
     return () => {
+      console.log("[APP.jsx] Removendo ouvinte do Socket");
       socket.off("status_atualizado");
+      socket.off("notificacao_mensagem");
     };
   }, []);
 

@@ -2,34 +2,52 @@ import { FaUser } from "react-icons/fa";
 import styles from "../../Perfil.module.css";
 import { CiBellOn } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import socket from "../../services/socket";
+import api from "../../services/api";
+import { toast } from "react-toastify";
 export function PerfilHeader({ perfil }) {
   const [notificacoes, setNotificacoes] = useState([]);
 
-  async function BuscarNotificacoes() {
-    const req = await api.get("http://localhost:3001/api/notificacoes/5");
-    const resposta = req.data;
-    setNotificacoes(resposta);
-
+  useEffect(() => {
+    async function BuscarNotificacoes() {
+      try {
+        const req = await api.get("http://localhost:3001/api/notificacoes/5");
+        if (Array.isArray(req.data)) {
+          setNotificacoes(req.data);
+        } else {
+          setNotificacoes([]);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar notificações,", error);
+        setNotificacoes([]);
+      }
+    }
     BuscarNotificacoes();
 
-    socket.on("status_atualizado", (novaNotificacao) => {
+    const tratarNotificacao = (novaNotificacao) => {
       toast.success(novaNotificacao.mensagem);
       setNotificacoes((listaAnterior) => [novaNotificacao, ...listaAnterior]);
-    });
-  }
+    };
+
+    socket.on("status_atualizado", tratarNotificacao);
+
+    return () => {
+      socket.off("status_atualizado", tratarNotificacao);
+    };
+  }, []);
 
   async function marcarComoLida(idNotificacao) {
-    await api.patch(
-      `http://localhost:3001/api/notificacoes/${idNotificacao}/lida`,
-    );
-    setNotificacoes((listaAnterior) =>
-      listaAnterior.filter((item) => item.id !== idNotificacao),
-    );
-    const filtragem = req.filter((id) => id === idNotificacao);
-
-    setNotificacoes(filtragem);
+    try {
+      await api.patch(
+        `http://localhost:3001/api/notificacoes/${idNotificacao}/lida`,
+      );
+      setNotificacoes((listaAnterior) =>
+        listaAnterior.filter((item) => item.id !== idNotificacao),
+      );
+    } catch (error) {
+      console.error("ERRO AO MARCAR COMO LIDA:", error);
+    }
   }
   return (
     <div className={styles.containerHeader}>
@@ -42,15 +60,16 @@ export function PerfilHeader({ perfil }) {
           <small>Nenhuma notificação pendente</small>
         ) : (
           <ul>
-            {notificacoes.map((item) => (
-              <li key={item.id}>
-                <h3>{item.titulo}</h3>
-                <p>{item.mensagem}</p>
-                <button onClick={() => marcarComoLida(item.id)}>
-                  marcar como lida <FaCheck size={24} />
-                </button>
-              </li>
-            ))}
+            {Array.isArray(notificacoes) &&
+              notificacoes.map((item) => (
+                <li key={item.id}>
+                  <h3>{item.titulo}</h3>
+                  <p>{item.mensagem}</p>
+                  <button onClick={() => marcarComoLida(item.id)}>
+                    marcar como lida <FaCheck size={24} />
+                  </button>
+                </li>
+              ))}
           </ul>
         )}
       </div>
