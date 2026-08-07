@@ -10,9 +10,11 @@ export function PerfilHeader({ perfil }) {
   const [notificacoes, setNotificacoes] = useState([]);
 
   useEffect(() => {
-    async function BuscarNotificacoes() {
+    async function BuscarNotificacoes(id) {
       try {
-        const req = await api.get("http://localhost:3001/api/notificacoes/5");
+        const req = await api.get(
+          `http://localhost:3001/api/notificacoes/${id}`,
+        );
         if (Array.isArray(req.data)) {
           setNotificacoes(req.data);
         } else {
