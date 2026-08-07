@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import pool from "./src/config/database.js";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 const jwt = require("jsonwebtoken");
 
 import { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
@@ -61,6 +61,12 @@ app.use("/api/conversas", conversaRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Funcionando!" });
+});
+
+io.on("connection", (socket) => {
+  const idSeguro = socket.data.usuario.id;
+  socket.join("usuario_" + idSeguro);
+  console.log("Usuário autenticado entrou na sala!");
 });
 
 app.get("/api/notificacoes/:usuarioId", async (req, res) => {
