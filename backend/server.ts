@@ -109,7 +109,8 @@ app.post("/api/notificacoes", async (req, res) => {
       lida: false,
     };
 
-    io.emit("status_atualizado", novaNotificacao);
+    io.to(`usuario_${usuarioId}`).emit("status_atualizado", novaNotificacao);
+
     return res.status(201).json(novaNotificacao);
   } catch (error) {
     console.error("ERRO AO EXECUTAR POST DA API DE NOTIFICAÇÕES", error);
