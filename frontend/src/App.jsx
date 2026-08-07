@@ -24,7 +24,6 @@ const Solicitacao = lazy(() => import("./pages/Solicitacao"));
 
 export function App() {
   useEffect(() => {
-    console.log("[APP.jsx] Registrando ouvinte do Socket");
     socket.auth = { token: localStorage.getItem("token") };
 
     if (!socket.connected) {
