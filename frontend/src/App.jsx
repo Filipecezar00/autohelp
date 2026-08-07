@@ -39,6 +39,7 @@ export function App() {
 
     return () => {
       socket.off("notificacao_mensagem");
+      socket.off("connect");
     };
   }, []);
 
