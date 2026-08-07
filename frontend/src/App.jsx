@@ -39,8 +39,6 @@ export function App() {
     });
 
     return () => {
-      console.log("[APP.jsx] Removendo ouvinte do Socket");
-      socket.off("status_atualizado");
       socket.off("notificacao_mensagem");
     };
   }, []);
