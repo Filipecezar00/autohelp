@@ -78,7 +78,7 @@ export default function Solicitacao() {
 
       setSucesso(true);
 
-      navigate(`/mensagens/${idDaSolicitacaoCriada}`);
+      navigate(`/historico`);
     } catch (erro) {
       if (erro.response && erro.response?.status === 409) {
         setErro("Você já tem uma solicitação ativa com esse prestador.");
