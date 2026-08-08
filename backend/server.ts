@@ -142,6 +142,33 @@ app.patch("/api/notificacoes/:id/lida", async (req, res) => {
   }
 });
 
+app.patch(
+  `/api/notificacoes/usuario/:usuarioId/marcar-todas`,
+  async (req, res) => {
+    try {
+      const { usuarioId } = req.params;
+
+      const [notificacao] = await pool.query(
+        `UPDATE notificacoes SET lida = true WHERE usuario_id = ? AND lida=false`,
+        [usuarioId],
+      );
+
+      if (notificacao.affectedRows === 0) {
+        return res
+          .status(200)
+          .json({ message: "Nenhuma notificação pendente no banco" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Todas as notificações foram marcadas como lidas" });
+    } catch (error) {
+      console.log("ERRO AO REALIZAR A EXECUÇÃO DE MARCAR TODAS:", error);
+      return res.status(500).json({ message: "Erro ao marcar todas" });
+    }
+  },
+);
+
 app.get("/api/teste-notificacao/:usuarioId", async (req, res) => {
   try {
     const { usuarioId } = req.params;
