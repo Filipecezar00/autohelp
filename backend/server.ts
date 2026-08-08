@@ -6,6 +6,7 @@ import { createServer } from "http";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
 const jwt = require("jsonwebtoken");
+import { iniciarJob } from "./src/services/expirarSolicitacoes.js";
 
 import { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
 
@@ -196,6 +197,7 @@ registrarEventosChat(io);
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`Servidor Rodando na porta ${PORT}`);
+  iniciarJob();
   if (app._router && app._router.stack) {
     app._router.stack.forEach((layer: any) => {
       if (layer.route) {
