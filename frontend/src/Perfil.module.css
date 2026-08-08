@@ -215,6 +215,7 @@
   border: 1px solid #1a4fa8;
   padding: 10px;
   border-radius: 15px;
+  margin-top: 25px;
 }
 
 .badge {
@@ -251,4 +252,20 @@
 
 .notificacao:last-child {
   border-bottom: none;
+}
+
+.cabecalho {
+  text-align: center;
+  margin: 10px;
+}
+.btn_marcarTodas {
+  background: none;
+  border: none;
+  color: #ffffff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn_marcarTodas:hover {
+  color: #2679ff;
 }

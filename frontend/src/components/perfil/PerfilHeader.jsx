@@ -14,6 +14,20 @@ export function PerfilHeader({ perfil }) {
     return notificacao.lida === false;
   });
 
+  async function marcarTodasComoLidas() {
+    try {
+      const requisicao = await api.patch(
+        `http://localhost:3001/api/notificacoes/usuario/${perfil.usuario.id}/marcar-todas`,
+      );
+
+      if (requisicao) {
+        setNotificacoes([]);
+      }
+    } catch (error) {
+      console.error("Erro ao executar função", error);
+    }
+  }
+
   function toggleNotificacoes() {
     setMenuAberto(!menuAberto);
   }
@@ -33,7 +47,7 @@ export function PerfilHeader({ perfil }) {
         setNotificacoes([]);
       }
     }
-    BuscarNotificacoes(perfil.id);
+    BuscarNotificacoes(perfil.usuario.id);
 
     const tratarNotificacao = (novaNotificacao) => {
       toast.success(novaNotificacao.mensagem);
@@ -73,8 +87,14 @@ export function PerfilHeader({ perfil }) {
       <div className={styles.listaNotificacoes}>
         {menuAberto === true && (
           <div>
-            <header>
+            <header className={styles.cabecalho}>
               <h3 className={styles.tituloCabecalho}>Notificações</h3>
+              <button
+                className={styles.btn_marcarTodas}
+                onClick={() => marcarTodasComoLidas()}
+              >
+                Marcar Todas
+              </button>
             </header>
             {notificacoes.length === 0 ? (
               <small>Nenhuma notificação pendente</small>
