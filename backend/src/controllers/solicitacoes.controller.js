@@ -120,7 +120,13 @@ async function atualizarStatus(req, res) {
     const novoStatus = req.body.status;
     const usuarioId = req.user.id;
 
-    const statusPermitidos = ["aceita", "recusada", "concluida", "cancelada"];
+    const statusPermitidos = [
+      "aceita",
+      "recusada",
+      "concluida",
+      "cancelada",
+      "expirada",
+    ];
 
     if (!statusPermitidos.includes(novoStatus)) {
       return res.status(400).json({ message: "status inválido" });
@@ -163,6 +169,7 @@ async function atualizarStatus(req, res) {
       recusada: [],
       concluida: [],
       cancelada: [],
+      expirada: [],
     };
     const transicoesPermitidas = transicoesValidas[solicitacao.status];
 
