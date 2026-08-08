@@ -8,7 +8,15 @@ import api from "../../services/api";
 import { toast } from "react-toastify";
 export function PerfilHeader({ perfil }) {
   const [notificacoes, setNotificacoes] = useState([]);
+  const [menuAberto, setMenuAberto] = useState(false);
 
+  const naolidaCount = notificacoes.filter((notificacao) => {
+    return notificacao.lida === false;
+  });
+
+  function toggleNotificacoes() {
+    setMenuAberto(!menuAberto);
+  }
   useEffect(() => {
     async function BuscarNotificacoes(id) {
       try {
@@ -25,7 +33,7 @@ export function PerfilHeader({ perfil }) {
         setNotificacoes([]);
       }
     }
-    BuscarNotificacoes();
+    BuscarNotificacoes(perfil.id);
 
     const tratarNotificacao = (novaNotificacao) => {
       toast.success(novaNotificacao.mensagem);
@@ -53,28 +61,38 @@ export function PerfilHeader({ perfil }) {
   }
   return (
     <div className={styles.containerHeader}>
-      <span className={styles.headerNotificacoes}>
+      <span
+        className={styles.headerNotificacoes}
+        onClick={() => toggleNotificacoes()}
+      >
+        {naolidaCount.length > 0 &&
+          `Notificações não lidas:${naolidaCount.length}`}
         <CiBellOn size={24} />
-        {notificacoes.length}
       </span>
       <div className={styles.listaNotificacoes}>
-        {notificacoes.length === 0 ? (
-          <small>Nenhuma notificação pendente</small>
-        ) : (
-          <ul>
-            {Array.isArray(notificacoes) &&
-              notificacoes.map((item) => (
-                <li key={item.id}>
-                  <h3>{item.titulo}</h3>
-                  <p>{item.mensagem}</p>
-                  <button onClick={() => marcarComoLida(item.id)}>
-                    marcar como lida <FaCheck size={24} />
-                  </button>
-                </li>
-              ))}
-          </ul>
+        {menuAberto === true && (
+          <div>
+            <header>Notificações</header>
+            {notificacoes.length === 0 ? (
+              <small>Nenhuma notificação pendente</small>
+            ) : (
+              <ul>
+                {Array.isArray(notificacoes) &&
+                  notificacoes.map((item) => (
+                    <li key={item.id}>
+                      <h3>{item.titulo}</h3>
+                      <p>{item.mensagem}</p>
+                      <button onClick={() => marcarComoLida(item.id)}>
+                        marcar como lida <FaCheck size={24} />
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
         )}
       </div>
+
       <div className={styles.containerUser}>
         <span className={styles.iconeUser}>
           <FaUser size={24} />
