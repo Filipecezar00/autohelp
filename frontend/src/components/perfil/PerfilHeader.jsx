@@ -65,24 +65,30 @@ export function PerfilHeader({ perfil }) {
         className={styles.headerNotificacoes}
         onClick={() => toggleNotificacoes()}
       >
-        {naolidaCount.length > 0 &&
-          `Notificações não lidas:${naolidaCount.length}`}
-        <CiBellOn size={24} />
+        <CiBellOn size={24} className={styles.sino} />
+        {naolidaCount.length > 0 && (
+          <span className={styles.badge}>{naolidaCount.length}</span>
+        )}
       </span>
       <div className={styles.listaNotificacoes}>
         {menuAberto === true && (
           <div>
-            <header>Notificações</header>
+            <header>
+              <h3 className={styles.tituloCabecalho}>Notificações</h3>
+            </header>
             {notificacoes.length === 0 ? (
               <small>Nenhuma notificação pendente</small>
             ) : (
-              <ul>
+              <ul className={styles.lista}>
                 {Array.isArray(notificacoes) &&
                   notificacoes.map((item) => (
-                    <li key={item.id}>
-                      <h3>{item.titulo}</h3>
-                      <p>{item.mensagem}</p>
-                      <button onClick={() => marcarComoLida(item.id)}>
+                    <li key={item.id} className={styles.notificacao}>
+                      <h4 className={styles.titulo}>{item.titulo}</h4>
+                      <p className={styles.mensagem}>{item.mensagem}</p>
+                      <button
+                        onClick={() => marcarComoLida(item.id)}
+                        className={styles.btn_marcarLida}
+                      >
                         marcar como lida <FaCheck size={24} />
                       </button>
                     </li>
@@ -94,7 +100,7 @@ export function PerfilHeader({ perfil }) {
       </div>
 
       <div className={styles.containerUser}>
-        <span className={styles.iconeUser}>
+        <span className={styles.iconeUser} title="Ver notificações">
           <FaUser size={24} />
         </span>
       </div>

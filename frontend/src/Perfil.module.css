@@ -200,4 +200,55 @@
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  position: relative;
+}
+.sino:hover {
+  color: #fff454;
+  cursor: pointer;
+}
+.lista {
+  position: absolute;
+  z-index: 10;
+  top: 35px;
+  right: 0;
+  background-color: #0b1120;
+  border: 1px solid #1a4fa8;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.badge {
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.titulo {
+  font-weight: bold;
+}
+.btn_marcarLida {
+  background: none;
+  color: #059669;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.tituloCabecalho {
+  text-align: center;
+  margin: 5px;
+}
+
+.notificacao {
+  margin-left: 10px;
+  border-bottom: 1px solid #1a4fa8;
+  padding: 4px;
+}
+
+.notificacao:last-child {
+  border-bottom: none;
 }
