@@ -39,9 +39,24 @@ async function criarSolicitacao(req, res) {
       [clienteId, prestadorId, descricao, tempoAtual],
     );
 
+    const novaSolicitacaoID = resultado.insertId;
+
+    const novaSolicitacao = {
+      id: novaSolicitacaoID,
+      clienteId: clienteId,
+      nome_cliente: req.usuario.nome,
+      status: "pendente",
+      criado_em: new Date(),
+    };
+
+    req.io
+      .to(`usuario_${prestadorId}`)
+      .emit("nova_solicitacao", novaSolicitacao);
+
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",
-      id: resultado.insertId,
+      id: novaSolicitacaoID,
+      solicitacao: novaSolicitacao,
     });
   } catch (error) {
     console.error("Erro interno:", error);
