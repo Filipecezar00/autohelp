@@ -206,14 +206,37 @@ export async function aceitarSolicitacao(req, res) {
     const { solicitacaoId } = req.params;
     const prestadorId = req.usuario.id;
 
-    (await pool.query(`UPDATE solicitacoes SET status = 'ACEITO' WHERE id = ?`),
-      [solicitacaoId]);
-
     const [rows] = await pool.query(
-      `SELECT cliente_id FROM solicitacoes WHERE id = ?`,
+      `SELECT cliente_id,status, criado_em FROM solicitacoes WHERE id = ?`,
       [solicitacaoId],
     );
-    const clienteId = rows[0].cliente_id;
+
+    const solicitacao = rows[0];
+
+    if (!solicitacao) {
+      return res.status(404).json("Solicitação não encontrada");
+    }
+
+    if (solicitacao.status != "pendente") {
+      return res
+        .status(400)
+        .json("Esta solicitação já foi aceita, cancelada ou expirada");
+    }
+    const agora = new Date();
+
+    const diferenca = agora - new Date(solicitacao.criado_em);
+    const minutosDecorridos = Math.floor(diferenca / 60000);
+
+    if (minutosDecorridos >= 30) {
+      await atualizarStatus(solicitacaoId, "expirado");
+      return res
+        .status(400)
+        .json("Tempo limite excedido. A solicitação acabou");
+    }
+
+    const clienteId = solicitacao.cliente_id;
+
+    await atualizarStatus(solicitacaoId, "aceito", prestadorId);
 
     req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
       solicitacaoId: Number(solicitacaoId),
@@ -223,6 +246,7 @@ export async function aceitarSolicitacao(req, res) {
 
     return res.json({ sucesso: true, mensagem: "Solicitação aceita!" });
   } catch (error) {
+    console.error("Erro ao aceitar solicitação:", error);
     return res.status(500).json({ erro: "Erro ao aceitar a solicitação" });
   }
 }
