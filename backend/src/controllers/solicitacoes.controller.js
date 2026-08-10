@@ -125,7 +125,7 @@ async function atualizarStatus(req, res) {
       "recusada",
       "concluida",
       "cancelada",
-      "expirada",
+      "expirado",
     ];
 
     if (!statusPermitidos.includes(novoStatus)) {
@@ -169,7 +169,7 @@ async function atualizarStatus(req, res) {
       recusada: [],
       concluida: [],
       cancelada: [],
-      expirada: [],
+      expirado: [],
     };
     const transicoesPermitidas = transicoesValidas[solicitacao.status];
 
@@ -179,8 +179,7 @@ async function atualizarStatus(req, res) {
 
     if (solicitacao.status === "cancelada") {
       return res.status(422).json({
-        message:
-          "Ops! O cliente cancelou esta solicitação antes de você aceitar",
+        message: "Solicitação cancelada, não foi possivel aceitar",
       });
     }
 
@@ -227,7 +226,7 @@ export async function aceitarSolicitacao(req, res) {
     const diferenca = agora - new Date(solicitacao.criado_em);
     const minutosDecorridos = Math.floor(diferenca / 60000);
 
-    if (minutosDecorridos >= 30) {
+    if (minutosDecorridos >= 1) {
       await atualizarStatus(solicitacaoId, "expirado");
       return res
         .status(400)

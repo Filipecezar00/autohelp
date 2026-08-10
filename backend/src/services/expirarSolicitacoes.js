@@ -2,14 +2,14 @@ import cron from "node-cron";
 import pool from "../config/database";
 
 export async function iniciarJob() {
-  const frequenciaCron = "*/5 * * * *";
+  const frequenciaCron = "*/1 * * * *";
 
   cron.schedule(frequenciaCron, async () => {
     try {
       const [resultado] = await pool.query(
         `UPDATE solicitacoes SET status = 'expirado'
-             WHERE status = 'pendente' AND data_criacao <= 
-             NOW() - INTERVAL 30 MINUTE  `,
+             WHERE status = 'pendente' AND criado_em <= 
+             NOW() - INTERVAL 1 MINUTE  `,
       );
       if (resultado.affectedRows > 0) {
         console.log(
