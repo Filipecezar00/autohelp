@@ -20,7 +20,7 @@ export function registrarEventosChat(
       );
     }
 
-    socket.on("nova_solicitacao", async (dados) => {
+    socket.on("nova_solicitacao", async (dados: any) => {
       try {
         const { prestadorId, tipoServico, descricao } = dados;
         const clientId = socket.usuario.id;

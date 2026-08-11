@@ -3,7 +3,8 @@ export type StatusSolicitacao =
   | "aceita"
   | "recusada"
   | "concluida"
-  | "cancelada";
+  | "cancelada"
+  | "expirado";
 
 export interface Mensagem {
   id: number;
@@ -28,6 +29,7 @@ export interface EventosServidor {
     status: StatusSolicitacao;
   }) => void;
   erro: (mensagem: string) => void;
+  nova_solicitacao: (dados: any) => void;
 }
 
 export interface EventosCliente {
