@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import CardSolicitacao from "../components/CardSolicitacao";
 import { TbDoorExit } from "react-icons/tb";
 import TelaCarregando from "../components/TelaCarregando";
+import socket from "../services/socket";
 
 const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
@@ -37,6 +38,13 @@ export function PainelPrestador() {
       return;
     }
 
+    socket.on("nova_solicitacao", (novaSolicitacao) => {
+      console.log("Nova solicitação recebida:", novaSolicitacao);
+
+      setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
+    });
+
+    return () => socket.off("nova_solicitacao");
     buscarSolicitacao();
   }, [usuario]);
 

@@ -20,6 +20,40 @@ export function registrarEventosChat(
       );
     }
 
+    socket.on("nova_solicitacao", async (dados) => {
+      try {
+        const { prestadorId, tipoServico, descricao } = dados;
+        const clientId = socket.usuario.id;
+
+        const [solicitacao]: any = await pool.query(
+          `INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status,criado_em) VALUES (?,?,?,'pendente',NOW())  `,
+          [clientId, prestadorId, descricao],
+        );
+
+        const solicitacaoId = solicitacao.insertId;
+
+        const resposta = {
+          status: "pendente",
+          criado_em: new Date(),
+          prestadorId: prestadorId,
+          tipoServico: tipoServico,
+          descricao: descricao,
+          clientId: clientId,
+          solicitacaoId: solicitacaoId,
+        };
+
+        io.to(`usuario_${prestadorId}`).emit(
+          "nova_solicitacao_recebida",
+          resposta,
+        );
+
+        socket.emit("solicitacao_criada_sucesso", resposta);
+      } catch (error) {
+        console.error("Erro no Socket nova_solicitacao:", error);
+        socket.emit("erro", "erro ao processar nova solicitacao");
+      }
+    });
+
     socket.on("entrar_sala", async (conversaId: number) => {
       try {
         const [rows]: any = await pool.query(
@@ -118,6 +152,7 @@ export function registrarEventosChat(
       );
     });
   });
+
   function emitirStatusAtualizado(
     io: Server<EventosCliente, EventosServidor>,
     conversaId: number,
