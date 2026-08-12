@@ -28,6 +28,8 @@ export default function Historico() {
           }
         });
       });
+      console.log("[DEBUG] EVENTO RECEBIDO NO FRONTEND!", dadosEvento);
+
       toast.info("Sua solicitação expirou por tempo limite.");
     });
     return () => socket.off("solicitacao_expirada");
@@ -70,7 +72,7 @@ export default function Historico() {
       toast.success("Solicitação cancelada com sucesso");
     } catch (error) {
       if (error.response && error.response.status === 422) {
-        toast.error("Essa solitação já foi cancelada, pelo prestador");
+        toast.error("Essa solitação já foi cancelada ou expirou");
       } else {
         toast.error("Não foi possivel cancelar a solicitação. Tente novamente");
       }
