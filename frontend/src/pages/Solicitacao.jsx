@@ -8,6 +8,7 @@ import { GiConfirmed } from "react-icons/gi";
 import styles from "../../src/Solicitacao.module.css";
 
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 const LABEL_TIPO = {
   mecanico: "Mecânico",
@@ -79,6 +80,7 @@ export default function Solicitacao() {
       setSucesso(true);
 
       navigate(`/historico`);
+      toast.success("Sua solicitação foi enviada com sucesso!");
     } catch (erro) {
       if (erro.response && erro.response?.status === 409) {
         setErro("Você já tem uma solicitação ativa com esse prestador.");

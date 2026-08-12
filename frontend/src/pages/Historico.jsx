@@ -58,7 +58,6 @@ export default function Historico() {
     if (!confirmado) {
       return;
     }
-
     try {
       setCancelando(id);
       await api.patch("/solicitacoes/" + id + "/status", {
@@ -68,11 +67,12 @@ export default function Historico() {
       setSolicitacoes((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: "cancelada" } : s)),
       );
+      toast.success("Solicitação cancelada com sucesso");
     } catch (error) {
       if (error.response && error.response.status === 422) {
-        alert("Essa solitação já foi cancelada, pelo prestador");
+        toast.error("Essa solitação já foi cancelada, pelo prestador");
       } else {
-        alert("Não foi possivel cancelar a solicitação. Tente novamente");
+        toast.error("Não foi possivel cancelar a solicitação. Tente novamente");
       }
     } finally {
       setCancelando(null);
