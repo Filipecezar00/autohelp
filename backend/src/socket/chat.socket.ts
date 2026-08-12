@@ -23,16 +23,16 @@ export function registrarEventosChat(
     socket.on("nova_solicitacao", async (dados: any) => {
       try {
         const { prestadorId, tipoServico, descricao } = dados;
-        const clientId = socket.usuario.id;
+        const clientId = socket.id;
 
         const [solicitacao]: any = await pool.query(
           `INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status,criado_em) VALUES (?,?,?,'pendente',NOW())  `,
           [clientId, prestadorId, descricao],
         );
 
-        const solicitacaoId = solicitacao.insertId;
+        const solicitacaoId: number = solicitacao.insertId;
 
-        const resposta = {
+        const resposta: any = {
           status: "pendente",
           criado_em: new Date(),
           prestadorId: prestadorId,
@@ -42,10 +42,7 @@ export function registrarEventosChat(
           solicitacaoId: solicitacaoId,
         };
 
-        io.to(`usuario_${prestadorId}`).emit(
-          "nova_solicitacao_recebida",
-          resposta,
-        );
+        io.to(`usuario_${prestadorId}`).emit("nova_solicitacao_recebida");
 
         socket.emit("solicitacao_criada_sucesso", resposta);
       } catch (error) {

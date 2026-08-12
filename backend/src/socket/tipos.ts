@@ -29,8 +29,7 @@ export interface EventosServidor {
     status: StatusSolicitacao;
   }) => void;
   erro: (mensagem: string) => void;
-  nova_solicitacao: (dados: any) => void;
-  solicitacao_criada_sucesso: () => void;
+  solicitacao_criada_sucesso: (resposta: any) => void;
   nova_solicitacao_recebida: () => void;
 }
 
@@ -38,4 +37,5 @@ export interface EventosCliente {
   entrar_sala: (conversaId: number) => void;
   enviar_mensagem: (dados: { texto: string; conversaId: number }) => void;
   sair_sala: (conversaId: number) => void;
+  nova_solicitacao: (dados: any) => void;
 }
