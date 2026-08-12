@@ -7,6 +7,7 @@ import CardSolicitacao from "../components/CardSolicitacao";
 import { TbDoorExit } from "react-icons/tb";
 import TelaCarregando from "../components/TelaCarregando";
 import socket from "../services/socket";
+import { toast } from "react-toastify";
 
 const TIPOS_SERVICO = ["mecanico", "borracheiro", "guincho"];
 
@@ -78,12 +79,12 @@ export function PainelPrestador() {
 
   async function finalizarConfiguracaoPerfil() {
     if (!servicoSelecionado) {
-      alert("Por favor, selecione a sua especialidade para continuar");
+      toast.info("Por favor, selecione a sua especialidade para continuar");
       return;
     }
 
     if (!navigator.geolocation) {
-      alert("Seu dispositivo não suporta geolocalização.");
+      toast.info("Seu dispositivo não suporta geolocalização.");
       return;
     }
 
@@ -107,7 +108,7 @@ export function PainelPrestador() {
 
         localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
       } catch {
-        alert("Erro ao salvar o perfil. Tente Novamente.");
+        toast.error("Erro ao salvar o perfil. Tente Novamente.");
       } finally {
         setPrecisaOnboarding(false);
         setCarregando(false);

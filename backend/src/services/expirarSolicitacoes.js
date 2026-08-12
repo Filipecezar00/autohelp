@@ -33,7 +33,6 @@ export async function processarExpiracaoEmLote(io) {
         WHERE status = 'pendente' AND criado_em <=NOW() - INTERVAL 30 MINUTE
       `,
     );
-    console.log("[DB] Resultados encontrados:", pendentesVencidas);
     if (pendentesVencidas.length === 0) {
       return;
     }
@@ -52,10 +51,7 @@ export async function processarExpiracaoEmLote(io) {
       };
 
       const canalCliente = "usuario_" + item.cliente_id;
-      console.log(
-        `[DEBUG] Emitindo expiração para sala:${canalCliente}`,
-        informacaoEvento,
-      );
+
       io.to(canalCliente).emit("solicitacao_expirada", informacaoEvento);
       if (item.prestador_id != null) {
         const canalPrestador = "usuario_" + item.prestador_id;
