@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { createServer } from "http";
+import { iniciarTodosOsCronJobs } from "../backend/src/services/cron";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
 const jwt = require("jsonwebtoken");
@@ -201,6 +202,7 @@ const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`Servidor Rodando na porta ${PORT}`);
   iniciarJob();
+  iniciarTodosOsCronJobs(io);
   processarExpiracaoEmLote(io);
   if (app._router && app._router.stack) {
     app._router.stack.forEach((layer: any) => {

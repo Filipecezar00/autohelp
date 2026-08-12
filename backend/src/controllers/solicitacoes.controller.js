@@ -44,7 +44,7 @@ async function criarSolicitacao(req, res) {
     const novaSolicitacao = {
       id: novaSolicitacaoID,
       clienteId: clienteId,
-      nome_cliente: req.usuario.name,
+      nome_cliente: req.user.name,
       status: "pendente",
       criado_em: new Date(),
     };
