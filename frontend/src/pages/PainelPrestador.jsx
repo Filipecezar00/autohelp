@@ -38,11 +38,14 @@ export function PainelPrestador() {
       setCarregando(false);
       return;
     }
+    buscarSolicitacao();
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
       console.log("Nova solicitação recebida:", novaSolicitacao);
 
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
+
+      toast.success("Você recebeu uma nova solicitação");
     });
 
     socket.on("solicitacao_expirada", (dadosEvento) => {
@@ -50,11 +53,11 @@ export function PainelPrestador() {
       setSolicitacoes((listaAnterior) =>
         listaAnterior.filter((item) => item.id !== dadosEvento.solicitacaoId),
       );
+      toast.info("Uma de suas solicitações expirou");
     });
 
     return () => socket.off("nova_solicitacao");
     socket.off("solicitacao_expirada");
-    buscarSolicitacao();
   }, [usuario]);
 
   async function buscarSolicitacao() {

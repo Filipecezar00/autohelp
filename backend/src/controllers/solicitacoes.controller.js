@@ -5,10 +5,11 @@ async function criarSolicitacao(req, res) {
     const prestadorId = req.body.prestador_id;
     const descricao = req.body.descricao;
     const pool = require("../config/database");
+    const io = req.app.get("io");
 
     const tempoAtual = new Date();
 
-    if (!prestadorId) {
+    if (!prestadorId || !clienteId) {
       return res.status(400).json({ message: "O prestador é obrigatorio" });
     }
 
@@ -48,10 +49,9 @@ async function criarSolicitacao(req, res) {
       status: "pendente",
       criado_em: new Date(),
     };
-
-    req.io
-      .to(`usuario_${prestadorId}`)
-      .emit("nova_solicitacao", novaSolicitacao);
+    if (io && prestadorId) {
+      io.to(`usuario_${prestadorId}`).emit("nova_solicitacao", novaSolicitacao);
+    }
 
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",

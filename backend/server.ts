@@ -31,6 +31,8 @@ const io = new Server<EventosCliente, EventosServidor>(httpServer, {
   },
 });
 
+app.set("io", io);
+
 io.use((socket, next) => {
   const token = socket.handshake.auth?.token;
 
