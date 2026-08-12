@@ -44,7 +44,15 @@ export function PainelPrestador() {
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
     });
 
+    socket.on("solicitacao_expirada", (dadosEvento) => {
+      console.log("Solicitação expirou: ", dadosEvento.solicitacaoId);
+      setSolicitacoes((listaAnterior) =>
+        listaAnterior.filter((item) => item.id !== dadosEvento.solicitacaoId),
+      );
+    });
+
     return () => socket.off("nova_solicitacao");
+    socket.off("solicitacao_expirada");
     buscarSolicitacao();
   }, [usuario]);
 

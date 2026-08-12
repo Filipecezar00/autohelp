@@ -6,6 +6,8 @@ import TelaErro from "../components/TelaErro.jsx";
 import CardSolicitacao from "../components/CardSolicitacao.jsx";
 import { useNavigate } from "react-router-dom";
 import styles from "../Historico.module.css";
+import socket from "../services/socket.js";
+import { toast } from "react-toastify";
 
 export default function Historico() {
   const [solicitacoes, setSolicitacoes] = useState([]);
@@ -16,6 +18,19 @@ export default function Historico() {
 
   useEffect(() => {
     buscarSolicitacoes();
+    socket.on("solicitacao_expirada", (dadosEvento) => {
+      setSolicitacoes((listaAnterior) => {
+        return listaAnterior.map((solicitacao) => {
+          if (solicitacao.id === dadosEvento.solicitacaoId) {
+            return { ...solicitacao, status: "expirado" };
+          } else {
+            return solicitacao;
+          }
+        });
+      });
+      toast.info("Sua solicitação expirou por tempo limite.");
+    });
+    return () => socket.off("solicitacao_expirada");
   }, []);
 
   function buscarPrestadores() {

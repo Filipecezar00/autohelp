@@ -30,6 +30,8 @@ export interface EventosServidor {
   }) => void;
   erro: (mensagem: string) => void;
   nova_solicitacao: (dados: any) => void;
+  solicitacao_criada_sucesso: () => void;
+  nova_solicitacao_recebida: () => void;
 }
 
 export interface EventosCliente {
