@@ -39,7 +39,6 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
-  setSolicitacoes,
 }) {
   const {
     status,
@@ -52,6 +51,7 @@ export default function CardSolicitacao({
   } = solicitacao;
 
   const [estaExpirado, setEstaExpirado] = useState(false);
+  const [solicitacoes, setSolicitacoes] = useState([]);
   const [tempoRestante, setTempoRestante] = useState(() => {
     return CalcularTempoRestante(criado_em);
   });
@@ -67,7 +67,7 @@ export default function CardSolicitacao({
           clearInterval(temporizador);
 
           setSolicitacoes((listaAnterior) => {
-            listaAnterior.filter((item) => item.id !== solicitacao.id);
+            return listaAnterior.filter((item) => item.id !== solicitacao.id);
           });
           return 0;
         }

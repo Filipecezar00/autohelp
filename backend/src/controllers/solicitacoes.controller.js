@@ -221,7 +221,7 @@ export async function aceitarSolicitacao(req, res) {
     const prestadorId = req.usuario.id;
 
     const AtualizandoSolicitacao = await pool.query(
-      `UPDATE solicitacoes SET status = aceita WHERE id=? AND prestador_id = ?`,
+      `UPDATE solicitacoes SET status = 'aceita' WHERE id=? AND prestador_id = ?`,
       [solicitacaoId, prestadorId],
     );
 
