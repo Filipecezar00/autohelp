@@ -220,11 +220,6 @@ export async function aceitarSolicitacao(req, res) {
     const { solicitacaoId } = req.params;
     const prestadorId = req.usuario.id;
 
-    const AtualizandoSolicitacao = await pool.query(
-      `UPDATE solicitacoes SET status = 'aceita' WHERE id=? AND prestador_id = ?`,
-      [solicitacaoId, prestadorId],
-    );
-
     const [rows] = await pool.query(
       `SELECT cliente_id,status, criado_em FROM solicitacoes WHERE id = ?`,
       [solicitacaoId],
@@ -240,6 +235,11 @@ export async function aceitarSolicitacao(req, res) {
         .status(400)
         .json("Esta solicitação já foi aceita, cancelada ou expirada");
     }
+
+    const AtualizandoSolicitacao = await pool.query(
+      `UPDATE solicitacoes SET status = 'aceita' WHERE id=? AND prestador_id = ?`,
+      [solicitacaoId, prestadorId],
+    );
     const agora = new Date();
 
     const diferenca = agora - new Date(solicitacao.criado_em);
@@ -254,13 +254,22 @@ export async function aceitarSolicitacao(req, res) {
 
     const clienteId = solicitacao.cliente_id;
 
-    await atualizarStatus(solicitacaoId, "aceito", prestadorId);
+    await atualizarStatus(solicitacaoId, "aceita", prestadorId);
 
-    req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
-      solicitacaoId: Number(solicitacaoId),
-      novoStatus: "ACEITO",
-      mensagem: "O prestador aceitou a sua solicitação de serviço",
-    });
+    if (req.io) {
+      req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
+        solicitacaoId: Number(solicitacaoId),
+        novoStatus: "ACEITO",
+        mensagem: "O prestador aceitou a sua solicitação de serviço",
+      });
+    }
+
+    console.log(
+      "Enviando aceite para a sala:",
+      "usuario_" + solicitacao.cliente_id,
+    );
+
+    console.log("Usuário conectado na sala:", "usuario_" + clienteId);
 
     return res.json({ sucesso: true, mensagem: "Solicitação aceita!" });
   } catch (error) {

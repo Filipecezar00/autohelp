@@ -56,8 +56,10 @@ export function PainelPrestador() {
       toast.info("Uma de suas solicitações expirou");
     });
 
-    return () => socket.off("nova_solicitacao");
-    socket.off("solicitacao_expirada");
+    return () => {
+      socket.off("nova_solicitacao");
+      socket.off("solicitacao_expirada");
+    };
   }, [usuario]);
 
   async function buscarSolicitacao() {

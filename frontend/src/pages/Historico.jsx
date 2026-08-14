@@ -33,20 +33,20 @@ export default function Historico() {
       toast.info("Sua solicitação expirou por tempo limite.");
     });
 
-    socket.on("solicitacao_aceita", (solicitacaoAtualizada) => {
-      setSolicitacoes(
-        (lista) =>
-          lista.map((item) => {
-            if (item.id == solicitacaoAtualizada.id) {
-              return solicitacaoAtualizada;
-            } else {
-              return item;
-            }
-          }),
-        toast.success("O prestador aceitou sua solicitação!"),
+    socket.on("status_atualizado", (solicitacaoAtualizada) => {
+      setSolicitacoes((lista) =>
+        lista.map((item) =>
+          item.id === solicitacaoAtualizada.conversaId
+            ? { ...item, status: solicitacaoAtualizada.novoStatus }
+            : item,
+        ),
       );
+      toast.success("O prestador aceitou sua solicitação!");
     });
-    return () => socket.off("solicitacao_expirada");
+    return () => {
+      socket.off("solicitacao_expirada");
+      socket.off("status_atualizado");
+    };
   }, []);
 
   function buscarPrestadores() {
