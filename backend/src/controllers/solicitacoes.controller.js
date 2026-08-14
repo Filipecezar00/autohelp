@@ -14,7 +14,7 @@ async function criarSolicitacao(req, res) {
     }
 
     const [prestadoresEncontrados] = await pool.query(
-      "SELECT * FROM prestadores WHERE id = ? AND ativo = TRUE",
+      `SELECT usuario_id FROM prestadores WHERE id = ?`,
       [prestadorId],
     );
 
@@ -23,6 +23,8 @@ async function criarSolicitacao(req, res) {
         .status(404)
         .json({ message: "Prestador não encontrado ou inativo" });
     }
+
+    const prestador = prestadoresEncontrados[0];
 
     const [solicitacaoExistente] = await pool.query(
       "SELECT * FROM solicitacoes WHERE cliente_id = ? AND prestador_id = ? AND status IN ('pendente','aceita')",
@@ -49,10 +51,13 @@ async function criarSolicitacao(req, res) {
       status: "pendente",
       criado_em: new Date(),
     };
-    if (io && prestadorId) {
-      io.to(`usuario_${prestadorId}`).emit("nova_solicitacao", novaSolicitacao);
-    }
 
+    if (io && prestadorId) {
+      io.to(`usuario_${prestador.usuario_id}`).emit(
+        "nova_solicitacao",
+        novaSolicitacao,
+      );
+    }
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",
       id: novaSolicitacaoID,

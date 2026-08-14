@@ -6,10 +6,30 @@ const router = express.Router();
 
 router.use(autenticarToken);
 
-router.post("/", solicitacoesController.criarSolicitacao);
-router.get("/minhas", solicitacoesController.listarSolicitacoesDoCliente);
-router.get("/recebidas", solicitacoesController.listarSolicitacoesDoPrestador);
-router.delete("/:id", solicitacoesController.cancelarSolicitacao);
-router.patch("/:id/status", solicitacoesController.atualizarStatus);
-router.put("/:id/esconder", solicitacoesController.esconderSolicitacao);
+router.post("/", autenticarToken, solicitacoesController.criarSolicitacao);
+router.get(
+  "/minhas",
+  autenticarToken,
+  solicitacoesController.listarSolicitacoesDoCliente,
+);
+router.get(
+  "/recebidas",
+  autenticarToken,
+  solicitacoesController.listarSolicitacoesDoPrestador,
+);
+router.delete(
+  "/:id",
+  autenticarToken,
+  solicitacoesController.cancelarSolicitacao,
+);
+router.patch(
+  "/:id/status",
+  autenticarToken,
+  solicitacoesController.atualizarStatus,
+);
+router.put(
+  "/:id/esconder",
+  autenticarToken,
+  solicitacoesController.esconderSolicitacao,
+);
 module.exports = router;
