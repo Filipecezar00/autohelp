@@ -32,13 +32,26 @@ export default function Historico() {
 
       toast.info("Sua solicitação expirou por tempo limite.");
     });
+
+    socket.on("solicitacao_aceita", (solicitacaoAtualizada) => {
+      setSolicitacoes(
+        (lista) =>
+          lista.map((item) => {
+            if (item.id == solicitacaoAtualizada.id) {
+              return solicitacaoAtualizada;
+            } else {
+              return item;
+            }
+          }),
+        toast.success("O prestador aceitou sua solicitação!"),
+      );
+    });
     return () => socket.off("solicitacao_expirada");
   }, []);
 
   function buscarPrestadores() {
     navigate("/mapa");
   }
-
   async function buscarSolicitacoes() {
     try {
       setCarregando(true);

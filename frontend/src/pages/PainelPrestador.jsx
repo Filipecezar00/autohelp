@@ -143,6 +143,28 @@ export function PainelPrestador() {
     }
   }
 
+  async function aceitarSolicitacao(idSolicitacao) {
+    try {
+      let resposta = await api.patch(
+        "/solicitacoes/" + idSolicitacao + "/aceitar",
+      );
+      if (resposta.status === 200) {
+        setSolicitacoes((listaAtual) => {
+          listaAtual.map((item) => {
+            if (item.id == idSolicitacao) {
+              return { ...item, status: "aceito" };
+            } else {
+              return false;
+            }
+          });
+        });
+        toast.success("Solicitação aceita com sucesso!");
+      }
+    } catch (error) {
+      toast.error("Erro ao aceitar Solicitação");
+    }
+  }
+
   async function deslogar() {
     const confirmacao = window.confirm("Você tem certeza que quer deslogar ?");
     if (!confirmacao) return;

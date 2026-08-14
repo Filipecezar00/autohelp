@@ -220,11 +220,15 @@ export async function aceitarSolicitacao(req, res) {
     const { solicitacaoId } = req.params;
     const prestadorId = req.usuario.id;
 
+    const AtualizandoSolicitacao = await pool.query(
+      `UPDATE solicitacoes SET status = aceita WHERE id=? AND prestador_id = ?`,
+      [solicitacaoId, prestadorId],
+    );
+
     const [rows] = await pool.query(
       `SELECT cliente_id,status, criado_em FROM solicitacoes WHERE id = ?`,
       [solicitacaoId],
     );
-
     const solicitacao = rows[0];
 
     if (!solicitacao) {
