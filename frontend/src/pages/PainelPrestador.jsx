@@ -40,6 +40,9 @@ export function PainelPrestador() {
     }
     buscarSolicitacao();
 
+    socket.connect();
+    socket.emit("registrar_usuario", usuario.id);
+
     socket.on("nova_solicitacao", (novaSolicitacao) => {
       console.log("Nova solicitação recebida:", novaSolicitacao);
 

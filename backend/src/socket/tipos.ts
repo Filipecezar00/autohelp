@@ -37,5 +37,6 @@ export interface EventosCliente {
   entrar_sala: (conversaId: number) => void;
   enviar_mensagem: (dados: { texto: string; conversaId: number }) => void;
   sair_sala: (conversaId: number) => void;
+  registrar_usuario: (usuarioId: number) => void;
   nova_solicitacao: (dados: any) => void;
 }

@@ -18,6 +18,11 @@ export default function Historico() {
 
   useEffect(() => {
     buscarSolicitacoes();
+    const dados_user_storage = localStorage.getItem("user");
+    const usuario = JSON.parse(dados_user_storage);
+
+    socket.connect();
+    socket.emit("registrar_usuario", usuario.id);
     socket.on("solicitacao_expirada", (dadosEvento) => {
       setSolicitacoes((listaAnterior) => {
         return listaAnterior.map((solicitacao) => {
@@ -28,16 +33,17 @@ export default function Historico() {
           }
         });
       });
-      console.log("[DEBUG] EVENTO RECEBIDO NO FRONTEND!", dadosEvento);
-
       toast.info("Sua solicitação expirou por tempo limite.");
     });
 
     socket.on("status_atualizado", (solicitacaoAtualizada) => {
       setSolicitacoes((lista) =>
         lista.map((item) =>
-          item.id === solicitacaoAtualizada.conversaId
-            ? { ...item, status: solicitacaoAtualizada.novoStatus }
+          item.id === solicitacaoAtualizada.solicitacaoId
+            ? {
+                ...item,
+                status: solicitacaoAtualizada.novoStatus.toLowerCase(),
+              }
             : item,
         ),
       );
