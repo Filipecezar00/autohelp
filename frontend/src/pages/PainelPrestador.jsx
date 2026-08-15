@@ -133,6 +133,7 @@ export function PainelPrestador() {
       await api.patch("/solicitacoes/" + id + "/status", {
         status: novoStatus,
       });
+      console.log("Aceitar clicado!");
       setSolicitacoes((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: novoStatus } : s)),
       );
@@ -157,7 +158,7 @@ export function PainelPrestador() {
         setSolicitacoes((listaAtual) => {
           listaAtual.map((item) => {
             if (item.id == idSolicitacao) {
-              return { ...item, status: "aceito" };
+              return { ...item, status: "aceita" };
             } else {
               return false;
             }

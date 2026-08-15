@@ -27,9 +27,17 @@ router.patch(
   autenticarToken,
   solicitacoesController.atualizarStatus,
 );
+
+router.patch(
+  "/:id/aceitar",
+  autenticarToken,
+  solicitacoesController.aceitarSolicitacao,
+);
+
 router.put(
   "/:id/esconder",
   autenticarToken,
   solicitacoesController.esconderSolicitacao,
 );
+
 module.exports = router;

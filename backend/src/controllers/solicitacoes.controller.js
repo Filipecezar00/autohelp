@@ -220,7 +220,7 @@ async function atualizarStatus(req, res) {
   }
 }
 
-export async function aceitarSolicitacao(req, res) {
+async function aceitarSolicitacao(req, res) {
   try {
     const { solicitacaoId } = req.params;
     const prestadorId = req.usuario.id;
@@ -229,6 +229,7 @@ export async function aceitarSolicitacao(req, res) {
       `SELECT cliente_id,status, criado_em FROM solicitacoes WHERE id = ?`,
       [solicitacaoId],
     );
+
     const solicitacao = rows[0];
 
     if (!solicitacao) {
@@ -245,6 +246,7 @@ export async function aceitarSolicitacao(req, res) {
       `UPDATE solicitacoes SET status = 'aceita' WHERE id=? AND prestador_id = ?`,
       [solicitacaoId, prestadorId],
     );
+
     const agora = new Date();
 
     const diferenca = agora - new Date(solicitacao.criado_em);
@@ -259,22 +261,21 @@ export async function aceitarSolicitacao(req, res) {
 
     const clienteId = solicitacao.cliente_id;
 
+    console.log("clienteId do banco:", clienteId);
+    console.log("sala destino:", `usuario_${clienteId}`);
+    console.log("req.io existe?", !!req.io);
+
     await atualizarStatus(solicitacaoId, "aceita", prestadorId);
 
     if (req.io) {
       req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
         solicitacaoId: Number(solicitacaoId),
-        novoStatus: "ACEITO",
+        novoStatus: "aceita",
         mensagem: "O prestador aceitou a sua solicitação de serviço",
       });
     }
 
-    console.log(
-      "Enviando aceite para a sala:",
-      "usuario_" + solicitacao.cliente_id,
-    );
-
-    console.log("Usuário conectado na sala:", "usuario_" + clienteId);
+    console.log("emit concluído");
 
     return res.json({ sucesso: true, mensagem: "Solicitação aceita!" });
   } catch (error) {
@@ -359,4 +360,5 @@ module.exports = {
   atualizarStatus,
   cancelarSolicitacao,
   esconderSolicitacao,
+  aceitarSolicitacao,
 };
