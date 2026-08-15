@@ -17,6 +17,15 @@ export interface Mensagem {
   criadoEm: string;
 }
 
+export interface novaNotificacao {
+  id: number;
+  usuarioId: number;
+  status: string;
+  titulo: string;
+  mensagem: string;
+  lida: boolean;
+}
+
 export interface EventosServidor {
   nova_mensagem: (mensagem: Mensagem) => void;
   notificacao_mensagem: (dados: {
@@ -31,6 +40,7 @@ export interface EventosServidor {
   erro: (mensagem: string) => void;
   solicitacao_criada_sucesso: (resposta: any) => void;
   nova_solicitacao_recebida: () => void;
+  nova_notificacao: () => void;
 }
 
 export interface EventosCliente {

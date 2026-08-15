@@ -242,11 +242,6 @@ async function aceitarSolicitacao(req, res) {
         .json("Esta solicitação já foi aceita, cancelada ou expirada");
     }
 
-    const AtualizandoSolicitacao = await pool.query(
-      `UPDATE solicitacoes SET status = 'aceita' WHERE id=? AND prestador_id = ?`,
-      [solicitacaoId, prestadorId],
-    );
-
     const agora = new Date();
 
     const diferenca = agora - new Date(solicitacao.criado_em);
@@ -268,7 +263,7 @@ async function aceitarSolicitacao(req, res) {
     await atualizarStatus(solicitacaoId, "aceita", prestadorId);
 
     if (req.io) {
-      req.io.to(`usuario_${clienteId}`).emit("status_atualizado", {
+      req.io.to(`usuario_${clienteId}`).emit("solicitacao_aceita", {
         solicitacaoId: Number(solicitacaoId),
         novoStatus: "aceita",
         mensagem: "O prestador aceitou a sua solicitação de serviço",

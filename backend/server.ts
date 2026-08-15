@@ -6,6 +6,7 @@ import { createServer } from "http";
 import { iniciarTodosOsCronJobs } from "../backend/src/services/cron";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
+import { novaNotificacao } from "./src/socket/tipos";
 const jwt = require("jsonwebtoken");
 import {
   iniciarJob,
@@ -108,15 +109,25 @@ app.post("/api/notificacoes", async (req, res) => {
       [usuarioId, titulo, mensagem],
     );
 
-    const novaNotificacao = {
+    const [status_solicitacao]: any = await pool.query(
+      `SELECT status FROM solicitacoes WHERE cliente_id = ? `,
+      [usuarioId],
+    );
+
+    const solicitacao = status_solicitacao[0];
+
+    const status = solicitacao.status;
+
+    const novaNotificacao: novaNotificacao = {
       id: resultado.insertId,
       usuarioId: usuarioId,
+      status: status,
       titulo: titulo,
       mensagem: mensagem,
       lida: false,
     };
 
-    io.to(`usuario_${usuarioId}`).emit("status_atualizado", novaNotificacao);
+    io.to(`usuario_${usuarioId}`).emit("nova_notificacao", novaNotificacao);
 
     return res.status(201).json(novaNotificacao);
   } catch (error) {

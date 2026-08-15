@@ -36,7 +36,7 @@ export default function Historico() {
       toast.info("Sua solicitação expirou por tempo limite.");
     });
 
-    socket.on("status_atualizado", (solicitacaoAtualizada) => {
+    socket.on("solicitacao_aceita", (solicitacaoAtualizada) => {
       setSolicitacoes((lista) =>
         lista.map((item) =>
           item.id === solicitacaoAtualizada.solicitacaoId
@@ -52,7 +52,7 @@ export default function Historico() {
 
     return () => {
       socket.off("solicitacao_expirada");
-      socket.off("status_atualizado");
+      socket.off("solicitacao_aceita");
     };
   }, []);
 
