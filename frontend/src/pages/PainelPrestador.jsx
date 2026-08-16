@@ -133,16 +133,17 @@ export function PainelPrestador() {
       await api.patch("/solicitacoes/" + id + "/status", {
         status: novoStatus,
       });
-      console.log("Aceitar clicado!");
       setSolicitacoes((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: novoStatus } : s)),
       );
     } catch (error) {
       if (error.response && error.response.status === 422) {
-        alert("Ops! O cliente cancelou esta solicitação antes de você aceitar");
+        toast.error(
+          "Ops! O cliente cancelou esta solicitação antes de você aceitar",
+        );
         buscarSolicitacao();
       } else {
-        alert("ocorreu um erro inesperado");
+        toast.error("ocorreu um erro inesperado");
       }
     } finally {
       setAtualizando(null);

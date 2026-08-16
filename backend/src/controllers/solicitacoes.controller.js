@@ -139,6 +139,7 @@ async function atualizarStatus(req, res) {
     const solicitacaoId = req.params.id;
     const novoStatus = req.body.status;
     const usuarioId = req.user.id;
+    const io = req.app.get("io");
 
     const statusPermitidos = [
       "aceita",
@@ -183,6 +184,7 @@ async function atualizarStatus(req, res) {
           .json({ message: "Apenas o prestador pode executar esta ação" });
       }
     }
+
     const transicoesValidas = {
       pendente: ["aceita", "recusada", "cancelada"],
       aceita: ["concluida", "cancelada"],
@@ -211,9 +213,17 @@ async function atualizarStatus(req, res) {
       [novoStatus, solicitacaoId],
     );
 
-    return res
-      .status(200)
-      .json({ mensagem: "Status atualizado", status: novoStatus });
+    console.log(solicitacao.cliente_id);
+    io.to(`usuario_${solicitacao.cliente_id}`).emit("solicitacao_aceita", {
+      solicitacaoId: Number(solicitacaoId),
+      novoStatus: "aceita",
+      mensagem: "O prestador aceitou a sua solicitação de serviço",
+    });
+
+    return res.status(200).json({
+      mensagem: "Status atualizado",
+      status: novoStatus,
+    });
   } catch (error) {
     console.error("Erro ao executar atualização de status: ", error);
     return res.status(500).json({ message: "Erro ao atualizar status" });
