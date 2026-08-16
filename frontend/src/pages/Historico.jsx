@@ -50,7 +50,22 @@ export default function Historico() {
       toast.success("O prestador aceitou sua solicitação!");
     });
 
+    socket.on("solicitacao_concluida", (solicitacaoAtualizada) => {
+      setSolicitacoes((lista) =>
+        lista.map((item) =>
+          item.id == solicitacaoAtualizada.solicitacaoId
+            ? {
+                ...item,
+                status: solicitacaoAtualizada.novoStatus.toLowerCase(),
+              }
+            : item,
+        ),
+      );
+      toast.success("O prestador concluiu a sua solicitação!");
+    });
+
     return () => {
+      socket.off("solicitacao_concluida");
       socket.off("solicitacao_expirada");
       socket.off("solicitacao_aceita");
     };

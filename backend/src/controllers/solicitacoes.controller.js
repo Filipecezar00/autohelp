@@ -205,6 +205,14 @@ async function atualizarStatus(req, res) {
       });
     }
 
+    const status_antigo = solicitacao.status.toLowerCase();
+
+    if (novoStatus === "concluida" && status_antigo !== "aceita") {
+      return res.status(400).json({
+        mensagem: "Apenas solicitações aceitas podem ser concluídas",
+      });
+    }
+
     await pool.query(
       `UPDATE solicitacoes 
        SET status = ?
@@ -213,13 +221,21 @@ async function atualizarStatus(req, res) {
       [novoStatus, solicitacaoId],
     );
 
-    console.log(solicitacao.cliente_id);
-    io.to(`usuario_${solicitacao.cliente_id}`).emit("solicitacao_aceita", {
-      solicitacaoId: Number(solicitacaoId),
-      novoStatus: "aceita",
-      mensagem: "O prestador aceitou a sua solicitação de serviço",
-    });
+    if (novoStatus === "aceita") {
+      io.to(`usuario_${solicitacao.cliente_id}`).emit("solicitacao_aceita", {
+        solicitacaoId: Number(solicitacaoId),
+        novoStatus: "aceita",
+        mensagem: "O prestador aceitou a sua solicitação de serviço",
+      });
+    }
 
+    if (novoStatus === "concluida") {
+      io.to(`usuario_${solicitacao.cliente_id}`).emit("solicitacao_concluida", {
+        solicitacaoId: Number(solicitacaoId),
+        novoStatus: "concluida",
+        mensagem: "O prestador concluiu a solicitação",
+      });
+    }
     return res.status(200).json({
       mensagem: "Status atualizado",
       status: novoStatus,
