@@ -63,7 +63,6 @@ export default function Historico() {
       );
       toast.success("O prestador concluiu a sua solicitação!");
     });
-
     return () => {
       socket.off("solicitacao_concluida");
       socket.off("solicitacao_expirada");

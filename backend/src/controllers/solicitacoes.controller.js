@@ -81,7 +81,7 @@ async function listarSolicitacoesDoCliente(req, res) {
         JOIN prestadores ON solicitacoes.prestador_id = prestadores.id
         JOIN usuarios ON prestadores.usuario_id = usuarios.id
         WHERE solicitacoes.cliente_id = ? AND solicitacoes.visivel_prestador = 1 
-        AND solicitacoes.status IN ('pendente','aceito')
+        AND solicitacoes.status IN ('pendente','aceita','concluida')
         ORDER BY solicitacoes.criado_em DESC`,
       [clienteId],
     );
@@ -118,7 +118,7 @@ async function listarSolicitacoesDoPrestador(req, res) {
               FROM solicitacoes JOIN usuarios ON 
               solicitacoes.cliente_id = usuarios.id WHERE
               solicitacoes.prestador_id = ? AND solicitacoes.visivel_prestador = 1
-              AND solicitacoes.status IN ('pendente','aceita') 
+              AND solicitacoes.status IN ('pendente','aceita','concluida') 
               ORDER BY CASE status WHEN 'pendente'
               THEN 1 WHEN 'aceita' THEN 2 ELSE 3 END,
               solicitacoes.criado_em DESC`,
