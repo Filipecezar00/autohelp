@@ -26,7 +26,7 @@ export default function Historico() {
     socket.on("solicitacao_expirada", (dadosEvento) => {
       setSolicitacoes((listaAnterior) => {
         return listaAnterior.map((solicitacao) => {
-          if (solicitacao.id === dadosEvento.solicitacaoId) {
+          if (solicitacao.id == dadosEvento.solicitacaoId) {
             return { ...solicitacao, status: "expirado" };
           } else {
             return solicitacao;
@@ -39,7 +39,7 @@ export default function Historico() {
     socket.on("solicitacao_aceita", (solicitacaoAtualizada) => {
       setSolicitacoes((lista) =>
         lista.map((item) =>
-          item.id === solicitacaoAtualizada.solicitacaoId
+          item.id == solicitacaoAtualizada.solicitacaoId
             ? {
                 ...item,
                 status: solicitacaoAtualizada.novoStatus.toLowerCase(),

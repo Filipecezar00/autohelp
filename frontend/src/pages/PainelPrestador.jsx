@@ -160,7 +160,7 @@ export function PainelPrestador() {
             if (item.id == idSolicitacao) {
               return { ...item, status: "aceita" };
             } else {
-              return false;
+              return item;
             }
           });
         });
