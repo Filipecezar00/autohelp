@@ -4,6 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import api from "../services/api.js";
 import { useState, useEffect } from "react";
 import { CiClock1 } from "react-icons/ci";
+import { toast } from "react-toastify";
 
 const CONFIG_STATUS = {
   pendente: { label: "Aguardando", classe: "pendente" },
@@ -113,9 +114,12 @@ export default function CardSolicitacao({
       );
 
       setSolicitacoes((listaAnterior) =>
-        listaAnterior.filter((item) => item.id !== solicitacao.id),
+        listaAnterior.filter((item) => item.id != solicitacao.id),
       );
+
+      toast.success("Excluido com sucesso!");
     } catch (error) {
+      toast.error("Erro ao Excluir");
       setErro("Não foi possível remover esse item do histórico.");
     }
   }
