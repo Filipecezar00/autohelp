@@ -30,9 +30,7 @@ export function App() {
       socket.connect();
     }
 
-    socket.on("connect", () => {
-      console.log("React conectado ao Socket! ID da conexão:", socket.id);
-    });
+    socket.on("connect", () => {});
     socket.on("notificacao_mensagem", (dados) => {
       toast.success(`${dados.remetenteNome}:${dados.texto}`);
     });

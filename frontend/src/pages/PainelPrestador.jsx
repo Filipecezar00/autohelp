@@ -44,15 +44,12 @@ export function PainelPrestador() {
     socket.emit("registrar_usuario", usuario.id);
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
-      console.log("Nova solicitação recebida:", novaSolicitacao);
-
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
 
       toast.success("Você recebeu uma nova solicitação");
     });
 
     socket.on("solicitacao_expirada", (dadosEvento) => {
-      console.log("Solicitação expirou: ", dadosEvento.solicitacaoId);
       setSolicitacoes((listaAnterior) =>
         listaAnterior.filter((item) => item.id !== dadosEvento.solicitacaoId),
       );

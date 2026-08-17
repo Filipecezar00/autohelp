@@ -125,8 +125,6 @@ async function listarSolicitacoesDoPrestador(req, res) {
       [prestador.id],
     );
 
-    console.log(solicitacoes);
-
     return res.status(200).json(solicitacoes);
   } catch (error) {
     console.error("Erro ao buscar as solicitações do prestador:", error);
@@ -282,10 +280,6 @@ async function aceitarSolicitacao(req, res) {
 
     const clienteId = solicitacao.cliente_id;
 
-    console.log("clienteId do banco:", clienteId);
-    console.log("sala destino:", `usuario_${clienteId}`);
-    console.log("req.io existe?", !!req.io);
-
     await atualizarStatus(solicitacaoId, "aceita", prestadorId);
 
     if (req.io) {
@@ -295,8 +289,6 @@ async function aceitarSolicitacao(req, res) {
         mensagem: "O prestador aceitou a sua solicitação de serviço",
       });
     }
-
-    console.log("emit concluído");
 
     return res.json({ sucesso: true, mensagem: "Solicitação aceita!" });
   } catch (error) {

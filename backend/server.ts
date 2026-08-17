@@ -57,7 +57,6 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   (req as any).io = io;
-  console.log(`requisição recebida: [${req.method}] ${req.url}`);
   next();
 });
 
@@ -163,7 +162,6 @@ app.patch("/api/notificacoes/:id/lida", async (req, res) => {
 app.patch(`/api/notificacoes/usuario/:id/marcar-todas`, async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
 
     const [notificacao] = await pool.query(
       `UPDATE notificacoes SET lida = true WHERE usuario_id = ? AND lida=false`,

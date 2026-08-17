@@ -77,8 +77,6 @@ function Cadastro() {
       setCarregando(true);
       setErro(null);
 
-      console.log("O QUE O RECO ESTÁ ENVIANDO PARA O BACKEND?:", form);
-
       await api.post("/auth/cadastro", {
         nome: form.nome,
         email: form.email,

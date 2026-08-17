@@ -15,9 +15,6 @@ export function registrarEventosChat(
     if (usuarioConectado?.id) {
       const salaPessoal = `usuario_${usuarioConectado.id}`;
       socket.join(salaPessoal);
-      console.log(
-        `Usuário ${usuarioConectado.id} conectado à sua sala pessoal:${salaPessoal}`,
-      );
     }
 
     socket.on("nova_solicitacao", async (dados: any) => {
@@ -54,9 +51,6 @@ export function registrarEventosChat(
     socket.on("registrar_usuario", (usuarioId: number) => {
       const sala = `usuario_${usuarioId}`;
       socket.join(sala);
-      console.log(`SALA REGISTRADA: ${sala}`);
-      console.log(`SALAS DO SOCKET:`, Array.from(socket.rooms));
-      console.log(`Usuário ${usuarioId} entrou na sala ${sala}`);
     });
 
     socket.on("entrar_sala", async (conversaId: number) => {
@@ -84,9 +78,6 @@ export function registrarEventosChat(
 
         const nomeDaSala = `conversa_${conversaId}`;
         socket.join(nomeDaSala);
-        console.log(
-          `Usuário ${usuarioConectado.id} entrou na sala: ${nomeDaSala}`,
-        );
       } catch (error) {
         socket.emit("erro", "Erro ao processar entrada na sala");
       }
@@ -151,11 +142,7 @@ export function registrarEventosChat(
       const nomeDaSala = `conversa_${conversaId}`;
       socket.leave(nomeDaSala);
     });
-    socket.on("disconnect", () => {
-      console.log(
-        `Usuário ${usuarioConectado?.id || "Desconhecido"} desconectou do WebSocket`,
-      );
-    });
+    socket.on("disconnect", () => {});
   });
 
   function emitirStatusAtualizado(

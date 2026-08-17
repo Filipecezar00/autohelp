@@ -25,12 +25,6 @@ export function BolhaMensagem({ mensagem, ehMinha }: Props) {
       return "";
     }
   };
-  console.log("Comparando identidades:", {
-    texto: mensagem.texto,
-    remetenteId_da_msg: mensagem.remetenteId,
-    tipo_remetente: typeof mensagem.remetenteId,
-    saoIguais: Number(mensagem.remetenteId) === Number(usuario.id),
-  });
 
   return (
     <div className={`mensagem-container ${ehMinha ? "minha" : "outra"}`}>

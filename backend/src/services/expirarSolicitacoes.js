@@ -12,13 +12,6 @@ export async function iniciarJob() {
              WHERE status = 'pendente' AND criado_em <= 
              NOW() - INTERVAL 1 MINUTE  `,
       );
-      if (resultado.affectedRows > 0) {
-        console.log(
-          "CRON JOB: " +
-            resultado.affectedRows +
-            " solicitacoes foram marcadas como expiradas",
-        );
-      }
     } catch (error) {
       console.log("ERRO AO EXECUTAR CRON:", error);
     }
@@ -58,7 +51,6 @@ export async function processarExpiracaoEmLote(io) {
         io.to(canalPrestador).emit("solicitacao_expirada", informacaoEvento);
       }
     });
-    console.log("Notificações de expiração enviadas com sucesso!");
   } catch (error) {
     console.error("ERRO AO PROCESSAR SOLICITAÇÕES EXPIRADAS:", error);
   }

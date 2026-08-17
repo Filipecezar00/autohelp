@@ -170,10 +170,6 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
         distancia = calcularDistanciaHaversine(lat, lng, latBanco, lngBanco);
       }
 
-      console.log(
-        `Prestador ID: ${prestador.prestador_id} (${prestador.nome}: Distância = ${distancia.toFixed(2)}) km`,
-      );
-
       return {
         ...prestador,
         distancia_km: distancia,
@@ -182,10 +178,6 @@ const buscarPrestadoresPorDistancia = async (req, res) => {
 
     const prestadoresFiltrados = filtrados.filter(
       (p) => p.distancia_km <= raio,
-    );
-
-    console.log(
-      `Encontrados ${prestadoresFiltrados.length} prestadores no raio de ${raio} km `,
     );
 
     return res.status(200).json(prestadoresFiltrados);

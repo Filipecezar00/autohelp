@@ -26,11 +26,6 @@ export function Chat() {
     return <TelaCarregando mensagem={"carregando"} />;
   }
 
-  console.log("Comparando identidades:", {
-    meu_id_logado: usuarioid,
-    tipo_meu_id: typeof usuarioid,
-  });
-
   return (
     <div className={styles.container}>
       <div className={styles.cabecalho}>
