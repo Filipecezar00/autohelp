@@ -87,6 +87,28 @@ export default function Historico() {
     }
   }
 
+  async function deletarSolicitacoes(id) {
+    try {
+      const token = localStorage.getItem("token");
+      const resposta = await api.put(
+        "/solicitacoes/" + id + "/esconder",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setSolicitacoes((listaAnterior) => {
+        return listaAnterior.filter((item) => item.id != id);
+      });
+      toast.success("Excluido com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao Excluir");
+      setErro("Não foi possível remover esse item do histórico.");
+    }
+  }
+
   async function cancelarSolicitacao(id) {
     const confirmado = window.confirm(
       "Tem certeza que deseja cancelar a solicitação?",
@@ -155,6 +177,7 @@ export default function Historico() {
                   solicitacao={solicitacao}
                   cancelando={cancelando === solicitacao.id}
                   onCancelar={() => cancelarSolicitacao(solicitacao.id)}
+                  onDeletar={() => deletarSolicitacoes(solicitacao.id)}
                   setSolicitacoes={setSolicitacoes}
                 />
               );

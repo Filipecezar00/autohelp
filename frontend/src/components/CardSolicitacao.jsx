@@ -40,6 +40,7 @@ export default function CardSolicitacao({
   solicitacao,
   cancelando,
   onCancelar,
+  onDeletar,
 }) {
   const {
     status,
@@ -97,30 +98,6 @@ export default function CardSolicitacao({
       return segundosRestantes;
     } else {
       return 0;
-    }
-  }
-
-  async function deletarSolicitacoes() {
-    try {
-      const token = localStorage.getItem("token");
-      await api.put(
-        "/solicitacoes/" + solicitacao.id + "/esconder",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      setSolicitacoes((listaAnterior) =>
-        listaAnterior.filter((item) => item.id != solicitacao.id),
-      );
-
-      toast.success("Excluido com sucesso!");
-    } catch (error) {
-      toast.error("Erro ao Excluir");
-      setErro("Não foi possível remover esse item do histórico.");
     }
   }
 
@@ -183,10 +160,7 @@ export default function CardSolicitacao({
             )}
           </button>
         )}
-        <button
-          className={styles.containerDelete}
-          onClick={deletarSolicitacoes}
-        >
+        <button className={styles.containerDelete} onClick={onDeletar}>
           <FaTrashAlt className={styles.btn_excluir} size={16} />
         </button>
       </div>

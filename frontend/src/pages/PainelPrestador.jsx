@@ -124,6 +124,50 @@ export function PainelPrestador() {
     });
   }
 
+  async function deletarSolicitacoes(id) {
+    try {
+      const token = localStorage.getItem("token");
+      await api.put("/solicitacoes/" + id + "/esconder", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSolicitacoes((listaAnterior) =>
+        listaAnterior.map((item) => item.id != id),
+      );
+      toast.success("Excluido com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao Excluir");
+      setErro("Não foi possível remover esse item do histórico.");
+    }
+  }
+
+  async function cancelarSolicitacao(id) {
+    const confirm = alert("Você deseja cancelar a solicitação ?");
+
+    if (!confirm) {
+      return;
+    }
+    try {
+      await api.patch("/solicitacao/" + id + "/status", {
+        status: "cancelada",
+      });
+      setSolicitacoes((listaAnterior) =>
+        listaAnterior.map((item) =>
+          item.id === id ? { ...item, status: "cancelada" } : item,
+        ),
+      );
+
+      toast.success("Solicitação cancelada com sucesso!");
+    } catch (error) {
+      if (error.response && error.response.status == 422) {
+        toast.error("Essa solicitação expirou ou foi cancelada");
+      } else {
+        toast.error("Não foi possivel cancelar, tente novamente");
+      }
+    }
+  }
+
   async function atualizarStatus(id, novoStatus) {
     try {
       if (novoStatus == "recusada") {
@@ -298,6 +342,8 @@ export function PainelPrestador() {
                 key={solicitacao.id}
                 nomeExibido={solicitacao.nome_cliente}
                 setSolicitacoes={setSolicitacoes}
+                onCancelar={() => cancelarSolicitacao(solicitacao.id)}
+                onDeletar={() => deletarSolicitacoes(solicitacao.id)}
               />
             );
           })}

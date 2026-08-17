@@ -359,17 +359,24 @@ async function cancelarSolicitacao(req, res) {
 }
 
 async function esconderSolicitacao(req, res) {
+  console.log("BACKEND: recebi a requisição para o ID:", req.params.id);
   const solicitacaoId = req.params.id;
   try {
+    console.log("Executando a query no sql");
     const [resultado] = await pool.query(
       "UPDATE solicitacoes SET visivel_prestador = false WHERE id = ?",
       [solicitacaoId],
+    );
+    console.log(
+      "Query executada com sucesso ! AffectedRows:",
+      resultado.affectedRows,
     );
     if (resultado.affectedRows === 0) {
       return res.status(404).json({ message: "Solicitação não encontrada" });
     }
     return res.status(200).json({ message: "Sucesso: Histórico atualizado" });
   } catch (error) {
+    console.error("ERRO CAPTURADO NO CATCH:", error);
     return res.status(500).json({ message: "Erro interno no servidor" });
   }
 }
