@@ -37,7 +37,7 @@ export async function atualizarDados(req, res) {
     );
     const usuarioAtual = usuarios[0];
 
-    const nomeFinal = nome && nome.trim() !== "" ? nome : usuarioAtual.nome;
+    const nomeFinal = nome && nome.trim() != "" ? nome : usuarioAtual.nome;
     if (!nome || nome.trim().length < 2) {
       return res.status(400).json({ message: "Nome Inválido" });
     }

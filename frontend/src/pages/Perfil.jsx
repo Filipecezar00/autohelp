@@ -37,6 +37,7 @@ export function Perfil({ handleDeletar }) {
           nome: resposta.data.usuario?.nome ?? "",
           telefone: resposta.data.usuario?.telefone ?? "",
           descricao: resposta.data.usuario?.descricao ?? "",
+          tipo: resposta.data.usuario?.tipo ?? "",
         });
       } catch (error) {
         setErro("ERRO AO CARREGAR PERFIL");
@@ -52,18 +53,20 @@ export function Perfil({ handleDeletar }) {
     try {
       setSalvando(true);
       setErro(null);
+      await api.put("/perfil", form);
 
-      const resposta = await api.put("/perfil", form);
+      setPerfil((listaAntiga) => {
+        const novoPerfil = {
+          ...listaAntiga,
+          usuario: {
+            ...listaAntiga.usuario,
+            nome: form.nome,
+          },
+        };
+        localStorage.setItem("user", JSON.stringify(novoPerfil.usuario));
 
-      setPerfil(resposta.data.usuario);
-
-      const usuarioAtualizado = {
-        ...usuario,
-        nome: form.nome,
-      };
-
-      setUsuario(usuarioAtualizado);
-      localStorage.setItem("user", JSON.stringify(usuarioAtualizado));
+        return novoPerfil;
+      });
 
       setmodoEdicao(false);
       setSucesso("Perfil atualizado com sucesso!");

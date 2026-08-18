@@ -73,6 +73,7 @@ export function PerfilHeader({ perfil }) {
       console.error("ERRO AO MARCAR COMO LIDA:", error);
     }
   }
+
   return (
     <div className={styles.containerHeader}>
       <span
@@ -125,12 +126,12 @@ export function PerfilHeader({ perfil }) {
         </span>
       </div>
       <div className={styles.headerPerfil}>
-        <h2 className={styles.nome}>{perfil.usuario.nome}</h2>
+        <h2 className={styles.nome}>{perfil.usuario?.nome}</h2>
         <p className={styles.tipo}>{perfil.usuario.tipo}</p>
       </div>
       {perfil.usuario.tipo === "prestador" && (
         <span className={styles.badgePrestador}>
-          <p className={styles.tipoPrestador}>{perfil.usuario.tipo_servico}</p>
+          <p className={styles.tipoPrestador}>{perfil.usuario?.tipo_servico}</p>
         </span>
       )}
     </div>
