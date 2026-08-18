@@ -73,7 +73,7 @@ CREATE TABLE notificacoes(
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-)
+);
 
 
 USE autohelp;
