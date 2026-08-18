@@ -64,6 +64,16 @@ CREATE TABLE mensagens(
     FOREIGN KEY (remetente_id) REFERENCES usuarios(id)
 );
 
+CREATE TABLE notificacoes(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    mensagem TEXT NOT NULL,
+    lida BOOLEAN NOT NULL DEFAULT FALSE,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+)
 
 
 USE autohelp;
