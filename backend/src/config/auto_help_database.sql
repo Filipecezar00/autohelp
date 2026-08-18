@@ -50,6 +50,20 @@ CREATE TABLE conversas(
     FOREIGN KEY (prestador_id) REFERENCES usuarios(id)
 )
 
+CREATE TABLE mensagens(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversa_id INT NOT NULL,
+    remetente_id INT NOT NULL,
+    texto TEXT NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT fk_mensagem_conversa
+    FOREIGN KEY (conversa_id) REFERENCES conversas(id),
+
+    CONSTRAINT fk_mensagem_remetente
+    FOREIGN KEY (remetente_id) REFERENCES usuarios(id)
+);
+
 
 
 USE autohelp;
