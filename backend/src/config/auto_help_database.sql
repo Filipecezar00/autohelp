@@ -34,7 +34,27 @@ CREATE TABLE solicitacoes(
     FOREIGN KEY (prestador_id) REFERENCES prestadores(id)
 );
 
+CREATE TABLE conversas(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    prestador_id INT NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE (cliente_id,prestador_id),
+
+    CONSTRAINT fk_conversa_cliente
+    FOREIGN KEY (cliente_id) REFERENCES usuarios(id),
+
+    CONSTRAINT fk_conversa_prestador
+    FOREIGN KEY (prestador_id) REFERENCES usuarios(id)
+)
+
+
+
 USE autohelp;
+
+
 
 INSERT INTO usuarios (nome,email,senha,tipo) VALUES 
 ('Carlos Mecânico','carlos@email.com','123456','prestador'),
