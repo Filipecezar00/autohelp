@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import pool from "../config/database.js";
 import "dotenv/config";
-import { io } from "../../server";
+import { io } from "../../server.js";
 
 export async function iniciarJob() {
   const frequenciaCron = "*/1 * * * *";
