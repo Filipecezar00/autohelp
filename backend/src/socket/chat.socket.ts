@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import pool from "../config/database";
-import {
+import type {
   Mensagem,
   StatusSolicitacao,
   EventosServidor,

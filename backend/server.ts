@@ -6,14 +6,14 @@ import { createServer } from "http";
 import { iniciarTodosOsCronJobs } from "./src/services/cron.js";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
-import { novaNotificacao } from "./src/socket/tipos.js";
+import type { novaNotificacao } from "./src/socket/tipos.js";
 const jwt = require("jsonwebtoken");
 import {
   iniciarJob,
   processarExpiracaoEmLote,
 } from "./src/services/expirarSolicitacoes.js";
 
-import { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
+import type { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
 
 import { registrarEventosChat } from "./src/socket/chat.socket.js";
 
