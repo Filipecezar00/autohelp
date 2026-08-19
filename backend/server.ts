@@ -15,7 +15,7 @@ import {
 
 import type { EventosCliente, EventosServidor } from "./src/socket/tipos.js";
 
-import type { registrarEventosChat } from "./src/socket/chat.socket.js";
+import { registrarEventosChat } from "./src/socket/chat.socket.js";
 
 import prestadoresRoutes from "./src/routes/prestadores.routes.js";
 import usuarioRoutes from "./src/routes/usuariosRoutes.js";
