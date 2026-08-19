@@ -27,7 +27,7 @@ const httpServer = createServer(app);
 
 const io = new Server<EventosCliente, EventosServidor>(httpServer, {
   cors: {
-    origin: "*",
+    origin: "https://autohelp-three.vercel.app",
     methods: ["GET", "POST"],
   },
 });
