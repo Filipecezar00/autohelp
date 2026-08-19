@@ -1,10 +1,17 @@
 import cron from "node-cron";
 import pool from "../config/database";
+import "dotenv/config";
 import { io } from "../../server";
 
 export async function iniciarJob() {
   const frequenciaCron = "*/1 * * * *";
 
+  console.log(
+    "Tentando conectar em:",
+    process.env.DB_HOST,
+    "na porta:",
+    process.env.PORT,
+  );
   cron.schedule(frequenciaCron, async () => {
     try {
       const [resultado] = await pool.query(
