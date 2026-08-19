@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import { createServer } from "http";
+import { createServer, METHODS } from "http";
 import { iniciarTodosOsCronJobs } from "./src/services/cron.js";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
@@ -25,11 +25,27 @@ import { conversaRoutes } from "./src/routes/conversas.routes.js";
 const app = express();
 const httpServer = createServer(app);
 
-const io = new Server<EventosCliente, EventosServidor>(httpServer, {
-  cors: {
-    origin: "https://autohelp-three.vercel.app",
-    methods: ["GET", "POST"],
+const corsOptions = {
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void,
+  ) => {
+    if (
+      !origin ||
+      origin.endsWith(".vercel.app") ||
+      origin.includes("localhost")
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Bloqueado pelo CORS`));
+    }
   },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
+
+const io = new Server<EventosCliente, EventosServidor>(httpServer, {
+  cors: corsOptions,
 });
 
 app.set("io", io);
@@ -52,7 +68,7 @@ io.use((socket, next) => {
   }
 });
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use((req, res, next) => {
