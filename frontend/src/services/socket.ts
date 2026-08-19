@@ -4,7 +4,7 @@ import { EventosCliente, EventosServidor } from "../types/chat.types";
 export function criarSocket(): Socket<EventosServidor, EventosCliente> {
   const token = localStorage.getItem("token");
 
-  return io("http://localhost:3001", {
+  return io((import.meta as any).env.VITE_API_URL, {
     auth: { token },
     autoConnect: false,
   });
