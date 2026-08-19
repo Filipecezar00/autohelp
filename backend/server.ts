@@ -3,10 +3,10 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { createServer } from "http";
-import { iniciarTodosOsCronJobs } from "../backend/src/services/cron";
+import { iniciarTodosOsCronJobs } from "./src/services/cron.js";
 import pool from "./src/config/database.js";
 import { Server, Socket } from "socket.io";
-import { novaNotificacao } from "./src/socket/tipos";
+import { novaNotificacao } from "./src/socket/tipos.js";
 const jwt = require("jsonwebtoken");
 import {
   iniciarJob,
