@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import pool from "../config/database";
+import pool from "../config/database.js";
 import "dotenv/config";
 import { io } from "../../server";
 
