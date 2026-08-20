@@ -5,6 +5,7 @@ export function criarSocket(): Socket<EventosServidor, EventosCliente> {
   const token = localStorage.getItem("token");
 
   return io((import.meta as any).env.VITE_API_URL, {
+    transports: ["websocket", "polling"],
     auth: { token },
     autoConnect: false,
   });
