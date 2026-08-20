@@ -27,7 +27,7 @@ CREATE TABLE solicitacoes(
     id INT AUTO_INCREMENT PRIMARY KEY,
     cliente_id INT NOT NULL,
     prestador_id INT NOT NULL,
-    status ENUM('pendente','aceita','concluida','cancelada') DEFAULT 'pendente',
+    status ENUM('pendente','aceita','concluida','cancelada','expirado') DEFAULT 'pendente',
     descricao TEXT,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (cliente_id) REFERENCES usuarios(id),

@@ -13,6 +13,8 @@ async function criarSolicitacao(req, res) {
       return res.status(400).json({ message: "O prestador é obrigatorio" });
     }
 
+    console.log("ID do usuário buscado:", clienteId);
+
     const [prestadoresEncontrados] = await pool.query(
       `SELECT usuario_id FROM prestadores WHERE id = ?`,
       [prestadorId],

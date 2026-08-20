@@ -23,7 +23,7 @@ export async function processarExpiracaoEmLote(io) {
     const [pendentesVencidas] = await pool.query(
       `
         SELECT id,cliente_id,prestador_id FROM solicitacoes
-        WHERE status = 'pendente' AND criado_em <=NOW() - INTERVAL 30 MINUTE
+        WHERE status = 'pendente' AND criado_em <=NOW() - INTERVAL 1 MINUTE
       `,
     );
     if (pendentesVencidas.length === 0) {
