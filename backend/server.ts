@@ -41,6 +41,7 @@ const corsOptions = {
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+
   credentials: true,
 };
 
