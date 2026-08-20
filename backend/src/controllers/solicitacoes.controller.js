@@ -110,7 +110,7 @@ async function listarSolicitacoesDoPrestador(req, res) {
       });
     }
 
-    const prestador_id = Resultadoprestador[0].usuario_id;
+    const prestador = Resultadoprestador[0];
 
     const [solicitacoes] = await pool.query(
       `SELECT solicitacoes.*,
@@ -124,7 +124,7 @@ async function listarSolicitacoesDoPrestador(req, res) {
               ORDER BY CASE status WHEN 'pendente'
               THEN 1 WHEN 'aceita' THEN 2 ELSE 3 END,
               solicitacoes.criado_em DESC`,
-      [prestador_id],
+      [prestador.id],
     );
 
     return res.status(200).json(solicitacoes);
