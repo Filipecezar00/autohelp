@@ -52,8 +52,6 @@ async function criarSolicitacao(req, res) {
       criado_em: new Date(),
     };
 
-    console.log("ID DA SALA:", prestador.usuario_id);
-
     if (io && prestadorId) {
       io.to(`usuario_${prestador_id}`).emit(
         "nova_solicitacao",
