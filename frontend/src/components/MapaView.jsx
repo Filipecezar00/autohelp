@@ -300,6 +300,8 @@ export default function MapaView({
             </Marker>
 
             {prestadores.map((prestador) => {
+              console.log("Dados do prestador no card:", prestador);
+
               const SameUser =
                 usuarioLogado.id &&
                 prestador.usuario_id &&
