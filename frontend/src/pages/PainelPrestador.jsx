@@ -40,26 +40,11 @@ export function PainelPrestador() {
     }
     buscarSolicitacao();
 
-    console.log("socket.id:", socket.id);
-    console.log("socket.connected:", socket.connected);
-
-    // function aoConectar() {
-    //   console.log("Socket conectado - entrando na sala");
-    //   socket.emit("registrar_usuario", usuario.id);
-    // }
-    // socket.on("connect", aoConectar);
-
-    socket.on("connect", () => {
-      console.log("CONNECT disparou - novo socket.id:", socket.id);
+    function aoConectar() {
+      console.log("CONECTADO - socket.id:", socket.id);
       socket.emit("registrar_usuario", usuario.id);
-    });
-
-    if (socket.connected) {
-      console.log("Já conectado - registrando diretamente");
-      socket.emit("registrar_usuario", usuario.id);
-    } else {
-      socket.connect();
     }
+    socket.on("connect", aoConectar);
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
       console.log("EVENTO RECEBIDO NO PAINEL:", novaSolicitacao);
@@ -74,6 +59,12 @@ export function PainelPrestador() {
       );
       toast.info("Uma de suas solicitações expirou");
     });
+
+    socket.connect();
+
+    if (socket.connected) {
+      aoConectar();
+    }
 
     return () => {
       socket.off("connect", aoConectar);
