@@ -53,6 +53,7 @@ export function PainelPrestador() {
     }
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
+      console.log("EVENTO RECEBIDO NO PAINEL:", novaSolicitacao);
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
 
       toast.success("Você recebeu uma nova solicitação");
