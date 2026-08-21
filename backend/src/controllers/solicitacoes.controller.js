@@ -52,12 +52,11 @@ async function criarSolicitacao(req, res) {
       criado_em: new Date(),
     };
 
+    console.log("EMITINDO para a sala:", `usuario_${prestadorId}`);
     if (io && prestadorId) {
-      io.to(`usuario_${prestador_id}`).emit(
-        "nova_solicitacao",
-        novaSolicitacao,
-      );
+      io.to(`usuario_${prestadorId}`).emit("nova_solicitacao", novaSolicitacao);
     }
+    console.log("EMISSÃO CONCLUÍDA");
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",
       id: novaSolicitacaoID,
