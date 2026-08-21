@@ -300,8 +300,6 @@ export default function MapaView({
             </Marker>
 
             {prestadores.map((prestador) => {
-              console.log("Dados do prestador no card:", prestador);
-
               const SameUser =
                 usuarioLogado.id &&
                 prestador.usuario_id &&
@@ -325,13 +323,19 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onSolicitar={() =>
-                          navigate(`/solicitar/${prestador.prestador_id}`, {
-                            state: {
-                              nome: prestador.nome,
-                              distancia: prestador.distancia_km,
-                            },
-                          })
+                        onSolicitar={
+                          () =>
+                            console.log(
+                              "Dados do prestador no card:",
+                              prestador,
+                            )
+
+                          // navigate(`/solicitar/${prestador.prestador_id}`, {
+                          //   state: {
+                          //     nome: prestador.nome,
+                          //     distancia: prestador.distancia_km,
+                          //   },
+                          // })
                         }
                       />
                     )}
