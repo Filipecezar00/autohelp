@@ -323,15 +323,14 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onSolicitar={navigate(
-                          `/solicitar/${prestador.prestador_id}`,
-                          {
+                        onSolicitar={() =>
+                          navigate(`/solicitar/${prestador.prestador_id}`, {
                             state: {
                               nome: prestador.nome,
                               distancia: prestador.distancia_km,
                             },
-                          },
-                        )}
+                          })
+                        }
                       />
                     )}
                   </Popup>
