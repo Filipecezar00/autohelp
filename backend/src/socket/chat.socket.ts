@@ -51,8 +51,7 @@ export function registrarEventosChat(
     socket.on("registrar_usuario", (usuarioId: number) => {
       const sala = `usuario_${usuarioId}`;
       socket.join(sala);
-      console.log(`SALA REGISTRADA: ${sala}`);
-      console.log(`SALAS ATIVAS:`, Array.from(socket.rooms));
+      console.log(`SALA REGISTRADA: ${sala} | socket.id:${socket.id}`);
     });
 
     socket.on("entrar_sala", async (conversaId: number) => {

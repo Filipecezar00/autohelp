@@ -40,14 +40,23 @@ export function PainelPrestador() {
     }
     buscarSolicitacao();
 
-    function aoConectar() {
-      console.log("Socket conectado - entrando na sala");
+    console.log("socket.id:", socket.id);
+    console.log("socket.connected:", socket.connected);
+
+    // function aoConectar() {
+    //   console.log("Socket conectado - entrando na sala");
+    //   socket.emit("registrar_usuario", usuario.id);
+    // }
+    // socket.on("connect", aoConectar);
+
+    socket.on("connect", () => {
+      console.log("CONNECT disparou - novo socket.id:", socket.id);
       socket.emit("registrar_usuario", usuario.id);
-    }
-    socket.on("connect", aoConectar);
+    });
 
     if (socket.connected) {
-      aoConectar();
+      console.log("Já conectado - registrando diretamente");
+      socket.emit("registrar_usuario", usuario.id);
     } else {
       socket.connect();
     }
