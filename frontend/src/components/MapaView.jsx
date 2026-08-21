@@ -331,6 +331,7 @@ export default function MapaView({
                   icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
                 >
                   <Popup>
+                    {console.log("POPUP RENDERIZANDO:", prestador?.id)}
                     {SameUser ? (
                       <div>
                         <p>{prestador.nome}</p>
