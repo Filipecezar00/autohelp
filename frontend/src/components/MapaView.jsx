@@ -323,20 +323,15 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onSolicitar={
-                          () =>
-                            console.log(
-                              "Dados do prestador no card:",
-                              prestador,
-                            )
-
-                          // navigate(`/solicitar/${prestador.prestador_id}`, {
-                          //   state: {
-                          //     nome: prestador.nome,
-                          //     distancia: prestador.distancia_km,
-                          //   },
-                          // })
-                        }
+                        onSolicitar={navigate(
+                          `/solicitar/${prestador.usuario_id}`,
+                          {
+                            state: {
+                              nome: prestador.nome,
+                              distancia: prestador.distancia_km,
+                            },
+                          },
+                        )}
                       />
                     )}
                   </Popup>
