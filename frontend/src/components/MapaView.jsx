@@ -219,20 +219,20 @@ export default function MapaView({
     setValorLocal(raioAtual);
   }, [raioAtual]);
 
-  const handleSolicitarServico = () => {
-    console.log("1. Handler do Pai executado!");
+  // const handleSolicitarServico = () => {
+  //   console.log("1. Handler do Pai executado!");
 
-    if (!prestador?.usuario_id) {
-      console.error("ERRO: prestador.usuario_id está ausente no Pai");
-      return;
-    }
-    navigate(`/solicitar/${prestador.usuario_id}`, {
-      state: {
-        nome: prestador.nome,
-        distancia: prestador.distancia_km,
-      },
-    });
-  };
+  //   if (!prestador?.usuario_id) {
+  //     console.error("ERRO: prestador.usuario_id está ausente no Pai");
+  //     return;
+  //   }
+  //   navigate(`/solicitar/${prestador.usuario_id}`, {
+  //     state: {
+  //       nome: prestador.nome,
+  //       distancia: prestador.distancia_km,
+  //     },
+  //   });
+  // };
 
   return (
     <div className={styles.containerglobal}>
@@ -340,7 +340,7 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onClick={handleSolicitarServico}
+                        onClick={() => console.log("CLICOU")}
                       />
                     )}
                   </Popup>
