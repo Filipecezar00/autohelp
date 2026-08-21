@@ -55,10 +55,7 @@ async function criarSolicitacao(req, res) {
     console.log("ID DA SALA:", prestador.usuario_id);
 
     if (io && prestadorId) {
-      io.to(`usuario_${prestador.usuario_id}`).emit(
-        "nova_solicitacao",
-        novaSolicitacao,
-      );
+      io.to(`usuario_${prestadorId}`).emit("nova_solicitacao", novaSolicitacao);
     }
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",
