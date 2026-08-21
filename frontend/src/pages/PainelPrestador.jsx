@@ -23,7 +23,7 @@ export function PainelPrestador() {
   const [servicoSelecionado, setServicoSelecionado] = useState("");
 
   useEffect(() => {
-    if (!usuario) return;
+    if (!usuario?.id) return;
 
     if (usuario.tipo !== "prestador") {
       navigate("/mapa", { replace: true });
@@ -40,8 +40,17 @@ export function PainelPrestador() {
     }
     buscarSolicitacao();
 
-    socket.connect();
-    socket.emit("registrar_usuario", usuario.id);
+    function aoConectar() {
+      console.log("Socket conectado - entrando na sala");
+      socket.emit("registrar_usuario", usuario.id);
+    }
+    socket.on("connect", aoConectar);
+
+    if (socket.connected) {
+      aoConectar();
+    } else {
+      socket.connect();
+    }
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
@@ -57,10 +66,12 @@ export function PainelPrestador() {
     });
 
     return () => {
+      socket.off("connect", aoConectar);
       socket.off("nova_solicitacao");
       socket.off("solicitacao_expirada");
+      socket.disconnect();
     };
-  }, [usuario]);
+  }, [usuario?.id]);
 
   async function buscarSolicitacao() {
     try {
