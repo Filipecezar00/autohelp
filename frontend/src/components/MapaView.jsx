@@ -324,8 +324,9 @@ export default function MapaView({
                         prestador={prestador}
                         usuario={usuarioLogado}
                         onSolicitar={() =>
-                          navigate(`/solicitar/${prestador.prestador_id}`, {
+                          navigate(`/solicitar/${prestador.usuario_id}`, {
                             state: {
+                              prestador_id_tabela: prestador.prestador_id,
                               nome: prestador.nome,
                               distancia: prestador.distancia_km,
                             },
