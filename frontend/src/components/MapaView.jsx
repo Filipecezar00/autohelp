@@ -331,7 +331,10 @@ export default function MapaView({
                   icon={ICONES[prestador.tipo_servico] ?? ICONES.mecanico}
                 >
                   <Popup>
-                    {console.log("POPUP RENDERIZANDO:", prestador?.id)}
+                    {console.log(
+                      "PRESTADOR COMPLETO:",
+                      JSON.stringify(prestador),
+                    )}
                     {SameUser ? (
                       <div>
                         <p>{prestador.nome}</p>
@@ -341,7 +344,14 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onClick={() => console.log("CLICOU")}
+                        onSolicitar={() =>
+                          navigate(`/solicitar/${prestador.prestador_id}`, {
+                            state: {
+                              nome: prestador.nome,
+                              distancia: prestador.distancia_km,
+                            },
+                          })
+                        }
                       />
                     )}
                   </Popup>
