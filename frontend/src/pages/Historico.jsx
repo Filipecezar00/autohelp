@@ -21,7 +21,21 @@ export default function Historico() {
     const dados_user_storage = localStorage.getItem("user");
     const usuario = JSON.parse(dados_user_storage);
 
-    socket.connect();
+    if (!usuario?.id) return;
+
+    function aoConectar() {
+      console.log("Socket conectado - entrando em sala");
+      socket.emit("registrar_usuario", usuario.id);
+    }
+
+    socket.on("connect", aoConectar);
+
+    if (socket.connected) {
+      aoConectar();
+    } else {
+      socket.connect();
+    }
+
     socket.emit("registrar_usuario", usuario.id);
     socket.on("solicitacao_expirada", (dadosEvento) => {
       setSolicitacoes((listaAnterior) => {
@@ -64,9 +78,11 @@ export default function Historico() {
       toast.success("O prestador concluiu a sua solicitação!");
     });
     return () => {
+      socket.off("connect", aoConectar);
       socket.off("solicitacao_concluida");
       socket.off("solicitacao_expirada");
       socket.off("solicitacao_aceita");
+      socket.disconnect();
     };
   }, []);
 
