@@ -206,6 +206,7 @@ export default function MapaView({
   raioAtual = 10,
   onAlternarRaio,
   usuarioLogado,
+  prestador,
 }) {
   if (!centro || centro.length !== 2) return null;
 
@@ -217,6 +218,22 @@ export default function MapaView({
   React.useEffect(() => {
     setValorLocal(raioAtual);
   }, [raioAtual]);
+
+  const handleSolicitarServico = () => {
+    console.log("1. Handler do Pai executado!");
+
+    if (!prestador?.usuario_id) {
+      console.error("ERRO: prestador.usuario_id está ausente no Pai");
+      return;
+    }
+    navigate(`/solicitar/${prestador.usuario_id}`, {
+      state: {
+        nome: prestador.nome,
+        distancia: prestador.distancia_km,
+      },
+    });
+  };
+
   return (
     <div className={styles.containerglobal}>
       <header className={styles.header}>
@@ -323,15 +340,7 @@ export default function MapaView({
                       <PopupPrestador
                         prestador={prestador}
                         usuario={usuarioLogado}
-                        onSolicitar={() =>
-                          navigate(`/solicitar/${prestador.usuario_id}`, {
-                            state: {
-                              prestador_id_tabela: prestador.prestador_id,
-                              nome: prestador.nome,
-                              distancia: prestador.distancia_km,
-                            },
-                          })
-                        }
+                        onClick={handleSolicitarServico}
                       />
                     )}
                   </Popup>
