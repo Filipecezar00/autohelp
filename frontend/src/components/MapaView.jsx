@@ -327,7 +327,6 @@ export default function MapaView({
                           `/solicitar/${prestador.usuario_id}`,
                           {
                             state: {
-                              prestador_id_tabela: prestador.prestador_id,
                               nome: prestador.nome,
                               distancia: prestador.distancia_km,
                             },
