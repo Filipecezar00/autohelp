@@ -70,6 +70,7 @@ export default function Solicitacao() {
       setEnviando(true);
       setErro(null);
 
+      console.log("ID PEGO NA URL:", prestadorId);
       const resposta = await api.post("/solicitacoes", {
         prestador_id: prestadorId,
         descricao: descricao.trim(),
