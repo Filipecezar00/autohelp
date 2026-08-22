@@ -27,7 +27,7 @@ async function criarSolicitacao(req, res) {
         .json({ message: "Prestador não encontrado ou inativo" });
     }
 
-    const prestador_id = prestadoresEncontrados[0].usuario_id;
+    const prestador_id = prestadoresEncontrados[0].id;
 
     const [solicitacaoExistente] = await pool.query(
       "SELECT * FROM solicitacoes WHERE cliente_id = ? AND prestador_id = ? AND status IN ('pendente','aceita')",
