@@ -48,7 +48,7 @@ async function criarSolicitacao(req, res) {
 
     const [resultado] = await pool.query(
       "INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status,criado_em) VALUES (?,?,?,'pendente',?)",
-      [clienteId, prestador_id, descricao, tempoAtual],
+      [clienteId, prestadorId, descricao, tempoAtual],
     );
 
     const novaSolicitacaoID = resultado.insertId;
@@ -61,13 +61,9 @@ async function criarSolicitacao(req, res) {
       criado_em: new Date(),
     };
 
-    console.log("EMITINDO para a sala:", `usuario_${prestadorId}`);
-    if (io && prestadorId) {
-      io.to(`usuario_${prestador_id}`).emit(
-        "nova_solicitacao",
-        novaSolicitacao,
-      );
-    }
+    console.log("EMITINDO para a sala:", `usuario_${prestador_id}`);
+    io.to(`usuario_${prestador_id}`).emit("nova_solicitacao", novaSolicitacao);
+
     console.log("EMISSÃO CONCLUÍDA");
     return res.status(201).json({
       mensagem: "Solicitação enviada com sucesso",
