@@ -10,7 +10,7 @@ export async function iniciarJob() {
       const [resultado] = await pool.query(
         `UPDATE solicitacoes SET status = 'expirado'
              WHERE status = 'pendente' AND criado_em <= 
-             NOW() - INTERVAL 1 MINUTE  `,
+             NOW() - INTERVAL 30 MINUTE  `,
       );
     } catch (error) {
       console.log("ERRO AO EXECUTAR CRON:", error);
