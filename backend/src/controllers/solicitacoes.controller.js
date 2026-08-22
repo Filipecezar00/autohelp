@@ -7,9 +7,6 @@ async function criarSolicitacao(req, res) {
     const pool = require("../config/database");
     const io = req.app.get("io");
 
-    console.log("req.usuario.id:", req.user.id);
-    console.log("req.body.prestador_id:", req.body.prestador_id);
-
     const tempoAtual = new Date();
 
     if (!prestadorId || !clienteId) {
@@ -27,12 +24,6 @@ async function criarSolicitacao(req, res) {
         .json({ message: "Prestador não encontrado ou inativo" });
     }
 
-    console.log("prestadorId recebido:", prestadorId);
-    console.log("prestadoresEncontrados:", prestadoresEncontrados);
-    console.log(
-      "usuario_id do prestador:",
-      prestadoresEncontrados[0]?.usuario_id,
-    );
     const prestador_id = prestadoresEncontrados[0].usuario_id;
 
     const [solicitacaoExistente] = await pool.query(
@@ -61,7 +52,6 @@ async function criarSolicitacao(req, res) {
       criado_em: new Date(),
     };
 
-    console.log("EMITINDO para a sala:", `usuario_${prestador_id}`);
     io.to(`usuario_${prestador_id}`).emit("nova_solicitacao", novaSolicitacao);
 
     console.log("EMISSÃO CONCLUÍDA");
