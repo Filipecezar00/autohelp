@@ -130,7 +130,8 @@ export default function CardSolicitacao({
   };
 
   const classeCor = styles[corDoCronometro(tempoRestante)];
-  console.log("solicitacao:", solicitacao);
+  console.log("Status Puro:", status);
+  console.log("Config gerada:", configStatus);
   return (
     <div className={styles.card}>
       <div className={styles.cabecalho}>
