@@ -57,7 +57,10 @@ async function criarSolicitacao(req, res) {
 
     console.log("EMITINDO para a sala:", `usuario_${prestadorId}`);
     if (io && prestadorId) {
-      io.to(`usuario_${prestadorId}`).emit("nova_solicitacao", novaSolicitacao);
+      io.to(`usuario_${prestador_id}`).emit(
+        "nova_solicitacao",
+        novaSolicitacao,
+      );
     }
     console.log("EMISSÃO CONCLUÍDA");
     return res.status(201).json({
