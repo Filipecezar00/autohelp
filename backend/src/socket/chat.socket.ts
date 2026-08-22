@@ -17,6 +17,10 @@ export function registrarEventosChat(
       socket.join(salaPessoal);
     }
 
+    socket.on("connect_error", (erro: any) => {
+      console.log("CONNECT ERROR:", erro.message);
+    });
+
     socket.on("nova_solicitacao", async (dados: any) => {
       try {
         const { prestadorId, tipoServico, descricao } = dados;
@@ -143,7 +147,9 @@ export function registrarEventosChat(
       const nomeDaSala = `conversa_${conversaId}`;
       socket.leave(nomeDaSala);
     });
-    socket.on("disconnect", () => {});
+    socket.on("disconnect", (motivo) => {
+      console.log("DISCONNECT:", motivo);
+    });
   });
 
   function emitirStatusAtualizado(

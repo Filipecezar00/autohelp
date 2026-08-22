@@ -49,4 +49,5 @@ export interface EventosCliente {
   sair_sala: (conversaId: number) => void;
   registrar_usuario: (usuarioId: number) => void;
   nova_solicitacao: (dados: any) => void;
+  connect_error: (erro: any) => void;
 }
