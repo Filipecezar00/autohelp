@@ -23,7 +23,12 @@ export function PainelPrestador() {
   const [servicoSelecionado, setServicoSelecionado] = useState("");
 
   useEffect(() => {
-    if (!usuario?.id) return;
+    console.log("1 - useEffect rodou");
+    console.log("2 - usuario?.id:", usuario?.id);
+    if (!usuario?.id) {
+      console.log("sem usuario.id - saindo");
+      return;
+    }
 
     if (usuario.tipo !== "prestador") {
       navigate("/mapa", { replace: true });
@@ -41,17 +46,21 @@ export function PainelPrestador() {
     buscarSolicitacao();
 
     function aoConectar() {
-      console.log("CONECTADO - socket.id:", socket.id);
+      console.log("3 - CONNECT disparou - socket.id:", socket.id);
       socket.emit("registrar_usuario", usuario.id);
+      console.log("4 - registrar_usuario emitido");
     }
     socket.on("connect", aoConectar);
 
     socket.on("nova_solicitacao", (novaSolicitacao) => {
-      console.log("EVENTO RECEBIDO NO PAINEL:", novaSolicitacao);
+      console.log("5 - nova_solicitacao RECEBIDO:", novaSolicitacao);
       setSolicitacoes((listaAnterior) => [novaSolicitacao, ...listaAnterior]);
-
       toast.success("Você recebeu uma nova solicitação");
     });
+
+    console.log("6 - socket.connected antes do connect():", socket.connected);
+    socket.connect();
+    console.log("7 - socket.connect() chamado");
 
     socket.on("solicitacao_expirada", (dadosEvento) => {
       setSolicitacoes((listaAnterior) =>
@@ -63,6 +72,7 @@ export function PainelPrestador() {
     socket.connect();
 
     if (socket.connected) {
+      console.log("8 - já estava conectado - chamando aoConectar diretamente");
       aoConectar();
     }
 
