@@ -30,6 +30,7 @@ function formatarData(dataString) {
   if (data.toDateString() === ontem.toDateString()) return "Ontem";
 
   return data.toLocaleDateString("pt-br", {
+    timeZone: "America/Sao_Paulo",
     day: "2-digit",
     month: "short",
     year: "numeric",
