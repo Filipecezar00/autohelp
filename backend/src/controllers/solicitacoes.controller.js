@@ -10,7 +10,9 @@ async function criarSolicitacao(req, res) {
     console.log("req.usuario.id:", req.user.id);
     console.log("req.body.prestador_id:", req.body.prestador_id);
 
-    const tempoAtual = new Date();
+    const tempoAtual = new Date().toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+    });
 
     if (!prestadorId || !clienteId) {
       return res.status(400).json({ message: "O prestador é obrigatorio" });
