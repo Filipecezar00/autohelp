@@ -27,7 +27,7 @@ async function criarSolicitacao(req, res) {
         .json({ message: "Prestador não encontrado ou inativo" });
     }
 
-    const prestador = prestadoresEncontrados[0];
+    const prestador_id = prestadoresEncontrados[0].usuario_id;
 
     const [solicitacaoExistente] = await pool.query(
       "SELECT * FROM solicitacoes WHERE cliente_id = ? AND prestador_id = ? AND status IN ('pendente','aceita')",
@@ -42,7 +42,7 @@ async function criarSolicitacao(req, res) {
 
     const [resultado] = await pool.query(
       "INSERT INTO solicitacoes (cliente_id,prestador_id,descricao,status,criado_em) VALUES (?,?,?,'pendente',?)",
-      [clienteId, prestadorId, descricao, tempoAtual],
+      [clienteId, prestador_id, descricao, tempoAtual],
     );
 
     const novaSolicitacaoID = resultado.insertId;
