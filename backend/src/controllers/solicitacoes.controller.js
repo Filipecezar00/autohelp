@@ -7,7 +7,7 @@ async function criarSolicitacao(req, res) {
     const pool = require("../config/database");
     const io = req.app.get("io");
 
-    console.log("req.usuario.id:", req.usuario.id);
+    console.log("req.usuario.id:", req.user.id);
     console.log("req.body.prestador_id:", req.body.prestador_id);
 
     const tempoAtual = new Date();
