@@ -158,8 +158,9 @@ export default function Solicitacao() {
                 <div>
                   <strong className={styles.nome}>{nomePrestador}</strong>
                   <span className={styles.badgeTipo}>
-                    {LABEL_TIPO[prestador.tipo_servico] ??
-                      prestador.tipo_servico}
+                    <p style={{ fontSize: "0.6875rem", fontWeight: "600" }}>
+                      {prestador.tipo_servico}
+                    </p>
                   </span>
                 </div>
               </span>
