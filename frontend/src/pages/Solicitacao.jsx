@@ -141,6 +141,7 @@ export default function Solicitacao() {
     navigate("/mapa");
   };
 
+  console.log("dados vindo do mapa:", dadosVindosDoMapa);
   return (
     <div className={styles.tela}>
       <div className={styles.card}>
@@ -158,9 +159,7 @@ export default function Solicitacao() {
                 <div>
                   <strong className={styles.nome}>{nomePrestador}</strong>
                   <span className={styles.badgeTipo}>
-                    <p style={{ fontSize: "0.6875rem", fontWeight: "600" }}>
-                      {prestador.tipo_servico}
-                    </p>
+                    {prestador.tipo_servico}
                   </span>
                 </div>
               </span>
