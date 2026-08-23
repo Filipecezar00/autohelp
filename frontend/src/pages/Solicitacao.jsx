@@ -183,7 +183,7 @@ export default function Solicitacao() {
             <span
               className={styles.infoItem}
               style={{
-                color: "red",
+                color: "white",
                 fontSize: "16px",
                 zIndex: 99,
                 display: "block",
