@@ -142,6 +142,7 @@ export default function Solicitacao() {
   };
 
   console.log("dados vindo do mapa:", dadosVindosDoMapa);
+  console.log("Objeto do prestador:", prestador);
   return (
     <div className={styles.tela}>
       <div className={styles.card}>
@@ -163,7 +164,6 @@ export default function Solicitacao() {
                       style={{
                         fontSize: "0.6875rem",
                         fontWeight: "600",
-                        background: "none",
                       }}
                     >
                       {prestador.tipo_servico}
