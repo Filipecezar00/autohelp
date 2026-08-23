@@ -170,10 +170,8 @@ export default function CardSolicitacao({
       <p className={styles.descricao}>{descricao}</p>
 
       <div className={styles.rodape}>
-        <span
-          className={`${styles.badgeStatus} ${styles[configStatus.classe]}`}
-        >
-          {configStatus.label}
+        <span className={` ${styles[solicitacao.status]}`}>
+          {solicitacao.status}
         </span>
         <span className={styles.data}>
           <FiClock size={11} />
