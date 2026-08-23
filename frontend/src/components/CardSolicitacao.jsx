@@ -173,12 +173,14 @@ export default function CardSolicitacao({
         <span
           className={styles[solicitacao.status]}
           style={{
-            border: "1px solid white",
+            border: "1px solid #1e3a6a",
             padding: "5px",
             borderRadius: "10px",
           }}
         >
-          {solicitacao.status}
+          <p style={{ fontSize: "0.6875rem", fontWeight: "600" }}>
+            {solicitacao.status}
+          </p>
         </span>
         <span className={styles.data}>
           <FiClock size={11} />
