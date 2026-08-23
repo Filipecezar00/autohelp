@@ -159,7 +159,15 @@ export default function Solicitacao() {
                 <div>
                   <strong className={styles.nome}>{nomePrestador}</strong>
                   <span className={styles.badgeTipo}>
-                    {prestador.tipo_servico}
+                    <p
+                      style={{
+                        fontSize: "0.6875rem",
+                        fontWeight: "600",
+                        background: "none",
+                      }}
+                    >
+                      {prestador.tipo_servico}
+                    </p>
                   </span>
                 </div>
               </span>
@@ -175,7 +183,7 @@ export default function Solicitacao() {
           {dadosVindosDoMapa?.distancia && (
             <span className={styles.infoItem}>
               <FiMapPin size={13} />
-              {dadosVindosDoMapa.distancia} km de você
+              {dadosVindosDoMapa?.distancia} km de você
             </span>
           )}
           {prestador.descricao && (
