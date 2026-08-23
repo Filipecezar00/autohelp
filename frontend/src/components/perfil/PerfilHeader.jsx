@@ -17,7 +17,7 @@ export function PerfilHeader({ perfil }) {
   async function marcarTodasComoLidas() {
     try {
       const requisicao = await api.patch(
-        `http://localhost:3001/api/notificacoes/usuario/${perfil.usuario.id}/marcar-todas`,
+        `https://autohelp-sjm6.onrender.com/api/notificacoes/usuario/${perfil.usuario.id}/marcar-todas`,
       );
 
       if (requisicao) {
@@ -35,7 +35,7 @@ export function PerfilHeader({ perfil }) {
     async function BuscarNotificacoes(id) {
       try {
         const req = await api.get(
-          `http://localhost:3001/api/notificacoes/${id}`,
+          `https://autohelp-sjm6.onrender.com/api/notificacoes/${id}`,
         );
         if (Array.isArray(req.data)) {
           setNotificacoes(req.data);
@@ -64,7 +64,7 @@ export function PerfilHeader({ perfil }) {
   async function marcarComoLida(idNotificacao) {
     try {
       await api.patch(
-        `http://localhost:3001/api/notificacoes/${idNotificacao}/lida`,
+        `https://autohelp-sjm6.onrender.com/api/notificacoes/${idNotificacao}/lida`,
       );
       setNotificacoes((listaAnterior) =>
         listaAnterior.filter((item) => item.id !== idNotificacao),
