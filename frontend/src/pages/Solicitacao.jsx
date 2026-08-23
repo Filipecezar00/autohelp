@@ -159,16 +159,7 @@ export default function Solicitacao() {
               <span className={styles.avatar}>
                 <div>
                   <strong className={styles.nome}>{nomePrestador}</strong>
-                  <span
-                    style={{
-                      fontWeight: "600",
-                      backgroundColor: "#1a2a4a",
-                      color: "#7ab3f4",
-                      border: "1px solid #1e3a6a",
-                      padding: "2px 10px",
-                      borderRadius: "20px",
-                    }}
-                  >
+                  <span>
                     <p>{prestador.tipo_servico}</p>
                   </span>{" "}
                 </div>
