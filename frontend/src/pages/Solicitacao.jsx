@@ -180,9 +180,17 @@ export default function Solicitacao() {
             </span>
           )}
           {dadosVindosDoMapa?.distancia !== undefined && (
-            <span className={styles.infoItem}>
+            <span
+              className={styles.infoItem}
+              style={{
+                color: "red",
+                fontSize: "16px",
+                zIndex: 99,
+                display: "block",
+              }}
+            >
               <FiMapPin size={13} />
-              {Number(location.state.distancia).toFixed(2)} km de você
+              {Number(dadosVindosDoMapa.distancia).toFixed(2)} km de você
             </span>
           )}
           {prestador.descricao && (
