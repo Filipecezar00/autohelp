@@ -170,7 +170,14 @@ export default function CardSolicitacao({
       <p className={styles.descricao}>{descricao}</p>
 
       <div className={styles.rodape}>
-        <span className={` ${styles[solicitacao.status]}`}>
+        <span
+          className={styles[solicitacao.status]}
+          style={{
+            border: "1px solid white",
+            padding: "5px",
+            borderRadius: "10px",
+          }}
+        >
           {solicitacao.status}
         </span>
         <span className={styles.data}>
