@@ -141,8 +141,6 @@ export default function Solicitacao() {
     navigate("/mapa");
   };
 
-  console.log("dados vindo do mapa:", dadosVindosDoMapa);
-  console.log("Objeto do prestador:", prestador);
   return (
     <div className={styles.tela}>
       <div className={styles.card}>
@@ -160,7 +158,15 @@ export default function Solicitacao() {
                 <div>
                   <strong className={styles.nome}>{nomePrestador}</strong>
                   <span>
-                    <p>{prestador.tipo_servico}</p>
+                    <p
+                      style={{
+                        color: "#7ab3f4",
+                        fontSize: "0.6875",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {prestador.tipo_servico}
+                    </p>
                   </span>{" "}
                 </div>
               </span>
@@ -173,10 +179,10 @@ export default function Solicitacao() {
               <FiPhone size={13} /> {prestador.telefone}
             </span>
           )}
-          {dadosVindosDoMapa?.distancia && (
+          {dadosVindosDoMapa?.distancia !== undefined && (
             <span className={styles.infoItem}>
               <FiMapPin size={13} />
-              {dadosVindosDoMapa?.distancia} km de você
+              {Number(dadosVindosDoMapa.distancia).toFixed(2)} km de você
             </span>
           )}
           {prestador.descricao && (
