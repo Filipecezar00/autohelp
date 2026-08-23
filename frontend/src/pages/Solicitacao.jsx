@@ -182,7 +182,7 @@ export default function Solicitacao() {
           {dadosVindosDoMapa?.distancia !== undefined && (
             <span className={styles.infoItem}>
               <FiMapPin size={13} />
-              {Number(dadosVindosDoMapa.distancia).toFixed(2)} km de você
+              {Number(location.state.distancia).toFixed(2)} km de você
             </span>
           )}
           {prestador.descricao && (
